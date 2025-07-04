@@ -3,15 +3,17 @@ dotenv.config({ path: './config.env' });
 
 import app from './app';
 import connectToDatabase from "./config/db";
+import {PORT} from "./constants/env";
+
 
 const startServer = async () => {
     try {
         await connectToDatabase();
-        app.listen(3500, () => {
-            console.log("Server started on port 3500");
+        app.listen(PORT, () => {
+            console.log(`Server started on port ${PORT}`);
         });
     } catch (err) {
-        console.error("Failed to connect to database", err);
+        console.error("Unexpected startup error:", err);
         process.exit(1);
     }
 };

@@ -1,37 +1,64 @@
 import mongoose from 'mongoose';
-import { hashValue, compareValue } from '../utils/bcrypt';
+import {hashValue, compareValue} from '../utils/bcrypt';
 
 export interface UserDocument extends mongoose.Document {
-  email: string;
-  password: string;
-  verified: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-  comparePassword: (password: string) => Promise<boolean>;
+    email: string;
+    password?: string;
+    verified: boolean;
+    name?: string;
+    googleId?: string;
+    profileImg?: string;
+    isOAuth?: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+    comparePassword: (password: string) => Promise<boolean>;
 }
 
 const userSchema = new mongoose.Schema<UserDocument>(
-  {
-    email: {
-      type: String,
-      unique: true,
-      required: [true, 'Email is required'],
+    {
+        email: {
+            type: String,
+            unique: true,
+            required: [true, 'Email is required'],
+            lowercase: true,
+            trim: true,
+        },
+        password: {
+            type: String,
+        },
+        verified: {
+            type: Boolean,
+            default: false,
+            required: true,
+        },
+        name: {
+            type: String,
+        },
+        googleId: {
+            type: String,
+        },
+        profileImg: {
+            type: String,
+        },
+        isOAuth: {
+            type: Boolean,
+            default: false,
+        },
     },
-    password: { type: String, required: [true, 'Password is required'] },
-    verified: { type: Boolean, required: true, default: false },
-  },
-  { timestamps: true }
+    {timestamps: true}
 );
 
 userSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) return next();
+    if (!this.isModified('password') || !this.password) return next();
 
-  this.password = await hashValue(this.password);
-  next();
+    this.password = await hashValue(this.password);
+    next();
 });
 
-userSchema.methods.comparePassword = async function (value: string) {
-  return await compareValue(value, this.password);
+// Compare passwords
+userSchema.methods.comparePassword = async function (candidatePassword: string) {
+    if (!this.password) return false;
+    return await compareValue(candidatePassword, this.password);
 };
 
 const UserModel = mongoose.model<UserDocument>('User', userSchema);

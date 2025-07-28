@@ -26,6 +26,7 @@ const userSchema = new mongoose.Schema<UserDocument>(
         },
         password: {
             type: String,
+            required: [true, 'Password is required']
         },
         verified: {
             type: Boolean,
@@ -50,6 +51,7 @@ const userSchema = new mongoose.Schema<UserDocument>(
 );
 
 userSchema.pre('save', async function (next) {
+    if (this.isOAuth) return next();
     if (!this.isModified('password') || !this.password) return next();
 
     this.password = await hashValue(this.password);

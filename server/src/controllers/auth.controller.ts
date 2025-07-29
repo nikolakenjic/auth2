@@ -15,8 +15,9 @@ const registerSchema = z.object({
 })
 
 export const registerHandler = catchAsync(async (req, res, next) => {
-//    validate request
+// //    validate request
     const request = registerSchema.parse(req.body);
+    // console.log(request)
 
 //     call service
     const {user, accessToken, refreshToken} = await createAccount(request)

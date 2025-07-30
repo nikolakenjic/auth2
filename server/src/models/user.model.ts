@@ -64,6 +64,15 @@ userSchema.methods.comparePassword = async function (candidatePassword: string) 
     return await compareValue(candidatePassword, this.password);
 };
 
+// Omit Password
+userSchema.set('toJSON', {
+    transform(doc, ret) {
+        delete ret.password;
+        return ret;
+    }
+});
+
+
 const UserModel = mongoose.model<UserDocument>('User', userSchema);
 
 export default UserModel;

@@ -25,3 +25,7 @@ export const registerHandler = catchAsync(async (req, res, next) => {
 //     return response
     return setAuthCookies({res, accessToken, refreshToken}).status(CREATED).json(user)
 })
+
+export const loginHandler = catchAsync(async (req, res, next) => {
+    return res.send('login')
+})

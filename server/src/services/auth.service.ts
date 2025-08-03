@@ -8,11 +8,13 @@ import {JWT_REFRESH_SECRET, JWT_SECRET} from "../constants/env";
 import appAssert from "../utils/appAssert";
 import {CONFLICT, UNAUTHORIZED} from "../constants/http";
 import SessionModel from "../models/session.model";
+import {accessTokenSignOptions, refreshTokenSignOptions, sighToken} from "../utils/jwt";
 
 export type CreateAccountParams = {
     email: string;
     password: string;
 };
+
 export const createAccount = async (data: CreateAccountParams) => {
     //  verify existing user does not exist
     const existingUser = await UserModel.exists({email: data.email});
@@ -40,20 +42,15 @@ export const createAccount = async (data: CreateAccountParams) => {
     })
 
     // sign access token and refresh token
-    const refreshToken = jwt.sign(
+    const refreshToken = sighToken(
         {sessionId: session._id},
-        JWT_REFRESH_SECRET,
-        {
-            expiresIn: '30d'
-        }
+        refreshTokenSignOptions
     )
 
-    const accessToken = jwt.sign(
+
+    const accessToken = sighToken(
         {userId: user._id, sessionId: session._id},
-        JWT_SECRET,
-        {
-            expiresIn: '15m'
-        }
+        accessTokenSignOptions
     )
 
 
@@ -85,21 +82,17 @@ export const loginUser = async ({email, password}: LoginParams) => {
     })
 
 //     sign access and refresh token
-    const refreshToken = jwt.sign(
+    const refreshToken = sighToken(
         {sessionId: session._id},
-        JWT_REFRESH_SECRET,
-        {
-            expiresIn: '30d'
-        }
+        refreshTokenSignOptions
     )
 
-    const accessToken = jwt.sign(
+
+    const accessToken = sighToken(
         {userId: user._id, sessionId: session._id},
-        JWT_SECRET,
-        {
-            expiresIn: '15m'
-        }
+        accessTokenSignOptions
     )
+
 
 //     return user
     return {

@@ -13,7 +13,10 @@ export const registerHandler = catchAsync(async (req, res, next) => {
     const {user, accessToken, refreshToken} = await createAccount(request)
 
 //     return response
-    return setAuthCookies({res, accessToken, refreshToken}).status(CREATED).json(user)
+    return setAuthCookies({res, accessToken, refreshToken}).status(CREATED).json({
+        status: "success",
+        user,
+    })
 })
 
 export const loginHandler = catchAsync(async (req, res, next) => {
@@ -25,8 +28,7 @@ export const loginHandler = catchAsync(async (req, res, next) => {
     // return response
 
     return setAuthCookies({res, accessToken, refreshToken}).status(OK).json({
-        message: 'success',
+        status: 'success',
         user
     })
-
 })

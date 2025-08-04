@@ -1,6 +1,6 @@
 import {SessionDocument} from "../models/session.model";
 import {UserDocument} from "../models/user.model";
-import jwt, {SignOptions} from "jsonwebtoken";
+import jwt, {SignOptions, VerifyOptions} from "jsonwebtoken";
 import {JWT_REFRESH_SECRET, JWT_SECRET} from "../constants/env";
 
 const defaults: SignOptions = {
@@ -41,4 +41,33 @@ export const sighToken = (
         ...signOpts
     })
 }
+
+export const verifyToken = <TPayload extends object = AccessTokenPayload>(
+    token: string,
+    options?: VerifyOptions & { secret?: string }
+) => {
+    const { secret = JWT_SECRET, ...verifyOpts } = options || {};
+
+    // Fix audience type
+    const fixedAudience =
+        Array.isArray(verifyOpts.audience)
+            ? verifyOpts.audience as [string | RegExp, ...(string | RegExp)[]]
+            : verifyOpts.audience;
+
+    try {
+        const payload = jwt.verify(token, secret, {
+            ...defaults,
+            ...verifyOpts,
+            audience: fixedAudience,
+        }) as unknown as TPayload;
+
+        return {
+            payload,
+        };
+    } catch (error: any) {
+        return {
+            error: error.message,
+        };
+    }
+};
 

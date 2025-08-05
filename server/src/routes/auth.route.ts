@@ -1,10 +1,12 @@
 import {Router} from "express";
-import {loginHandler, logoutHandler, registerHandler} from "../controllers/auth.controller";
+import {loginHandler, logoutHandler, refreshHandler, registerHandler} from "../controllers/auth.controller";
 
 const router = Router();
 
 router.post('/register', registerHandler);
 router.post('/login', loginHandler)
+
+router.get('/refresh', refreshHandler)
 router.get('/logout', logoutHandler)
 
 export default router

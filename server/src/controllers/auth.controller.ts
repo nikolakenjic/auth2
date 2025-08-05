@@ -48,3 +48,7 @@ export const logoutHandler = catchAsync(async (req, res, next) => {
         message: 'Logged out',
     })
 })
+
+export const refreshHandler = catchAsync(async (req, res, next) => {
+    return res.send('refresh')
+})

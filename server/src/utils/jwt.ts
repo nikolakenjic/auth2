@@ -30,7 +30,7 @@ export const accessTokenSignOptions: SignOptionsAndSecret = {
 }
 
 
-export const sighToken = (
+export const signToken = (
     payload: AccessTokenPayload | RefreshTokenPayload,
     options ?: SignOptionsAndSecret
 ) => {

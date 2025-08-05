@@ -1,12 +1,18 @@
 import UserModel from '../models/user.model';
 import VerificationCodeModel from "../models/verificationCode.model";
 import VerificationCodeTypes from "../constants/verificationCodeTypes";
-import {oneYearFromNow} from "../utils/date";
+import {ONE_DAY_MS, oneYearFromNow, thirtyDaysFromNow} from "../utils/date";
 import sessionModel from "../models/session.model";
 import appAssert from "../utils/appAssert";
 import {CONFLICT, UNAUTHORIZED} from "../constants/http";
 import SessionModel from "../models/session.model";
-import {accessTokenSignOptions, refreshTokenSignOptions, sighToken} from "../utils/jwt";
+import {
+    accessTokenSignOptions,
+    RefreshTokenPayload,
+    refreshTokenSignOptions,
+    signToken,
+    verifyToken
+} from "../utils/jwt";
 import {AuthCredentials} from "../types/auth.types";
 
 
@@ -37,13 +43,13 @@ export const createAccount = async (data: AuthCredentials) => {
     })
 
     // sign access token and refresh token
-    const refreshToken = sighToken(
+    const refreshToken = signToken(
         {sessionId: session._id},
         refreshTokenSignOptions
     )
 
 
-    const accessToken = sighToken(
+    const accessToken = signToken(
         {userId: user._id, sessionId: session._id},
         accessTokenSignOptions
     )
@@ -73,13 +79,13 @@ export const loginUser = async ({email, password}: AuthCredentials) => {
     })
 
 //     sign access and refresh token
-    const refreshToken = sighToken(
+    const refreshToken = signToken(
         {sessionId: session._id},
         refreshTokenSignOptions
     )
 
 
-    const accessToken = sighToken(
+    const accessToken = signToken(
         {userId: user._id, sessionId: session._id},
         accessTokenSignOptions
     )
@@ -90,5 +96,41 @@ export const loginUser = async ({email, password}: AuthCredentials) => {
         user,
         accessToken,
         refreshToken,
+    }
+}
+
+export const refreshUserAccessToken = async (refreshToken: string) => {
+    const {payload} = verifyToken<RefreshTokenPayload>(refreshToken, {
+        secret: refreshTokenSignOptions.secret
+    })
+    appAssert(payload, UNAUTHORIZED, 'Invalid refresh token')
+
+    const now = Date.now()
+
+    const session = await SessionModel.findById(payload.sessionId)
+    appAssert(session && session.expiresAt.getTime() > now, UNAUTHORIZED, 'Session expired')
+
+//     Refresh the session if it expires in the next 24 hours
+    const sessionNeedRefresh = session.expiresAt.getTime() - now <= ONE_DAY_MS
+    if (sessionNeedRefresh) {
+        session.expiresAt = thirtyDaysFromNow()
+        await session.save()
+    }
+
+
+    const newRefreshToken = sessionNeedRefresh
+        ? signToken(
+            {sessionId: session._id},
+            refreshTokenSignOptions
+        ) : undefined
+
+    const accessToken = signToken({
+        userId: session.userId,
+        sessionId: session._id
+    })
+
+    return {
+        accessToken,
+        newRefreshToken
     }
 }

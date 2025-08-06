@@ -70,3 +70,7 @@ export const refreshHandler = catchAsync(async (req, res, next) => {
         message: 'Access token refreshed'
     })
 })
+
+export const emailVerifyHandler = catchAsync(async (req, res, next) => {
+    return res.send('verify email')
+})

@@ -4,7 +4,7 @@ import VerificationCodeTypes from "../constants/verificationCodeTypes";
 import {ONE_DAY_MS, oneYearFromNow, thirtyDaysFromNow} from "../utils/date";
 import sessionModel from "../models/session.model";
 import appAssert from "../utils/appAssert";
-import {CONFLICT, UNAUTHORIZED} from "../constants/http";
+import {CONFLICT, INTERNAL_SERVER_ERROR, NOT_FOUND, UNAUTHORIZED} from "../constants/http";
 import SessionModel from "../models/session.model";
 import {
     accessTokenSignOptions,
@@ -132,5 +132,30 @@ export const refreshUserAccessToken = async (refreshToken: string) => {
     return {
         accessToken,
         newRefreshToken
+    }
+}
+
+export const verifyEmail = async (code: string) => {
+//     get the verification code
+    const validCode = await VerificationCodeModel.findOne({
+        _id: code,
+        type: VerificationCodeTypes.EmailVerification,
+        expiresAt: {$gt: new Date()}
+    })
+    appAssert(validCode, NOT_FOUND, 'Invalid or expired verification code')
+
+//     update user to verified true
+    const updateUser = await UserModel.findByIdAndUpdate(
+        validCode.userId,
+        {verified: true},
+        {new: true}
+    )
+    appAssert(updateUser, INTERNAL_SERVER_ERROR, 'Failed to verify email')
+//     delete verification code
+    await validCode.deleteOne()
+
+//     return user
+    return {
+        user: updateUser,
     }
 }

@@ -1,5 +1,5 @@
 import catchAsync from "../utils/catchAsync";
-import {createAccount, loginUser, refreshUserAccessToken} from "../services/auth.service";
+import {createAccount, loginUser, refreshUserAccessToken, verifyEmail} from "../services/auth.service";
 import {CREATED, OK, UNAUTHORIZED} from "../constants/http";
 import {
     clearAuthCookies,
@@ -7,7 +7,7 @@ import {
     getRefreshTokenCookieOptions,
     setAuthCookies
 } from "../utils/cookies";
-import {loginSchema, registerSchema} from "../validations/auth.schemas";
+import {loginSchema, registerSchema, verificationCodeSchema} from "../validations/auth.schemas";
 import {verifyToken} from "../utils/jwt";
 import SessionModel from "../models/session.model";
 import appAssert from "../utils/appAssert";
@@ -72,5 +72,13 @@ export const refreshHandler = catchAsync(async (req, res, next) => {
 })
 
 export const emailVerifyHandler = catchAsync(async (req, res, next) => {
-    return res.send('verify email')
+    const verificationCode = verificationCodeSchema.parse(req.params.code)
+
+    const {user} = await verifyEmail(verificationCode)
+
+    return res.status(OK).json({
+        status: 'success',
+        message: 'Email verified',
+        user,
+    })
 })

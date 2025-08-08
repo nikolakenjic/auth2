@@ -14,6 +14,9 @@ import {
     verifyToken
 } from "../utils/jwt";
 import {AuthCredentials} from "../types/auth.types";
+import {sendMail} from "../utils/sendMail";
+import {APP_ORIGIN} from "../constants/env";
+import {getVerifyEmailTemplate} from "../utils/emailTemplates";
 
 
 export const createAccount = async (data: AuthCredentials) => {
@@ -35,7 +38,13 @@ export const createAccount = async (data: AuthCredentials) => {
         expiresAt: oneYearFromNow()
     })
 
+
+    const url = `${APP_ORIGIN}/email/verify/${verificationCode._id}`
     // send verification email
+    await sendMail({
+        to: user.email,
+        ...getVerifyEmailTemplate(url),
+    })
 
     // create session
     const session = await sessionModel.create({

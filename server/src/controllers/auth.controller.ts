@@ -7,7 +7,7 @@ import {
     getRefreshTokenCookieOptions,
     setAuthCookies
 } from "../utils/cookies";
-import {loginSchema, registerSchema, verificationCodeSchema} from "../validations/auth.schemas";
+import {emailSchema, loginSchema, registerSchema, verificationCodeSchema} from "../validations/auth.schemas";
 import {verifyToken} from "../utils/jwt";
 import SessionModel from "../models/session.model";
 import appAssert from "../utils/appAssert";
@@ -81,4 +81,10 @@ export const emailVerifyHandler = catchAsync(async (req, res, next) => {
         message: 'Email verified',
         user,
     })
+})
+
+export const sendPasswordResetHandler = catchAsync(async(req, res) => {
+    // const email = emailSchema.parse(req.body.email)
+
+    return res.send('reset')
 })

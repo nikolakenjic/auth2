@@ -1,5 +1,11 @@
 import catchAsync from "../utils/catchAsync";
-import {createAccount, loginUser, refreshUserAccessToken, verifyEmail} from "../services/auth.service";
+import {
+    createAccount,
+    loginUser,
+    refreshUserAccessToken,
+    sendPasswordResetEmail,
+    verifyEmail
+} from "../services/auth.service";
 import {CREATED, OK, UNAUTHORIZED} from "../constants/http";
 import {
     clearAuthCookies,
@@ -84,7 +90,12 @@ export const emailVerifyHandler = catchAsync(async (req, res, next) => {
 })
 
 export const sendPasswordResetHandler = catchAsync(async(req, res) => {
-    // const email = emailSchema.parse(req.body.email)
+    const email = emailSchema.parse(req.body.email)
 
-    return res.send('reset')
+    const {url, emailId} = await sendPasswordResetEmail(email)
+
+    return res.status(OK).json({
+        status: 'success',
+        message: 'Password reset email sent',
+    })
 })

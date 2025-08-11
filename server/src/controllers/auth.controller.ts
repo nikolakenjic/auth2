@@ -99,3 +99,7 @@ export const sendPasswordResetHandler = catchAsync(async(req, res) => {
         message: 'Password reset email sent',
     })
 })
+
+export const resetPasswordHandler = catchAsync(async (req, res) => {
+    return res.send('reset')
+})

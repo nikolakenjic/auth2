@@ -4,7 +4,7 @@ import {
     loginHandler,
     logoutHandler,
     refreshHandler,
-    registerHandler, sendPasswordResetHandler
+    registerHandler, resetPasswordHandler, sendPasswordResetHandler
 } from "../controllers/auth.controller";
 
 const router = Router();
@@ -18,5 +18,6 @@ router.get('/logout', logoutHandler)
 router.get('/email/verify/:code', emailVerifyHandler)
 
 router.post('/password/forgot', sendPasswordResetHandler)
+router.post('/password/reset', resetPasswordHandler)
 
 export default router

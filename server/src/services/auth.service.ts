@@ -13,10 +13,11 @@ import {
     signToken,
     verifyToken
 } from "../utils/jwt";
-import {AuthCredentials} from "../types/auth.types";
+import {AuthCredentials, ResetPasswordParams} from "../types/auth.types";
 import {sendMail} from "../utils/sendMail";
 import {APP_ORIGIN} from "../constants/env";
 import {getPasswordResetTemplate, getVerifyEmailTemplate} from "../utils/emailTemplates";
+import {hashValue} from "../utils/bcrypt";
 
 
 export const createAccount = async (data: AuthCredentials) => {
@@ -201,6 +202,36 @@ export const sendPasswordResetEmail = async (email: string) => {
 //     return success
     return {
         url,
-        emailId:data.id
+        emailId: data.id
+    }
+}
+
+export const resetPassword = async ({
+                                        password,
+                                        verificationCode,
+                                    }: ResetPasswordParams) => {
+// get the verification code
+    const validCode = await VerificationCodeModel.findOne({
+        _id: verificationCode,
+        type: VerificationCodeTypes.PasswordReset,
+        expiresAt: {$gt: new Date()}
+    })
+    appAssert(validCode, NOT_FOUND, 'Invalid or expired verification code')
+
+//     update the user password
+    const updateUser = await UserModel.findByIdAndUpdate(validCode.userId, {
+        password: await hashValue(password)
+    })
+    appAssert(updateUser, INTERNAL_SERVER_ERROR, 'Faild to reset password')
+
+//     delete the verification code
+    await validCode.deleteOne()
+
+//     delete all sessions
+    await SessionModel.deleteMany({userId: validCode.userId})
+
+//     return value
+    return {
+        user: updateUser
     }
 }

@@ -2,7 +2,7 @@ import catchAsync from "../utils/catchAsync";
 import {
     createAccount,
     loginUser,
-    refreshUserAccessToken,
+    refreshUserAccessToken, resetPassword,
     sendPasswordResetEmail,
     verifyEmail
 } from "../services/auth.service";
@@ -13,7 +13,13 @@ import {
     getRefreshTokenCookieOptions,
     setAuthCookies
 } from "../utils/cookies";
-import {emailSchema, loginSchema, registerSchema, verificationCodeSchema} from "../validations/auth.schemas";
+import {
+    emailSchema,
+    loginSchema,
+    registerSchema,
+    resetPasswordSchema,
+    verificationCodeSchema
+} from "../validations/auth.schemas";
 import {verifyToken} from "../utils/jwt";
 import SessionModel from "../models/session.model";
 import appAssert from "../utils/appAssert";
@@ -51,7 +57,7 @@ export const logoutHandler = catchAsync(async (req, res, next) => {
     const accessToken = req.cookies.accessToken as string | undefined
     const {payload} = verifyToken(accessToken || '')
 
-    if(payload) {
+    if (payload) {
         await SessionModel.findByIdAndDelete(payload.sessionId)
     }
 
@@ -67,7 +73,7 @@ export const refreshHandler = catchAsync(async (req, res, next) => {
 
     const {accessToken, newRefreshToken} = await refreshUserAccessToken(refreshToken)
 
-    if(newRefreshToken) {
+    if (newRefreshToken) {
         res.cookie('refreshToken', newRefreshToken, getRefreshTokenCookieOptions())
     }
 
@@ -89,7 +95,7 @@ export const emailVerifyHandler = catchAsync(async (req, res, next) => {
     })
 })
 
-export const sendPasswordResetHandler = catchAsync(async(req, res) => {
+export const sendPasswordResetHandler = catchAsync(async (req, res) => {
     const email = emailSchema.parse(req.body.email)
 
     const {url, emailId} = await sendPasswordResetEmail(email)
@@ -101,5 +107,12 @@ export const sendPasswordResetHandler = catchAsync(async(req, res) => {
 })
 
 export const resetPasswordHandler = catchAsync(async (req, res) => {
-    return res.send('reset')
+    const request = resetPasswordSchema.parse(req.body)
+
+    await resetPassword(request)
+
+    return clearAuthCookies(res).status(OK).json({
+        status: 'success',
+        message: 'Password reset successful',
+    })
 })

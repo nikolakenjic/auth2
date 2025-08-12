@@ -19,6 +19,9 @@ app.get(
 
 app.use('/auth', authRoute)
 
+// protected routes
+
+
 // Error
 app.use(errorHandler);
 

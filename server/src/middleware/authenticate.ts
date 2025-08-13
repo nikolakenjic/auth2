@@ -1,8 +1,9 @@
-import { RequestHandler } from 'express';
+import {RequestHandler} from 'express';
 import appAssert from '../utils/appAssert';
-import { UNAUTHORIZED } from '../constants/http';
+import {UNAUTHORIZED} from '../constants/http';
 import AppErrorCode from '../constants/appErrorCode';
-import { verifyToken } from '../utils/jwt';
+import {verifyToken} from '../utils/jwt';
+import {ObjectId} from "mongoose";
 
 const authenticate: RequestHandler = (req, res, next) => {
     const accessToken = req.cookies.accessToken as string | undefined;
@@ -13,7 +14,7 @@ const authenticate: RequestHandler = (req, res, next) => {
         AppErrorCode.InvalidAccessToken
     );
 
-    const { error, payload } = verifyToken(accessToken);
+    const {error, payload} = verifyToken(accessToken);
     appAssert(
         payload,
         UNAUTHORIZED,
@@ -21,8 +22,8 @@ const authenticate: RequestHandler = (req, res, next) => {
         AppErrorCode.InvalidAccessToken
     );
 
-    req.userId = payload.userId;
-    req.sessionId = payload.sessionId;
+    req.userId = payload.userId as ObjectId;
+    req.sessionId = payload.sessionId as ObjectId;
 
     next();
 };

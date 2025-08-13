@@ -4,6 +4,7 @@ import errorHandler from './middleware/errorHandler';
 import catchAsync from './utils/catchAsync';
 import authRoute from './routes/auth.route';
 import userRoute from './routes/user.route';
+import authenticate from './middleware/authenticate';
 
 const app = express();
 
@@ -21,7 +22,7 @@ app.get(
 app.use('/auth', authRoute);
 
 // protected routes
-app.use('/user', userRoute);
+app.use('/user', authenticate, userRoute);
 
 // Error
 app.use(errorHandler);

@@ -1,5 +1,14 @@
+import { NOT_FOUND, OK } from '../constants/http';
+import UserModel from '../models/user.model';
+import appAssert from '../utils/appAssert';
 import catchAsync from '../utils/catchAsync';
 
-export const getMe = catchAsync(async (req, res, next) => {
-  return res.send('me');
+export const getUserHandler = catchAsync(async (req, res, next) => {
+  const user = await UserModel.findById(req.userId);
+  appAssert(user, NOT_FOUND, 'User not found');
+
+  return res.status(OK).json({
+    status: 'success',
+    user,
+  });
 });

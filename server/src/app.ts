@@ -24,7 +24,7 @@ app.use('/auth', authRoute);
 
 // protected routes
 app.use('/user', authenticate, userRoute);
-app.use('/sessions', sessionRoute);
+app.use('/sessions', authenticate, sessionRoute);
 
 // Error
 app.use(errorHandler);

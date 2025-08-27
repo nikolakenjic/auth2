@@ -7,7 +7,8 @@ import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {useState} from "react";
 import {useRouter} from "next/navigation";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form"
+import UserService, {RegisterUserData} from "@/app/services/api-client/user.service";
 
 const registerSchema = z.object({
     email: z.string().min(1).max(50),
@@ -35,6 +36,27 @@ export default function RegisterPage() {
         },
     })
 
+    const onSubmit = async (values: RegisterFormValues) => {
+        try {
+            setLoading(true)
+            const payload: RegisterUserData = {
+                email: values.email,
+                password: values.password
+            }
+            const response = await UserService.register(payload)
+
+            //     save token
+            localStorage.setItem('accessToken', response.accessToken)
+            localStorage.setItem('refreshToken', response.refreshToken)
+
+
+            router.push('/')
+        } catch (err) {
+            console.error('Registration failed', err)
+        } finally {
+            setLoading(false)
+        }
+    }
 
 
     return (
@@ -46,7 +68,7 @@ export default function RegisterPage() {
                 </h1>
 
                 <Form {...form}>
-                    <form /*onSubmit={form.handleSubmit(onSubmit)}*/ className="space-y-4">
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                         {/* Email */}
                         <FormField
                             control={form.control}

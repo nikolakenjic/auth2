@@ -18,7 +18,7 @@ export interface  UserResponse {
 export default class UserService {
     static readonly ENDPOINT = '/auth/register';
 
-    static async reguster(userData: RegisterUserData): Promise<UserResponse> {
+    static async register(userData: RegisterUserData): Promise<UserResponse> {
         return BaseService.create<UserResponse>(this.ENDPOINT, userData);
     }
 }

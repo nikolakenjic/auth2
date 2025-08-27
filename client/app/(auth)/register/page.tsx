@@ -41,14 +41,13 @@ export default function RegisterPage() {
             setLoading(true)
             const payload: RegisterUserData = {
                 email: values.email,
-                password: values.password
+                password: values.password,
+                confirmPassword: values.confirmPassword,
             }
             const response = await UserService.register(payload)
 
             //     save token
             localStorage.setItem('accessToken', response.accessToken)
-            localStorage.setItem('refreshToken', response.refreshToken)
-
 
             router.push('/')
         } catch (err) {

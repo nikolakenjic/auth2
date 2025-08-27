@@ -3,6 +3,7 @@ import BaseService from "../base.service";
 export interface  RegisterUserData {
     email: string;
     password: string;
+    confirmPassword: string;
 }
 
 export interface  UserResponse {

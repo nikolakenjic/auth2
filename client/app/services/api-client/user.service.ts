@@ -16,10 +16,19 @@ export interface  UserResponse {
     refreshToken: string;
 }
 
+export interface LoginUserData {
+    email: string;
+    password: string;
+}
+
 export default class UserService {
-    static readonly ENDPOINT = '/auth/register';
+    static readonly ENDPOINT = '/auth';
 
     static async register(userData: RegisterUserData): Promise<UserResponse> {
-        return BaseService.create<UserResponse>(this.ENDPOINT, userData);
+        return BaseService.create<UserResponse>(`${this.ENDPOINT}/register`, userData);
+    }
+
+    static async login(userData: LoginUserData): Promise<LoginUserData> {
+        return BaseService.create<LoginUserData>(`${this.ENDPOINT}/login`, userData);
     }
 }

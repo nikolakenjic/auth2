@@ -15,6 +15,7 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form";
+import UserService, {LoginUserData} from "@/app/services/api-client/user.service";
 
 const loginSchema = z.object({
     email: z.string().min(1, "Email is required").max(50),
@@ -35,6 +36,24 @@ export default function LoginPage() {
         },
     });
 
+    const onSubmit = async (values: LoginFormValues) => {
+        try {
+            setLoading(true);
+            const payload: LoginUserData = {
+                email: values.email,
+                password: values.password,
+            }
+
+            const response = await UserService.login(payload);
+
+            router.push('/')
+        } catch (err) {
+            console.error("Login failed", err);
+        } finally {
+            setLoading(false);
+        }
+    }
+
 
     return (
         <div className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-gray-900">
@@ -45,7 +64,7 @@ export default function LoginPage() {
                 </h1>
 
                 <Form {...form}>
-                    <form /*onSubmit={form.handleSubmit(onSubmit)}*/ className="space-y-4">
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                         {/* Email */}
                         <FormField
                             control={form.control}

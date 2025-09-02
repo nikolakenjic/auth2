@@ -4,4 +4,8 @@ export default class BaseService {
     static async create<T>(endpoint: string, body: any, queryParams = {}): Promise<T> {
         return ApiClient.post(endpoint, body, queryParams).then(res => res.data);
     }
+
+    static async delete<T>(endpoint: string, queryParams = {}): Promise<T> {
+        return ApiClient.remove(endpoint, queryParams).then(res => res.data);
+    }
 }

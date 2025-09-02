@@ -46,9 +46,6 @@ export default function RegisterPage() {
             }
             const response = await UserService.register(payload)
 
-            //     save token
-            localStorage.setItem('accessToken', response.accessToken)
-
             router.push('/')
         } catch (err) {
             console.error('Registration failed', err)

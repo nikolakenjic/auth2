@@ -8,4 +8,8 @@ export default class BaseService {
     static async delete<T>(endpoint: string, queryParams = {}): Promise<T> {
         return ApiClient.remove(endpoint, queryParams).then(res => res.data);
     }
+
+    static async fetch<T>(endpoint: string, queryParams = {}, config = {}): Promise<T> {
+        return ApiClient.get(endpoint, queryParams, config).then(res => res.data);
+    }
 }

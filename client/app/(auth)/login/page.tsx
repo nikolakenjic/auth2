@@ -15,7 +15,7 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form";
-import UserService, {LoginUserData} from "@/app/services/api-client/user.service";
+import AuthService, {LoginUserData} from "@/app/services/api-client/auth.service";
 
 const loginSchema = z.object({
     email: z.string().min(1, "Email is required").max(50),
@@ -44,7 +44,7 @@ export default function LoginPage() {
                 password: values.password,
             }
 
-            const response = await UserService.login(payload);
+            const response = await AuthService.login(payload);
 
             router.push('/')
         } catch (err) {

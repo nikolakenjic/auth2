@@ -8,7 +8,7 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import {useState} from "react";
 import {useRouter} from "next/navigation";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form"
-import UserService, {RegisterUserData} from "@/app/services/api-client/user.service";
+import AuthService, {RegisterUserData} from "@/app/services/api-client/auth.service";
 
 const registerSchema = z.object({
     email: z.string().min(1).max(50),
@@ -44,7 +44,7 @@ export default function RegisterPage() {
                 password: values.password,
                 confirmPassword: values.confirmPassword,
             }
-            const response = await UserService.register(payload)
+            const response = await AuthService.register(payload)
 
             router.push('/')
         } catch (err) {

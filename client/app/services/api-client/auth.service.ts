@@ -21,7 +21,7 @@ export interface LoginUserData {
     password: string;
 }
 
-export default class UserService {
+export default class AuthService {
     static readonly ENDPOINT = '/auth';
 
     static async register(userData: RegisterUserData): Promise<UserResponse> {

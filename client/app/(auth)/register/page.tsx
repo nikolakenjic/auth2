@@ -8,17 +8,9 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import {useState} from "react";
 import {useRouter} from "next/navigation";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form"
-import AuthService, {RegisterUserData} from "@/app/services/api-client/auth.service";
+import AuthService from "@/app/services/api-client/auth.service";
+import {registerSchema} from "@/app/lib/validations/auth";
 
-const registerSchema = z.object({
-    email: z.string().min(1).max(50),
-    password: z.string().min(6).max(50),
-    confirmPassword: z.string().min(6).max(50),
-})
-    .refine((data) => data.password === data.confirmPassword, {
-        message: "Passwords do not match",
-        path: ["confirmPassword"],
-    })
 
 type RegisterFormValues = z.infer<typeof registerSchema>;
 
@@ -39,12 +31,8 @@ export default function RegisterPage() {
     const onSubmit = async (values: RegisterFormValues) => {
         try {
             setLoading(true)
-            const payload: RegisterUserData = {
-                email: values.email,
-                password: values.password,
-                confirmPassword: values.confirmPassword,
-            }
-            const response = await AuthService.register(payload)
+
+            const response = await AuthService.register(values)
 
             router.push('/')
         } catch (err) {

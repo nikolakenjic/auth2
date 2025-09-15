@@ -1,23 +1,27 @@
 'use client'
 
-import {Button} from "@/components/ui/button";
-import {Input} from "@/components/ui/input";
 import {z} from "zod";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {useState} from "react";
 import {useRouter} from "next/navigation";
-import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form"
 import AuthService from "@/app/services/api-client/auth.service";
 import {registerSchema} from "@/app/lib/validations/auth";
+import {AuthForm, Field} from "@/components/auth/AuthForm";
 
 
 type RegisterFormValues = z.infer<typeof registerSchema>;
 
-
 export default function RegisterPage() {
     const router = useRouter()
     const [loading, setLoading] = useState(false)
+
+    const registerFields: Field[] = [
+        {name: "email", label: "Email", type: "email"},
+        {name: "password", label: "Password", type: "password"},
+        {name: "confirmPassword", label: "Confirm Password", type: "password"},
+    ]
+
 
     const form = useForm<RegisterFormValues>({
         resolver: zodResolver(registerSchema),
@@ -51,59 +55,14 @@ export default function RegisterPage() {
                     Create Account
                 </h1>
 
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                        {/* Email */}
-                        <FormField
-                            control={form.control}
-                            name="email"
-                            render={({field}) => (
-                                <FormItem>
-                                    <FormLabel>Email</FormLabel>
-                                    <FormControl>
-                                        <Input type="email" placeholder="you@example.com" {...field} />
-                                    </FormControl>
-                                    <FormMessage/>
-                                </FormItem>
-                            )}
-                        />
+                <AuthForm
+                    form={form}
+                    onSubmit={onSubmit}
+                    submitText="Register"
+                    loading={loading}
+                    fields={registerFields}
+                />
 
-                        {/* Password */}
-                        <FormField
-                            control={form.control}
-                            name="password"
-                            render={({field}) => (
-                                <FormItem>
-                                    <FormLabel>Password</FormLabel>
-                                    <FormControl>
-                                        <Input type="password" placeholder="********" {...field} />
-                                    </FormControl>
-                                    <FormMessage/>
-                                </FormItem>
-                            )}
-                        />
-
-                        {/* Confirm Password */}
-                        <FormField
-                            control={form.control}
-                            name="confirmPassword"
-                            render={({field}) => (
-                                <FormItem>
-                                    <FormLabel>Confirm Password</FormLabel>
-                                    <FormControl>
-                                        <Input type="password" placeholder="********" {...field} />
-                                    </FormControl>
-                                    <FormMessage/>
-                                </FormItem>
-                            )}
-                        />
-
-                        {/* Submit dugme */}
-                        <Button type="submit" className="w-full" disabled={loading}>
-                            {loading ? "Registering..." : "Register"}
-                        </Button>
-                    </form>
-                </Form>
             </div>
         </div>
     )

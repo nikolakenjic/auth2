@@ -1,26 +1,5 @@
 import BaseService from "../base.service";
-import {AuthResponse, RegisterUserData} from "@/app/types/auth";
-
-// export interface RegisterUserData {
-//     email: string;
-//     password: string;
-//     confirmPassword: string;
-// }
-
-// export interface UserResponse {
-//     status: string;
-//     user: {
-//         _id: string;
-//         email: string;
-//     };
-//     accessToken: string;
-//     refreshToken: string;
-// }
-
-export interface LoginUserData {
-    email: string;
-    password: string;
-}
+import {AuthResponse, LoginUserData, RegisterUserData} from "@/app/types/auth";
 
 export default class AuthService {
     static readonly ENDPOINT = '/auth';
@@ -45,4 +24,18 @@ export default class AuthService {
         return BaseService.fetch<T>(`${this.ENDPOINT}/refresh`);
     }
 
+    // Verify Email
+    static async verifyEmail(code: string) {
+        return BaseService.fetch(`${this.ENDPOINT}/email/verify/${code}`);
+    }
+
+    // Forgot password
+    static async forgotPassword(payload: { email: string }) {
+        return BaseService.create(`${this.ENDPOINT}/password/forgot`, payload);
+    }
+
+    // Reset password
+    static async resetPassword(payload: any) {
+        return BaseService.create(`${this.ENDPOINT}/password/reset`, payload);
+    }
 }

@@ -10,8 +10,8 @@ export default class AuthService {
     }
 
     // Login
-    static async login(userData: LoginUserData): Promise<LoginUserData> {
-        return BaseService.create<LoginUserData>(`${this.ENDPOINT}/login`, userData);
+    static async login(userData: LoginUserData): Promise<AuthResponse> {
+        return BaseService.create<AuthResponse>(`${this.ENDPOINT}/login`, userData);
     }
 
     // Logout

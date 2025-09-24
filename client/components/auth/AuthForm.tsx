@@ -10,6 +10,7 @@ export type Field = {
     name: string
     label: string
     type?: "text" | "password" | "email"
+    placeholder?: string
 }
 
 type AuthFormProps = {
@@ -24,9 +25,22 @@ type AuthFormProps = {
         linkText: string
         href: string
     }
+    forgotPassword?: {
+        text: string
+        href: string
+    }
 }
 
-export function AuthForm({title, form, onSubmit, submitText, loading, fields, secondaryAction}: AuthFormProps) {
+export function AuthForm({
+                             title,
+                             form,
+                             onSubmit,
+                             submitText,
+                             loading,
+                             fields,
+                             secondaryAction,
+                             forgotPassword
+                         }: AuthFormProps) {
     return (
         <div className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-gray-900">
             <div
@@ -46,7 +60,8 @@ export function AuthForm({title, form, onSubmit, submitText, loading, fields, se
                                     <FormItem>
                                         <FormLabel>{field.label}</FormLabel>
                                         <FormControl>
-                                            <Input type={field.type ?? "text"} {...f} />
+                                            <Input type={field.type ?? "text"}
+                                                   placeholder={field.placeholder}  {...f} />
                                         </FormControl>
                                         <FormMessage/>
                                     </FormItem>
@@ -59,6 +74,14 @@ export function AuthForm({title, form, onSubmit, submitText, loading, fields, se
                         </Button>
                     </form>
                 </Form>
+
+                {forgotPassword && (
+                    <div className="text-center">
+                        <Link href={forgotPassword.href} className="text-sm text-blue-500 hover:underline">
+                            {forgotPassword.text}
+                        </Link>
+                    </div>
+                )}
 
                 {secondaryAction && (
                     <div className="text-center text-sm text-gray-500 dark:text-gray-400">

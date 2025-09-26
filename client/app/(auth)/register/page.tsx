@@ -5,21 +5,22 @@ import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {useState} from "react";
 import {useRouter} from "next/navigation";
-import AuthService from "@/app/services/api-client/auth.service";
 import {registerSchema} from "@/app/lib/validations/auth";
 import {AuthForm, Field} from "@/components/auth/AuthForm";
+import {useAuth} from "@/app/context/AuthContext";
 
 
 type RegisterFormValues = z.infer<typeof registerSchema>;
 
 export default function RegisterPage() {
     const router = useRouter()
+    const {register: registerUser} = useAuth()
     const [loading, setLoading] = useState(false)
 
     const registerFields: Field[] = [
-        {name: "email", label: "Email", type: "email"},
-        {name: "password", label: "Password", type: "password"},
-        {name: "confirmPassword", label: "Confirm Password", type: "password"},
+        {name: "email", label: "Email", type: "email", placeholder: "Enter your email"},
+        {name: "password", label: "Password", type: "password", placeholder: "Enter your password"},
+        {name: "confirmPassword", label: "Confirm Password", type: "password", placeholder: "Confirm Password"},
     ]
 
 
@@ -35,9 +36,7 @@ export default function RegisterPage() {
     const onSubmit = async (values: RegisterFormValues) => {
         try {
             setLoading(true)
-
-            const response = await AuthService.register(values)
-
+            await registerUser(values)
             router.push('/')
         } catch (err) {
             console.error('Registration failed', err)
@@ -48,22 +47,19 @@ export default function RegisterPage() {
 
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-gray-900">
-            <div
-                className="w-full max-w-md space-y-6 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 shadow-lg bg-white dark:bg-gray-800">
-                <h1 className="text-2xl font-bold text-center text-gray-900 dark:text-gray-100">
-                    Create Account
-                </h1>
+        <AuthForm
+            title='Create Account'
+            form={form}
+            onSubmit={onSubmit}
+            submitText="Register"
+            loading={loading}
+            fields={registerFields}
+            secondaryAction={{
+                text: "Already have an account?",
+                linkText: "Login",
+                href: "/login"
+            }}
+        />
 
-                <AuthForm
-                    form={form}
-                    onSubmit={onSubmit}
-                    submitText="Register"
-                    loading={loading}
-                    fields={registerFields}
-                />
-
-            </div>
-        </div>
     )
 }

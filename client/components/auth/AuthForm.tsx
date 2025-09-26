@@ -69,6 +69,12 @@ export function AuthForm({
                             />
                         ))}
 
+                        {form.formState.errors.root && (
+                            <p className="text-red-500 text-sm">
+                                {form.formState.errors.root.message}
+                            </p>
+                        )}
+
                         <Button type="submit" className="w-full" disabled={loading}>
                             {loading ? `${submitText}...` : submitText}
                         </Button>

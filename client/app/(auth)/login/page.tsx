@@ -8,6 +8,7 @@ import {useRouter} from "next/navigation";
 import {AuthForm, Field} from "@/components/auth/AuthForm";
 import {loginSchema} from "@/app/lib/validations/auth";
 import {useAuth} from "@/app/context/AuthContext";
+import {AxiosError} from "axios";
 
 
 type LoginFormValues = z.infer<typeof loginSchema>
@@ -35,8 +36,22 @@ export default function LoginPage() {
             setLoading(true);
             await loginUser(values);
             router.push('/')
-        } catch (err) {
-            console.error("Login failed", err);
+        } catch (err: unknown) {
+            if (err instanceof AxiosError) {
+                console.error("Login failed", err.response?.data);
+                const errorMessage = err.response?.data?.message || "Something went wrong";
+
+                form.setError("root", {
+                    type: "server",
+                    message: errorMessage,
+                });
+            } else {
+                console.error("Unexpected error", err);
+                form.setError("root", {
+                    type: "server",
+                    message: "Unexpected error occurred",
+                });
+            }
         } finally {
             setLoading(false);
         }

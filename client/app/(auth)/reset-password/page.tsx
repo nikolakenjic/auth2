@@ -6,7 +6,8 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { AuthForm, Field } from "@/components/auth/AuthForm"
 import { useState } from "react"
 import { useSearchParams, useRouter } from "next/navigation"
-import axios from "axios"
+import {useAuth} from "@/app/context/AuthContext";
+
 
 const resetPasswordSchema = z
     .object({
@@ -21,12 +22,18 @@ const resetPasswordSchema = z
 type ResetPasswordValues = z.infer<typeof resetPasswordSchema>
 
 export default function ResetPasswordPage() {
+    const {resetPasswordChange} = useAuth()
     const [loading, setLoading] = useState(false)
     const searchParams = useSearchParams()
     const router = useRouter()
 
     // 👇 pick up the verificationCode from query string
     const verificationCode = searchParams.get("code")
+    const exp = Number(searchParams.get("exp"))
+    const now = Date.now();
+    const linkIsValid = verificationCode && exp && exp > now;
+
+    console.log(linkIsValid)
 
     const form = useForm<ResetPasswordValues>({
         resolver: zodResolver(resetPasswordSchema),
@@ -49,8 +56,11 @@ export default function ResetPasswordPage() {
 
         try {
             setLoading(true)
-            // Reset password TODO
 
+            await resetPasswordChange({
+                password: values.password,
+                verificationCode
+            })
             // ✅ after success, redirect to login
             router.push("/login")
         } catch (error: any) {

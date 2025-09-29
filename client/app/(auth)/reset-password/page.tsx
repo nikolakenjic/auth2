@@ -49,10 +49,7 @@ export default function ResetPasswordPage() {
 
         try {
             setLoading(true)
-            await axios.post("/api/auth/password/reset", {
-                password: values.password,
-                verificationCode,
-            })
+            // Reset password TODO
 
             // ✅ after success, redirect to login
             router.push("/login")

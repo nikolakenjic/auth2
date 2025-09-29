@@ -5,6 +5,7 @@ import {useForm} from "react-hook-form"
 import {zodResolver} from "@hookform/resolvers/zod"
 import {AuthForm, Field} from "@/components/auth/AuthForm";
 import {useState} from "react";
+import {useAuth} from "@/app/context/AuthContext";
 
 const forgotPasswordSchema = z.object({
     email: z.string().email("Invalid email address"),
@@ -13,6 +14,7 @@ const forgotPasswordSchema = z.object({
 type ForgotPasswordValues = z.infer<typeof forgotPasswordSchema>
 
 export default function ForgotPasswordPage() {
+    const {sendPasswordReset} = useAuth()
     const [loading, setLoading] = useState(false);
 
     const form = useForm<ForgotPasswordValues>({
@@ -28,7 +30,16 @@ export default function ForgotPasswordPage() {
 
     const onSubmit = async (values: ForgotPasswordValues) => {
         console.log("Forgot password request:", values)
-        // 👇 ovde ćemo kasnije pozvati backend (UserService ili AuthService)
+        try {
+            setLoading(true)
+            await sendPasswordReset(values)
+            console.log('successfully sent')
+            form.reset()
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setLoading(false)
+        }
     }
 
     return (

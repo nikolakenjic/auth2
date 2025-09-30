@@ -24,3 +24,17 @@ export interface AuthResponse {
     user: User;
 }
 
+export interface AuthContextType {
+    user: User | null;
+    login: (credentials: any) => Promise<User | null>;
+    register: (payload: any) => Promise<User | null>;
+    logout: () => Promise<void>;
+    verifyEmail: (code: string) => Promise<any>;
+    sendPasswordReset: (payload: { email: string }) => Promise<any>;
+    resetPasswordChange: (payload: any) => Promise<any>;
+    loading: boolean;
+}
+
+export interface ForgotPasswordData {
+    email: string;
+}

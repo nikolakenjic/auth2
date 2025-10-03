@@ -17,6 +17,7 @@ export default function LoginPage() {
     const router = useRouter();
     const {login: loginUser} = useAuth()
     const [loading, setLoading] = useState(false);
+    const [unverifiedEmail, setUnverifiedEmail] = useState<string | null>(null)
 
     const loginFields: Field[] = [
         {name: "email", label: "Email", type: "email", placeholder: "Enter your email"},
@@ -40,6 +41,10 @@ export default function LoginPage() {
             if (err instanceof AxiosError) {
                 console.error("Login failed", err.response?.data);
                 const errorMessage = err.response?.data?.message || "Something went wrong";
+
+                if (errorMessage.includes("verify your email")) {
+                    setUnverifiedEmail(values.email);
+                }
 
                 form.setError("root", {
                     type: "server",
@@ -75,6 +80,7 @@ export default function LoginPage() {
                 text: "Forgot your password?",
                 href: "/forgot-password"
             }}
+            unverifiedEmail={unverifiedEmail}
         />
     )
 }

@@ -3,7 +3,7 @@
 import {useAuth} from "@/app/context/AuthContext";
 import React from "react";
 import Header from "@/components/header/Header";
-import { Loader2 } from "lucide-react";
+import {Loader2} from "lucide-react";
 
 
 export default function Home() {
@@ -13,14 +13,14 @@ export default function Home() {
     if (loading) {
         return (
             <div className="flex items-center justify-center h-screen">
-                <Loader2 className="h-6 w-6 animate-spin text-blue-500" />
+                <Loader2 className="h-6 w-6 animate-spin text-blue-500"/>
             </div>
         );
     }
 
     return (
         <>
-            <Header />
+            <Header/>
 
             <main className="max-w-4xl mx-auto p-6">
                 <h1 className="text-3xl font-bold mb-6">Home</h1>
@@ -40,7 +40,8 @@ export default function Home() {
                     </>
                 ) : (
                     <>
-                        <p className="text-gray-700 mb-4">Dobrodošao nazad, <strong>{user.email.split('@')[0]}</strong>!</p>
+                        <p className="text-gray-700 mb-4">Dobrodošao nazad, <strong>{user.email.split('@')[0]}</strong>!
+                        </p>
 
                         <section className="grid gap-4">
                             <div className="p-4 rounded border">Full content card #1</div>

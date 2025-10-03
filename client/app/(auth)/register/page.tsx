@@ -37,7 +37,7 @@ export default function RegisterPage() {
         try {
             setLoading(true)
             await registerUser(values)
-            router.push('/')
+            router.push('/email/verify')
         } catch (err) {
             console.error('Registration failed', err)
         } finally {

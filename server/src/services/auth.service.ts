@@ -77,6 +77,9 @@ export const loginUser = async ({email, password}: AuthCredentials) => {
     const user = await UserModel.findOne({email})
     appAssert(user, UNAUTHORIZED, 'Invalid email or password')
 
+//     check if email is verified
+    appAssert(user.verified, UNAUTHORIZED, 'You must verify your email before logging in')
+
 //     validate password from the request
     const isValid = await user.comparePassword(password)
     appAssert(isValid, UNAUTHORIZED, 'Invalid email or password')
@@ -191,7 +194,7 @@ export const sendPasswordResetEmail = async (email: string) => {
     })
 
 //     send email verification
-    const url = `${APP_ORIGIN}/password/reset?code=${verificationCode._id}&exp=${expiresAt.getTime()}`
+    const url = `${APP_ORIGIN}/reset-password?code=${verificationCode._id}&exp=${expiresAt.getTime()}`
 
     const {data, error} = await sendMail({
         to: user.email,

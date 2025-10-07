@@ -2,7 +2,7 @@ import catchAsync from "../utils/catchAsync";
 import {
     createAccount,
     loginUser,
-    refreshUserAccessToken, resetPassword,
+    refreshUserAccessToken, resendVerifyEmail, resetPassword,
     sendPasswordResetEmail,
     verifyEmail
 } from "../services/auth.service";
@@ -16,7 +16,7 @@ import {
 import {
     emailSchema,
     loginSchema,
-    registerSchema,
+    registerSchema, resendVerificationSchema,
     resetPasswordSchema,
     verificationCodeSchema
 } from "../validations/auth.schemas";
@@ -92,6 +92,17 @@ export const emailVerifyHandler = catchAsync(async (req, res, next) => {
         status: 'success',
         message: 'Email verified',
         user,
+    })
+})
+
+export const resendEmailVerificationHandler = catchAsync(async (req, res, next) => {
+    const {email} = resendVerificationSchema.parse(req.body)
+
+    await resendVerifyEmail(email)
+
+    return res.status(OK).json({
+        status: 'success',
+        message: 'Verification email resend successfully',
     })
 })
 

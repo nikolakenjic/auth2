@@ -5,7 +5,14 @@ import {fiveMinutesAgo, ONE_DAY_MS, oneHourFromNow, oneYearFromNow, thirtyDaysFr
 import sessionModel from "../models/session.model";
 import SessionModel from "../models/session.model";
 import appAssert from "../utils/appAssert";
-import {CONFLICT, INTERNAL_SERVER_ERROR, NOT_FOUND, TOO_MANY_REQUESTS, UNAUTHORIZED} from "../constants/http";
+import {
+    BAD_REQUEST,
+    CONFLICT,
+    INTERNAL_SERVER_ERROR,
+    NOT_FOUND,
+    TOO_MANY_REQUESTS,
+    UNAUTHORIZED
+} from "../constants/http";
 import {
     accessTokenSignOptions,
     RefreshTokenPayload,
@@ -169,6 +176,35 @@ export const verifyEmail = async (code: string) => {
     return {
         user: updateUser,
     }
+}
+
+export const resendVerifyEmail = async (email: string) => {
+    console.log('email',email)
+    const user = await UserModel.findOne({email})
+    appAssert(user, NOT_FOUND, 'User not found')
+
+//      if email is already verified
+    appAssert(!user.verified, BAD_REQUEST, 'Email is already verified')
+
+//      Delete old verification codes
+    await VerificationCodeModel.deleteMany({
+        userId: user._id,
+        type: VerificationCodeTypes.EmailVerification
+    })
+
+//      create new verification code
+    const verificationCode = await VerificationCodeModel.create({
+        userId: user._id,
+        type: VerificationCodeTypes.EmailVerification,
+        expiresAt: oneYearFromNow()
+    })
+
+    const url = `${APP_ORIGIN}/email/verify/${verificationCode._id}`
+//      send verification email
+    await sendMail({
+        to: user.email,
+        ...getVerifyEmailTemplate(url),
+    })
 }
 
 export const sendPasswordResetEmail = async (email: string) => {

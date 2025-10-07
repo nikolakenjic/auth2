@@ -18,6 +18,9 @@ export const registerSchema = loginSchema
   });
 
 export const verificationCodeSchema = z.string().min(1).max(50);
+export const resendVerificationSchema = z.object({
+  email: emailSchema,
+})
 
 export const resetPasswordSchema = z.object({
   password: passwordSchema,

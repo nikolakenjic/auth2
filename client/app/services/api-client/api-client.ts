@@ -18,3 +18,4 @@ export default class ApiClient {
         return axiosInstance.delete(endpoint, {params: queryParams});
     }
 }
+

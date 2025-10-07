@@ -5,6 +5,8 @@ import {Input} from "@/components/ui/input"
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form"
 import {UseFormReturn} from "react-hook-form"
 import Link from "next/link";
+import {Mail} from "lucide-react"
+import {useAuth} from "@/app/context/AuthContext";
 
 export type Field = {
     name: string
@@ -29,6 +31,7 @@ type AuthFormProps = {
         text: string
         href: string
     }
+    unverifiedEmail?: string | null
 }
 
 export function AuthForm({
@@ -39,8 +42,11 @@ export function AuthForm({
                              loading,
                              fields,
                              secondaryAction,
-                             forgotPassword
+                             forgotPassword,
+                             unverifiedEmail
                          }: AuthFormProps) {
+    const {resendVerificationEmail} = useAuth()
+
     return (
         <div className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-gray-900">
             <div
@@ -80,6 +86,27 @@ export function AuthForm({
                         </Button>
                     </form>
                 </Form>
+
+                {unverifiedEmail && (
+                    <div
+                        className="mt-4 rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm flex items-center justify-between">
+                        <div className='flex gap-2'>
+                            <Mail className="w-5 h-5 text-gray-600 dark:text-gray-300"/>
+                            <span>Didn’t get the email?</span>
+                        </div>
+                        <Button
+                            variant="secondary"
+                            size="sm"
+                            onClick={async () => {
+                                if (!unverifiedEmail) return;
+                                await resendVerificationEmail(unverifiedEmail);
+                                console.log('send resend email', unverifiedEmail);
+                            }}
+                        >
+                            Resend
+                        </Button>
+                    </div>
+                )}
 
                 {forgotPassword && (
                     <div className="text-center">

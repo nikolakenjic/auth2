@@ -1,6 +1,6 @@
 'use client'
 
-import {createContext, useContext, useEffect, useState} from "react";
+import {createContext, useCallback, useContext, useEffect, useState} from "react";
 import {AuthContextType, User} from "@/app/types/auth";
 import AuthService from "@/app/services/api-client/auth.service";
 import UserService from "@/app/services/user.service";
@@ -50,8 +50,13 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
     };
 
     // verify email
-    const verifyEmail = async (code: string) => {
+    const verifyEmail = useCallback(async (code: string) => {
         return AuthService.verifyEmail(code);
+    }, [])
+
+    // resend verification email
+    const resendVerificationEmail = async (email: string) => {
+        return AuthService.resendVerificationEmail({ email });
     };
 
     // forgot password
@@ -60,7 +65,7 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
     };
 
     // reset password
-    const resetPassword = async (payload: any) => {
+    const resetPasswordChange = async (payload: any) => {
         return AuthService.resetPassword(payload);
     };
 
@@ -71,8 +76,9 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
         register,
         logout,
         verifyEmail,
+        resendVerificationEmail,
         sendPasswordReset,
-        resetPassword,
+        resetPasswordChange,
         loading
     };
 

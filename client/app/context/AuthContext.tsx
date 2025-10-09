@@ -15,6 +15,8 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
     const refreshUser = async () => {
         try {
             setLoading(true);
+            await AuthService.refresh()
+
             const response = await UserService.getMe()
             setUser(response.user);
         } catch (err) {

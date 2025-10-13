@@ -24,17 +24,24 @@ export interface AuthResponse {
     user: User;
 }
 
+export interface ForgotPasswordPayload {
+    email: string;
+}
+
+export interface ResetPasswordPayload {
+    token: string;
+
+}
+
 export interface AuthContextType {
     user: User | null;
-    login: (credentials: any) => Promise<User | null>;
-    register: (payload: any) => Promise<User | null>;
+    login: (credentials: LoginUserData) => Promise<User | null>;
+    register: (payload: RegisterUserData) => Promise<User | null>;
     logout: () => Promise<void>;
-    verifyEmail: (code: string) => Promise<any>;
-    sendPasswordReset: (payload: { email: string }) => Promise<any>;
-    resetPasswordChange: (payload: any) => Promise<any>;
+    verifyEmail: (code: string) => Promise<void>;
+    resendVerificationEmail: (email: string) => Promise<void>;
+    sendPasswordReset: (payload: ForgotPasswordPayload) => Promise<void>;
+    resetPasswordChange: (payload: any) => Promise<void>;
     loading: boolean;
 }
 
-export interface ForgotPasswordData {
-    email: string;
-}

@@ -1,24 +1,31 @@
-import {Router} from "express";
+import { Router } from 'express';
 import {
-    emailVerifyHandler,
-    loginHandler,
-    logoutHandler,
-    refreshHandler,
-    registerHandler, resendEmailVerificationHandler, resetPasswordHandler, sendPasswordResetHandler
-} from "../controllers/auth.controller";
+  emailVerifyHandler,
+  googleAuthHandler,
+  loginHandler,
+  logoutHandler,
+  refreshHandler,
+  registerHandler,
+  resendEmailVerificationHandler,
+  resetPasswordHandler,
+  sendPasswordResetHandler,
+} from '../controllers/auth.controller';
 
 const router = Router();
 
 router.post('/register', registerHandler);
-router.post('/login', loginHandler)
+router.post('/login', loginHandler);
 
-router.get('/refresh', refreshHandler)
-router.get('/logout', logoutHandler)
+router.get('/refresh', refreshHandler);
+router.get('/logout', logoutHandler);
 
-router.get('/email/verify/:code', emailVerifyHandler)
-router.post('/email/resend-verification', resendEmailVerificationHandler)
+router.get('/email/verify/:code', emailVerifyHandler);
+router.post('/email/resend-verification', resendEmailVerificationHandler);
 
-router.post('/password/forgot', sendPasswordResetHandler)
-router.post('/password/reset', resetPasswordHandler)
+router.post('/password/forgot', sendPasswordResetHandler);
+router.post('/password/reset', resetPasswordHandler);
 
-export default router
+// Google Auth
+router.post('/google', googleAuthHandler);
+
+export default router;

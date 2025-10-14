@@ -127,3 +127,8 @@ export const resetPasswordHandler = catchAsync(async (req, res) => {
         message: 'Password reset successful',
     })
 })
+
+// Google Auth
+export const googleAuthHandler = catchAsync(async (req, res, next) => {
+    res.send('google')
+})

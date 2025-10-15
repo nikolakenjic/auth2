@@ -24,3 +24,6 @@ export const ENV = {
 } as const;
 
 export type EnvValue = (typeof ENV)[keyof typeof ENV];
+
+//Google Client
+export const GOOGLE_CLIENT_ID = getEnv('GOOGLE_CLIENT_ID');

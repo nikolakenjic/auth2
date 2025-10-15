@@ -28,7 +28,7 @@ import {
 } from '../utils/jwt';
 import {AuthCredentials, ResetPasswordParams} from '../types/auth.types';
 import {sendMail} from '../utils/sendMail';
-import {APP_ORIGIN} from '../constants/env';
+import {APP_ORIGIN, GOOGLE_CLIENT_ID} from '../constants/env';
 import {
     getPasswordResetTemplate,
     getVerifyEmailTemplate,
@@ -36,7 +36,7 @@ import {
 import {hashValue} from '../utils/bcrypt';
 import {OAuth2Client} from 'google-auth-library'
 
-const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID)
+const client = new OAuth2Client(GOOGLE_CLIENT_ID)
 
 export const createAccount = async (data: AuthCredentials) => {
     //  verify existing user does not exist
@@ -300,7 +300,7 @@ export const googleLoginOrRegister = async (googleToken: string) => {
     // Verify token with google
     const ticket = await client.verifyIdToken({
         idToken: googleToken,
-        audience: process.env.GOOGLE_ClIENT_ID,
+        audience: GOOGLE_CLIENT_ID,
     })
 
     const payload = ticket.getPayload();

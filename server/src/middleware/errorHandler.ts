@@ -3,6 +3,7 @@ import {BAD_REQUEST, INTERNAL_SERVER_ERROR} from "../constants/http";
 import {z} from "zod";
 import AppError from "../utils/AppError";
 import {clearAuthCookies, REFRESH_PATH} from "../utils/cookies";
+import {NODE_ENV} from "../constants/env";
 
 // Handle Zod Error
 const handleZodError = (res: Response, error: z.ZodError) => {
@@ -17,7 +18,7 @@ const handleZodError = (res: Response, error: z.ZodError) => {
     });
 }
 
-const handleAppError = (res: Response, error: AppError)=> {
+const handleAppError = (res: Response, error: AppError) => {
     return res.status(error.statusCode).json({
         message: error.message,
         errorCode: error.errorCode,
@@ -29,7 +30,7 @@ const errorHandler: ErrorRequestHandler = (error, req, res, next) => {
     console.error(error);
 
     // Clear all cookies if we got some error
-    if(req.path === REFRESH_PATH) {
+    if (req.path === REFRESH_PATH) {
         clearAuthCookies(res)
     }
 
@@ -37,11 +38,15 @@ const errorHandler: ErrorRequestHandler = (error, req, res, next) => {
         return handleZodError(res, error);
     }
 
-    if(error instanceof AppError) {
-        return  handleAppError(res, error);
+    if (error instanceof AppError) {
+        return handleAppError(res, error);
     }
 
-    return res.status(INTERNAL_SERVER_ERROR).send('Internal Server Error');
+    return res.status(INTERNAL_SERVER_ERROR).json({
+        message: 'Internal Server Error',
+        error: NODE_ENV === 'development' ? error.message : undefined,
+        stack: NODE_ENV === 'development' ? error.stack : undefined
+    })
 }
 
 export default errorHandler

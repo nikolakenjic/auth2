@@ -26,6 +26,7 @@ const handleAppError = (res: Response, error: AppError)=> {
 
 const errorHandler: ErrorRequestHandler = (error, req, res, next) => {
     console.log(`PATH: ${req.path}`, error)
+    console.error(error);
 
     // Clear all cookies if we got some error
     if(req.path === REFRESH_PATH) {

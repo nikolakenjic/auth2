@@ -25,22 +25,27 @@ export default class AuthService {
     }
 
     // Verify Email
-    static async verifyEmail(code: string):Promise<void> {
+    static async verifyEmail(code: string): Promise<void> {
         return BaseService.fetch(`${this.ENDPOINT}/email/verify/${code}`);
     }
 
     // Resend verification email
-    static async resendVerificationEmail(payload: { email: string }):Promise<void>  {
+    static async resendVerificationEmail(payload: { email: string }): Promise<void> {
         return BaseService.create(`${this.ENDPOINT}/email/resend-verification`, payload);
     }
 
     // Forgot password
-    static async forgotPassword(payload: { email: string }):Promise<void>  {
+    static async forgotPassword(payload: { email: string }): Promise<void> {
         return BaseService.create(`${this.ENDPOINT}/password/forgot`, payload);
     }
 
     // Reset password
-    static async resetPassword(payload: any):Promise<void>  {
+    static async resetPassword(payload: any): Promise<void> {
         return BaseService.create(`${this.ENDPOINT}/password/reset`, payload);
+    }
+
+    // Google login
+    static async google(token: string): Promise<AuthResponse> {
+        return BaseService.create<AuthResponse>(`${this.ENDPOINT}/google`, {token});
     }
 }

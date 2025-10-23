@@ -26,7 +26,9 @@ const userSchema = new mongoose.Schema<UserDocument>(
         },
         password: {
             type: String,
-            required: [true, 'Password is required']
+            required: function() {
+                return !this.isOAuth;
+            },
         },
         verified: {
             type: Boolean,

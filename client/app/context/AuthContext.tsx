@@ -58,7 +58,7 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
 
     // resend verification email
     const resendVerificationEmail = async (email: string) => {
-        return AuthService.resendVerificationEmail({ email });
+        return AuthService.resendVerificationEmail({email});
     };
 
     // forgot password
@@ -71,12 +71,20 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
         return AuthService.resetPassword(payload);
     };
 
+    // Google Auth login
+    const googleLogin = async (token: string) => {
+        const response = await AuthService.google(token);
+        setUser(response.user);
+        return response.user;
+    }
+
 
     const value: AuthContextType = {
         user,
         login,
         register,
         logout,
+        googleLogin,
         verifyEmail,
         resendVerificationEmail,
         sendPasswordReset,

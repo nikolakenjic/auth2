@@ -34,4 +34,6 @@ app.use('/sessions', authenticate, sessionRoute);
 // Error
 app.use(errorHandler);
 
+console.log('server')
+
 export default app;

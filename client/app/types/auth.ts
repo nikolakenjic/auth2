@@ -38,6 +38,7 @@ export interface AuthContextType {
     login: (credentials: LoginUserData) => Promise<User | null>;
     register: (payload: RegisterUserData) => Promise<User | null>;
     logout: () => Promise<void>;
+    googleLogin: (token: string) => Promise<User | null>;
     verifyEmail: (code: string) => Promise<void>;
     resendVerificationEmail: (email: string) => Promise<void>;
     sendPasswordReset: (payload: ForgotPasswordPayload) => Promise<void>;

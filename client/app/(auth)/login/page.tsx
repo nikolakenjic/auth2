@@ -9,13 +9,14 @@ import {AuthForm, Field} from "@/components/auth/AuthForm";
 import {loginSchema} from "@/app/lib/validations/auth";
 import {useAuth} from "@/app/context/AuthContext";
 import {AxiosError} from "axios";
+import {CredentialResponse, GoogleLogin} from "@react-oauth/google";
 
 
 type LoginFormValues = z.infer<typeof loginSchema>
 
 export default function LoginPage() {
     const router = useRouter();
-    const {login: loginUser} = useAuth()
+    const {login: loginUser, googleLogin} = useAuth()
     const [loading, setLoading] = useState(false);
     const [unverifiedEmail, setUnverifiedEmail] = useState<string | null>(null)
 
@@ -62,25 +63,47 @@ export default function LoginPage() {
         }
     }
 
+    const handleGoogleSuccess = async (credentialResponse: CredentialResponse) => {
+        try {
+            const token = credentialResponse?.credential;
+            if (!token) {
+                console.error("Google token not found");
+                return;
+            }
+
+            const user = await googleLogin(token);
+            console.log("Google user:", user);
+
+            router.push("/"); // redirect to home after successful login
+        } catch (err) {
+            console.error("Google login failed", err);
+        }
+    };
+
 
     return (
-        <AuthForm
-            title="Login"
-            form={form}
-            onSubmit={onSubmit}
-            submitText="Login"
-            loading={loading}
-            fields={loginFields}
-            secondaryAction={{
-                text: "Don't have an account?",
-                linkText: "Register",
-                href: "/register"
-            }}
-            forgotPassword={{
-                text: "Forgot your password?",
-                href: "/forgot-password"
-            }}
-            unverifiedEmail={unverifiedEmail}
-        />
+        <div>
+            <AuthForm
+                title="Login"
+                form={form}
+                onSubmit={onSubmit}
+                submitText="Login"
+                loading={loading}
+                fields={loginFields}
+                secondaryAction={{
+                    text: "Don't have an account?",
+                    linkText: "Register",
+                    href: "/register"
+                }}
+                forgotPassword={{
+                    text: "Forgot your password?",
+                    href: "/forgot-password"
+                }}
+                unverifiedEmail={unverifiedEmail}
+            />
+
+            {/* Google Login Button */}
+            <GoogleLogin onSuccess={handleGoogleSuccess}/>
+        </div>
     )
 }

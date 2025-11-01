@@ -4,11 +4,9 @@ import {useAuth} from "@/app/context/AuthContext";
 import React from "react";
 import Header from "@/components/header/Header";
 import {Loader2} from "lucide-react";
-import {CredentialResponse, GoogleLogin} from "@react-oauth/google";
-
 
 export default function Home() {
-    const {user, loading, googleLogin} = useAuth()
+    const {user, loading} = useAuth()
     console.log(user)
 
     if (loading) {
@@ -19,27 +17,10 @@ export default function Home() {
         );
     }
 
-    const handleSuccess = async (credentialResponse: CredentialResponse) => {
-        try {
-            const token = credentialResponse.credential
-            if (!token) {
-                console.error("Google token not found");
-                return;
-            }
-
-            const user = await googleLogin(token)
-
-            console.log('Google user', user)
-        } catch (error) {
-            console.log(error)
-        }
-    }
 
     return (
         <>
             <Header/>
-
-            <GoogleLogin onSuccess={handleSuccess} />
 
             <main className="max-w-4xl mx-auto p-6">
                 <h1 className="text-3xl font-bold mb-6">Home</h1>

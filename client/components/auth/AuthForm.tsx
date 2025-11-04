@@ -101,8 +101,23 @@ export function AuthForm({
 
         {/* --- Google Login Button --- */}
         {onGoogleSuccess && (
-          <div className="flex justify-center">
-            <GoogleLogin onSuccess={onGoogleSuccess} />
+          <div className="mt-6">
+            {/* Divider */}
+            <div className="relative mb-4">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t border-gray-300 dark:border-gray-700"></span>
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-white dark:bg-gray-800 px-2 text-gray-500 dark:text-gray-400">
+                  or continue with
+                </span>
+              </div>
+            </div>
+
+            {/* Google Login Button */}
+            <div className="flex justify-center">
+              <GoogleLogin onSuccess={onGoogleSuccess} />
+            </div>
           </div>
         )}
 

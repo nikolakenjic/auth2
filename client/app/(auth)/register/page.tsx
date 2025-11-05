@@ -50,7 +50,7 @@ export default function RegisterPage() {
         <AuthForm
             title='Create Account'
             form={form}
-            onSubmit={onSubmit}
+            onSubmitAction={onSubmit}
             submitText="Register"
             loading={loading}
             fields={registerFields}

@@ -96,7 +96,7 @@ export default function LoginPage() {
     <AuthForm
       title="Login"
       form={form}
-      onSubmit={onSubmit}
+      onSubmitAction={onSubmit}
       submitText="Login"
       loading={loading}
       fields={loginFields}
@@ -110,7 +110,7 @@ export default function LoginPage() {
         href: '/forgot-password',
       }}
       unverifiedEmail={unverifiedEmail}
-      onGoogleSuccess={handleGoogleSuccess}
+      onGoogleSuccessAction={handleGoogleSuccess}
     />
   );
 }

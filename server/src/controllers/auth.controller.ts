@@ -151,4 +151,3 @@ export const googleAuthHandler = catchAsync(async (req, res, next) => {
     user,
   });
 });
-leSuccess?;

@@ -4,9 +4,10 @@ import cors from 'cors';
 import errorHandler from './middleware/errorHandler';
 import catchAsync from './utils/catchAsync';
 import authRoute from './routes/auth.route';
-import userRoute from './routes/user.route';
 import authenticate from './middleware/authenticate';
+import userRoute from './routes/user.route';
 import sessionRoute from './routes/session.route';
+import resumeRoute from './routes/resume.route';
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.use('/auth', authRoute);
 // protected routes
 app.use('/user', authenticate, userRoute);
 app.use('/sessions', authenticate, sessionRoute);
+app.use('/resume', authenticate, resumeRoute)
 
 // Error
 app.use(errorHandler);

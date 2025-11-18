@@ -1,153 +1,153 @@
 import catchAsync from '../utils/catchAsync';
 import {
-  createAccount, googleLoginOrRegister,
-  loginUser,
-  refreshUserAccessToken,
-  resendVerifyEmail,
-  resetPassword,
-  sendPasswordResetEmail,
-  verifyEmail,
+    createAccount, googleLoginOrRegister,
+    loginUser,
+    refreshUserAccessToken,
+    resendVerifyEmail,
+    resetPassword,
+    sendPasswordResetEmail,
+    verifyEmail,
 } from '../services/auth.service';
 import {BAD_REQUEST, CREATED, OK, UNAUTHORIZED} from '../constants/http';
 import {
-  clearAuthCookies,
-  getAccessTokenCookieOptions,
-  getRefreshTokenCookieOptions,
-  setAuthCookies,
+    clearAuthCookies,
+    getAccessTokenCookieOptions,
+    getRefreshTokenCookieOptions,
+    setAuthCookies,
 } from '../utils/cookies';
 import {
-  emailSchema,
-  loginSchema,
-  registerSchema,
-  resendVerificationSchema,
-  resetPasswordSchema,
-  verificationCodeSchema,
+    emailSchema,
+    loginSchema,
+    registerSchema,
+    resendVerificationSchema,
+    resetPasswordSchema,
+    verificationCodeSchema,
 } from '../validations/auth.schemas';
-import { verifyToken } from '../utils/jwt';
+import {verifyToken} from '../utils/jwt';
 import SessionModel from '../models/session.model';
 import appAssert from '../utils/appAssert';
 
 export const registerHandler = catchAsync(async (req, res, next) => {
-  // //    validate request
-  const request = registerSchema.parse(req.body);
-  // console.log(request)
+    // //    validate request
+    const request = registerSchema.parse(req.body);
+    // console.log(request)
 
-  //     call service
-  const { user, accessToken, refreshToken } = await createAccount(request);
+    //     call service
+    const {user, accessToken, refreshToken} = await createAccount(request);
 
-  //     return response
-  return setAuthCookies({ res, accessToken, refreshToken })
-    .status(CREATED)
-    .json({
-      status: 'success',
-      user,
-    });
+    //     return response
+    return setAuthCookies({res, accessToken, refreshToken})
+        .status(CREATED)
+        .json({
+            status: 'success',
+            user,
+        });
 });
 
 export const loginHandler = catchAsync(async (req, res, next) => {
-  // validate request
-  const request = loginSchema.parse(req.body);
+    // validate request
+    const request = loginSchema.parse(req.body);
 
-  // call service
-  const { user, accessToken, refreshToken } = await loginUser(request);
-  // return response
+    // call service
+    const {user, accessToken, refreshToken} = await loginUser(request);
+    // return response
 
-  return setAuthCookies({ res, accessToken, refreshToken }).status(OK).json({
-    status: 'success',
-    user,
-  });
+    return setAuthCookies({res, accessToken, refreshToken}).status(OK).json({
+        status: 'success',
+        user,
+    });
 });
 
 export const logoutHandler = catchAsync(async (req, res, next) => {
-  const accessToken = req.cookies.accessToken as string | undefined;
-  const { payload } = verifyToken(accessToken || '');
+    const accessToken = req.cookies.accessToken as string | undefined;
+    const {payload} = verifyToken(accessToken || '');
 
-  if (payload) {
-    await SessionModel.findByIdAndDelete(payload.sessionId);
-  }
+    if (payload) {
+        await SessionModel.findByIdAndDelete(payload.sessionId);
+    }
 
-  return clearAuthCookies(res).status(OK).json({
-    status: 'success',
-    message: 'Logged out',
-  });
+    return clearAuthCookies(res).status(OK).json({
+        status: 'success',
+        message: 'Logged out',
+    });
 });
 
 export const refreshHandler = catchAsync(async (req, res, next) => {
-  const refreshToken = req.cookies.refreshToken as string | undefined;
-  appAssert(refreshToken, UNAUTHORIZED, 'Missing refresh token');
+    const refreshToken = req.cookies.refreshToken as string | undefined;
+    appAssert(refreshToken, UNAUTHORIZED, 'Missing refresh token');
 
-  const { accessToken, newRefreshToken } =
-    await refreshUserAccessToken(refreshToken);
+    const {accessToken, newRefreshToken} =
+        await refreshUserAccessToken(refreshToken);
 
-  if (newRefreshToken) {
-    res.cookie('refreshToken', newRefreshToken, getRefreshTokenCookieOptions());
-  }
+    if (newRefreshToken) {
+        res.cookie('refreshToken', newRefreshToken, getRefreshTokenCookieOptions());
+    }
 
-  return res
-    .status(OK)
-    .cookie('accessToken', accessToken, getAccessTokenCookieOptions())
-    .json({
-      status: 'success',
-      message: 'Access token refreshed',
-    });
+    return res
+        .status(OK)
+        .cookie('accessToken', accessToken, getAccessTokenCookieOptions())
+        .json({
+            status: 'success',
+            message: 'Access token refreshed',
+        });
 });
 
 export const emailVerifyHandler = catchAsync(async (req, res, next) => {
-  const verificationCode = verificationCodeSchema.parse(req.params.code);
+    const verificationCode = verificationCodeSchema.parse(req.params.code);
 
-  const { user } = await verifyEmail(verificationCode);
+    const {user} = await verifyEmail(verificationCode);
 
-  return res.status(OK).json({
-    status: 'success',
-    message: 'Email verified',
-    user,
-  });
+    return res.status(OK).json({
+        status: 'success',
+        message: 'Email verified',
+        user,
+    });
 });
 
 export const resendEmailVerificationHandler = catchAsync(
-  async (req, res, next) => {
-    const { email } = resendVerificationSchema.parse(req.body);
+    async (req, res, next) => {
+        const {email} = resendVerificationSchema.parse(req.body);
 
-    await resendVerifyEmail(email);
+        await resendVerifyEmail(email);
 
-    return res.status(OK).json({
-      status: 'success',
-      message: 'Verification email resend successfully',
-    });
-  }
+        return res.status(OK).json({
+            status: 'success',
+            message: 'Verification email resend successfully',
+        });
+    }
 );
 
 export const sendPasswordResetHandler = catchAsync(async (req, res) => {
-  const email = emailSchema.parse(req.body.email);
+    const email = emailSchema.parse(req.body.email);
 
-  const { url, emailId } = await sendPasswordResetEmail(email);
+    const {url, emailId} = await sendPasswordResetEmail(email);
 
-  return res.status(OK).json({
-    status: 'success',
-    message: 'Password reset email sent',
-  });
+    return res.status(OK).json({
+        status: 'success',
+        message: 'Password reset email sent',
+    });
 });
 
 export const resetPasswordHandler = catchAsync(async (req, res) => {
-  const request = resetPasswordSchema.parse(req.body);
+    const request = resetPasswordSchema.parse(req.body);
 
-  await resetPassword(request);
+    await resetPassword(request);
 
-  return clearAuthCookies(res).status(OK).json({
-    status: 'success',
-    message: 'Password reset successful',
-  });
+    return clearAuthCookies(res).status(OK).json({
+        status: 'success',
+        message: 'Password reset successful',
+    });
 });
 
 // Google Auth
 export const googleAuthHandler = catchAsync(async (req, res, next) => {
-  const { token } = req.body;
-  appAssert(token, BAD_REQUEST, 'Missing Google token');
+    const {token} = req.body;
+    appAssert(token, BAD_REQUEST, 'Missing Google token');
 
-  const {user, accessToken, refreshToken} = await googleLoginOrRegister(token);
+    const {user, accessToken, refreshToken} = await googleLoginOrRegister(token);
 
-  return setAuthCookies({ res, accessToken, refreshToken }).status(OK).json({
-    status: 'success',
-    user,
-  });
+    return setAuthCookies({res, accessToken, refreshToken}).status(OK).json({
+        status: 'success',
+        user,
+    });
 });

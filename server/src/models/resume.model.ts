@@ -1,8 +1,7 @@
 import mongoose from 'mongoose';
-import { ObjectId } from 'mongodb';
 
 export interface ResumeDocument extends mongoose.Document {
-    userId: ObjectId;
+    userId: mongoose.Types.ObjectId;
     title: string;
     sections: {
         type: 'experience' | 'education' | 'skills' | 'projects' | 'other';
@@ -32,7 +31,7 @@ const resumeSchema = new mongoose.Schema<ResumeDocument>(
                     required: true,
                 },
                 content: {
-                    type: mongoose.Schema.Types.Mixed, // flexible content
+                    type: mongoose.Schema.Types.Mixed,
                     required: true,
                 },
             },

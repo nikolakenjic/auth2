@@ -8,6 +8,8 @@ import authenticate from './middleware/authenticate';
 import userRoute from './routes/user.route';
 import sessionRoute from './routes/session.route';
 import resumeRoute from './routes/resume.route';
+import coverLetterRoute from "./routes/coverLetter.route";
+import interviewSessionRoute from "./routes/interviewSession.route";
 
 const app = express();
 
@@ -19,11 +21,11 @@ app.use(cors({
 }))
 
 app.get(
-  '/',
-  catchAsync(async (req, res, next) => {
-    // throw new Error('This is an error');
-    return res.send('Node auth');
-  })
+    '/',
+    catchAsync(async (req, res, next) => {
+        // throw new Error('This is an error');
+        return res.send('Node auth');
+    })
 );
 
 app.use('/auth', authRoute);
@@ -32,6 +34,8 @@ app.use('/auth', authRoute);
 app.use('/user', authenticate, userRoute);
 app.use('/sessions', authenticate, sessionRoute);
 app.use('/resume', authenticate, resumeRoute)
+app.use('/coverLetter', authenticate, coverLetterRoute)
+app.use('/interviewSession', authenticate, interviewSessionRoute)
 
 // Error
 app.use(errorHandler);

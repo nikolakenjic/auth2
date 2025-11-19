@@ -1,5 +1,6 @@
 import catchAsync from "../utils/catchAsync";
 
+
 export const getAllResumes = catchAsync(async (req, res, next) => {
     res.send('all resumes')
 })

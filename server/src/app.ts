@@ -34,8 +34,8 @@ app.use('/auth', authRoute);
 app.use('/user', authenticate, userRoute);
 app.use('/sessions', authenticate, sessionRoute);
 app.use('/resume', authenticate, resumeRoute)
-app.use('/coverLetter', authenticate, coverLetterRoute)
-app.use('/interviewSession', authenticate, interviewSessionRoute)
+app.use('/cover-letter', authenticate, coverLetterRoute)
+app.use('/interview-session', authenticate, interviewSessionRoute)
 
 // Error
 app.use(errorHandler);

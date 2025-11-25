@@ -1,7 +1,13 @@
 import catchAsync from "../utils/catchAsync";
-import {createResumeService, getAllResumesService} from "../services/resume.service";
+import {
+    createResumeService, deleteResumeService,
+    getAllResumesService,
+    getResumeByIdService,
+    updateResumeService
+} from "../services/resume.service";
 import {CREATED, OK} from "../constants/http";
 import {createResumeSchema} from "../validations/resume.schemas";
+import mongoose from "mongoose";
 
 
 export const getAllResumes = catchAsync(async (req, res, next) => {
@@ -27,13 +33,38 @@ export const createResume = catchAsync(async (req, res, next) => {
 })
 
 export const getResumeById = catchAsync(async (req, res, next) => {
-    res.send('get resume')
+    const userId = req.userId
+    const resumeId = new mongoose.Types.ObjectId(req.params.id)
+
+    const resume = await getResumeByIdService(userId, resumeId)
+
+    return res.status(OK).json({
+        status: "success",
+        resume
+    })
 })
 
 export const updateResume = catchAsync(async (req, res, next) => {
-    res.send('update resume')
+    const userId = req.userId
+    const resumeId = new mongoose.Types.ObjectId(req.params.id)
+    const data = req.body
+
+    const updateResume = await updateResumeService(userId, resumeId, data)
+
+    return res.status(OK).json({
+        status: "success",
+        resume: updateResume
+    })
 })
 
 export const deleteResume = catchAsync(async (req, res, next) => {
-    res.send('delete resume')
+    const userId = req.userId
+    const resumeId = new mongoose.Types.ObjectId(req.params.id)
+
+    await deleteResumeService(userId, resumeId)
+
+    return res.status(OK).json({
+        status: "success",
+        message: 'Resume deleted'
+    })
 })

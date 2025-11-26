@@ -11,3 +11,6 @@ export const createResumeSchema = z.object({
 });
 
 export const updateResumeSchema = createResumeSchema.partial()
+
+export type CreateResumeInput = z.infer<typeof createResumeSchema>;
+export type UpdateResumeInput = z.infer<typeof updateResumeSchema>;

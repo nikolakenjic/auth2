@@ -34,6 +34,7 @@ export const getResumeById = catchAsync(async (req, res, next) => {
     const resumeId = toObjectId(req.params.id)
 
     const resume = await getResumeByIdService(req.userId, resumeId)
+    ensureFound(resume, 'Resume not found')
 
     return res.status(OK).json({
         status: "success",

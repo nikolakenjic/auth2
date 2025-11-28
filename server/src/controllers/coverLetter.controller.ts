@@ -1,21 +1,64 @@
 import catchAsync from "../utils/catchAsync";
+import {
+    createCoverLetterService, deleteCoverLetterService,
+    getAllCoverLettersService,
+    getCoverLetterByIdService, updateCoverLetterService
+} from "../services/coverLetter.service";
+import {CREATED, OK} from "../constants/http";
+import {createCoverLetterSchema, updateCoverLetterSchema} from "../validations/coverLetter.schemas";
+import {ensureFound, toObjectId} from "../utils/dataHelpers";
 
 export const getAllCoverLetters = catchAsync(async (req, res, next) => {
-    res.send('all CLs')
+    const coverLetters = await getAllCoverLettersService(req.userId)
+
+    return res.status(OK).json({
+        status: "success",
+        coverLetters: coverLetters
+    })
 })
 
 export const createCoverLetter = catchAsync(async (req, res, next) => {
-    res.send('create CL')
+    const data = createCoverLetterSchema.parse(req.body)
+
+    const coverLetter = await createCoverLetterService(req.userId, data)
+
+    return res.status(CREATED).json({
+        status: "success",
+        coverLetter
+    })
 })
 
 export const getCoverLetterById = catchAsync(async (req, res, next) => {
-    res.send('get CL')
+    const coverLetterId = toObjectId(req.params.id)
+
+    const coverLetter = await getCoverLetterByIdService(req.userId, coverLetterId)
+    ensureFound(coverLetter, 'Cover Letter not found')
+
+    return res.status(OK).json({
+        status: "success",
+        coverLetter
+    })
 })
 
 export const updateCoverLetter = catchAsync(async (req, res, next) => {
-    res.send('update CL')
+    const coverLetterId = toObjectId(req.params.id)
+    const data = updateCoverLetterSchema.parse(req.body)
+
+    const updatedCoverLetter = await updateCoverLetterService(req.userId, coverLetterId, data)
+
+    return res.status(OK).json({
+        status: "success",
+        coverLetter: updatedCoverLetter
+    })
 })
 
 export const deleteCoverLetter = catchAsync(async (req, res, next) => {
-    res.send('delete CL')
+    const coverLetterId = toObjectId(req.params.id)
+
+    await deleteCoverLetterService(req.userId, coverLetterId)
+
+    return res.status(OK).json({
+        status: "success",
+        message: "Cover Letter deleted successfully"
+    })
 })

@@ -6,7 +6,11 @@ import {verifyToken} from '../utils/jwt';
 import {ObjectId} from "mongodb";
 
 const authenticate: RequestHandler = (req, res, next) => {
-    const accessToken = req.cookies.accessToken as string | undefined;
+    const authHeader = req.headers.authorization;
+    const tokenFromHeader = authHeader?.startsWith("Bearer ") ? authHeader.split(" ")[1] : undefined;
+    const tokenFromCookie = req.cookies.accessToken as string;
+
+    const accessToken = tokenFromHeader || tokenFromCookie;
     appAssert(
         accessToken,
         UNAUTHORIZED,
@@ -22,8 +26,12 @@ const authenticate: RequestHandler = (req, res, next) => {
         AppErrorCode.InvalidAccessToken
     );
 
-    req.userId = new ObjectId(payload.userId as string);
-    req.sessionId = new ObjectId(payload.sessionId as string);
+    // attach user object
+    req.user = {
+        userId: new ObjectId(payload.userId as string),
+        role: payload.role || 'user',
+        sessionId: new ObjectId(payload.sessionId as string)
+    };
 
     next();
 };

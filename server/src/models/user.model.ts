@@ -5,6 +5,7 @@ export interface UserDocument extends mongoose.Document {
     email: string;
     password?: string;
     verified: boolean;
+    role:string;
     name?: string;
     googleId?: string;
     profileImg?: string;
@@ -34,6 +35,11 @@ const userSchema = new mongoose.Schema<UserDocument>(
             type: Boolean,
             default: false,
             required: true,
+        },
+        role: {
+            type: String,
+            required: true,
+            default: 'user'
         },
         name: {
             type: String,

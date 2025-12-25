@@ -27,7 +27,10 @@ const handleAppError = (res: Response, error: AppError) => {
 
 const errorHandler: ErrorRequestHandler = (error, req, res, next) => {
     console.log(`PATH: ${req.path}`, error)
-    console.error(error);
+
+    if(NODE_ENV === 'development') {
+        console.error(`Error on ${req.method} ${req.path}`, error)
+    }
 
     // Clear all cookies if we got some error
     if (req.path === REFRESH_PATH) {
@@ -43,10 +46,10 @@ const errorHandler: ErrorRequestHandler = (error, req, res, next) => {
     }
 
     return res.status(INTERNAL_SERVER_ERROR).json({
+        success: false,
         message: 'Internal Server Error',
-        error: NODE_ENV === 'development' ? error.message : undefined,
-        stack: NODE_ENV === 'development' ? error.stack : undefined
-    })
+        ...(NODE_ENV === 'development' && { error: error.message, stack: error.stack }),
+    });
 }
 
 export default errorHandler

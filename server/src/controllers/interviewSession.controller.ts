@@ -9,7 +9,7 @@ import {
 import {ensureFound, toObjectId} from "../utils/dataHelpers";
 
 export const getAllInterviewSessions = catchAsync(async (req, res, next) => {
-    const sessions = await getAllInterviewSessionsService(req.userId)
+    const sessions = await getAllInterviewSessionsService(req.user.userId)
 
     return res.status(OK).json({
         status: 'success',
@@ -20,7 +20,7 @@ export const getAllInterviewSessions = catchAsync(async (req, res, next) => {
 export const createInterviewSession = catchAsync(async (req, res, next) => {
     const data = createInterviewSessionSchema.parse(req.body)
 
-    const session = await createInterviewSessionService(req.userId, data)
+    const session = await createInterviewSessionService(req.user.userId, data)
 
     return res.status(CREATED).json({
         status: 'success',
@@ -31,7 +31,7 @@ export const createInterviewSession = catchAsync(async (req, res, next) => {
 export const getInterviewSessionById = catchAsync(async (req, res, next) => {
     const sessionId = toObjectId(req.params.id)
 
-    const session = await getInterviewSessionByIdService(req.userId, sessionId)
+    const session = await getInterviewSessionByIdService(req.user.userId, sessionId)
     ensureFound(session, 'Interview Session Not Found')
 
     return res.status(OK).json({
@@ -44,7 +44,7 @@ export const updateInterviewSession = catchAsync(async (req, res, next) => {
     const sessionId = toObjectId(req.params.id)
     const data = updateInterviewSessionSchema.parse(req.body)
 
-    const updatedInterviewSession = await updateInterviewSessionService(req.userId, sessionId, data)
+    const updatedInterviewSession = await updateInterviewSessionService(req.user.userId, sessionId, data)
     ensureFound(updatedInterviewSession, 'Interview Session Not Found')
 
     return res.status(OK).json({
@@ -56,7 +56,7 @@ export const updateInterviewSession = catchAsync(async (req, res, next) => {
 export const deleteInterviewSession = catchAsync(async (req, res, next) => {
     const sessionId = toObjectId(req.params.id);
 
-    await deleteInterviewSessionService(req.userId, sessionId)
+    await deleteInterviewSessionService(req.user.userId, sessionId)
 
     return res.status(OK).json({
         status: 'success',

@@ -50,8 +50,8 @@ export const loginHandler = catchAsync(async (req, res, next) => {
 
     // call service
     const {user, accessToken, refreshToken} = await loginUser(request);
-    // return response
 
+    // return response
     return setAuthCookies({res, accessToken, refreshToken}).status(OK).json({
         status: 'success',
         user,

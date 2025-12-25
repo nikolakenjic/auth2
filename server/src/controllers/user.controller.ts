@@ -4,7 +4,7 @@ import appAssert from '../utils/appAssert';
 import catchAsync from '../utils/catchAsync';
 
 export const getUserHandler = catchAsync(async (req, res, next) => {
-  const user = await UserModel.findById(req.userId);
+  const user = await UserModel.findById(req.user!.userId);
   appAssert(user, NOT_FOUND, 'User not found');
 
   return res.status(OK).json({

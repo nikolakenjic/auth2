@@ -11,7 +11,7 @@ import {ensureFound, toObjectId} from "../utils/dataHelpers";
 
 
 export const getAllResumes = catchAsync(async (req, res, next) => {
-    const resumes = await getAllResumesService(req.userId);
+    const resumes = await getAllResumesService(req.user.userId);
 
     return res.status(OK).json({
         status: "success",
@@ -22,7 +22,7 @@ export const getAllResumes = catchAsync(async (req, res, next) => {
 export const createResume = catchAsync(async (req, res, next) => {
     const data = createResumeSchema.parse(req.body)
 
-    const resume = await createResumeService(req.userId, data)
+    const resume = await createResumeService(req.user.userId, data)
 
     return res.status(CREATED).json({
         status: "success",
@@ -33,7 +33,7 @@ export const createResume = catchAsync(async (req, res, next) => {
 export const getResumeById = catchAsync(async (req, res, next) => {
     const resumeId = toObjectId(req.params.id)
 
-    const resume = await getResumeByIdService(req.userId, resumeId)
+    const resume = await getResumeByIdService(req.user.userId, resumeId)
     ensureFound(resume, 'Resume not found')
 
     return res.status(OK).json({
@@ -46,7 +46,7 @@ export const updateResume = catchAsync(async (req, res, next) => {
     const resumeId = toObjectId(req.params.id)
     const data = updateResumeSchema.parse(req.body)
 
-    const updatedResume = await updateResumeService(req.userId, resumeId, data)
+    const updatedResume = await updateResumeService(req.user.userId, resumeId, data)
     ensureFound(updatedResume, 'Resume not found')
 
     return res.status(OK).json({
@@ -58,7 +58,7 @@ export const updateResume = catchAsync(async (req, res, next) => {
 export const deleteResume = catchAsync(async (req, res, next) => {
     const resumeId = toObjectId(req.params.id)
 
-    await deleteResumeService(req.userId, resumeId)
+    await deleteResumeService(req.user.userId, resumeId)
 
     return res.status(OK).json({
         status: "success",

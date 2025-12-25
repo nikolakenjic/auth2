@@ -9,7 +9,7 @@ import {createCoverLetterSchema, updateCoverLetterSchema} from "../validations/c
 import {ensureFound, toObjectId} from "../utils/dataHelpers";
 
 export const getAllCoverLetters = catchAsync(async (req, res, next) => {
-    const coverLetters = await getAllCoverLettersService(req.userId)
+    const coverLetters = await getAllCoverLettersService(req.user.userId)
 
     return res.status(OK).json({
         status: "success",
@@ -20,7 +20,7 @@ export const getAllCoverLetters = catchAsync(async (req, res, next) => {
 export const createCoverLetter = catchAsync(async (req, res, next) => {
     const data = createCoverLetterSchema.parse(req.body)
 
-    const coverLetter = await createCoverLetterService(req.userId, data)
+    const coverLetter = await createCoverLetterService(req.user.userId, data)
 
     return res.status(CREATED).json({
         status: "success",
@@ -31,7 +31,7 @@ export const createCoverLetter = catchAsync(async (req, res, next) => {
 export const getCoverLetterById = catchAsync(async (req, res, next) => {
     const coverLetterId = toObjectId(req.params.id)
 
-    const coverLetter = await getCoverLetterByIdService(req.userId, coverLetterId)
+    const coverLetter = await getCoverLetterByIdService(req.user.userId, coverLetterId)
     ensureFound(coverLetter, 'Cover Letter not found')
 
     return res.status(OK).json({
@@ -44,7 +44,7 @@ export const updateCoverLetter = catchAsync(async (req, res, next) => {
     const coverLetterId = toObjectId(req.params.id)
     const data = updateCoverLetterSchema.parse(req.body)
 
-    const updatedCoverLetter = await updateCoverLetterService(req.userId, coverLetterId, data)
+    const updatedCoverLetter = await updateCoverLetterService(req.user.userId, coverLetterId, data)
 
     return res.status(OK).json({
         status: "success",
@@ -55,7 +55,7 @@ export const updateCoverLetter = catchAsync(async (req, res, next) => {
 export const deleteCoverLetter = catchAsync(async (req, res, next) => {
     const coverLetterId = toObjectId(req.params.id)
 
-    await deleteCoverLetterService(req.userId, coverLetterId)
+    await deleteCoverLetterService(req.user.userId, coverLetterId)
 
     return res.status(OK).json({
         status: "success",

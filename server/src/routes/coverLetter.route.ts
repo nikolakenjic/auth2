@@ -5,13 +5,15 @@ import {
     getCoverLetterById,
     updateCoverLetter
 } from "../controllers/coverLetter.controller";
+import {validate} from "../middleware/validate";
+import {createCoverLetterSchema, updateCoverLetterSchema} from "../validations/coverLetter.schemas";
 
 const router = Router();
 
 router.get('/', getAllCoverLetters)
-router.post('/', createCoverLetter)
+router.post('/', validate(createCoverLetterSchema), createCoverLetter)
 router.get('/:id', getCoverLetterById)
-router.patch('/:id', updateCoverLetter)
+router.patch('/:id', validate(updateCoverLetterSchema), updateCoverLetter)
 router.delete('/:id', deleteCoverLetter)
 
 export default router;

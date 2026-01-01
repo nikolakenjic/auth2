@@ -1,14 +1,7 @@
 import UserModel from '../models/user.model';
 import VerificationCodeModel from '../models/verificationCode.model';
 import VerificationCodeTypes from '../constants/verificationCodeTypes';
-import {
-    fiveMinutesAgo,
-    ONE_DAY_MS,
-    oneHourFromNow,
-    oneYearFromNow,
-    thirtyDaysFromNow,
-} from '../utils/date';
-import sessionModel from '../models/session.model';
+import {fiveMinutesAgo, ONE_DAY_MS, oneHourFromNow, oneYearFromNow, thirtyDaysFromNow,} from '../utils/date';
 import SessionModel from '../models/session.model';
 import appAssert from '../utils/appAssert';
 import {
@@ -20,7 +13,6 @@ import {
     UNAUTHORIZED,
 } from '../constants/http';
 import {
-    accessTokenSignOptions,
     RefreshTokenPayload,
     refreshTokenSignOptions,
     signToken,
@@ -29,20 +21,18 @@ import {
 import {AuthCredentials, ResetPasswordParams} from '../types/auth.types';
 import {sendMail} from '../utils/sendMail';
 import {APP_ORIGIN, GOOGLE_CLIENT_ID} from '../constants/env';
-import {
-    getPasswordResetTemplate,
-    getVerifyEmailTemplate,
-} from '../utils/emailTemplates';
+import {getPasswordResetTemplate, getVerifyEmailTemplate,} from '../utils/emailTemplates';
 import {hashValue} from '../utils/bcrypt';
 import {OAuth2Client} from 'google-auth-library'
+import AppErrorCode from "../constants/appErrorCode";
+import {createSessionAndTokens} from "../utils/auth";
 
 const client = new OAuth2Client(GOOGLE_CLIENT_ID)
 
 export const createAccount = async (data: AuthCredentials) => {
     //  verify existing user does not exist
     const existingUser = await UserModel.exists({email: data.email});
-
-    appAssert(!existingUser, CONFLICT, 'Email already exists');
+    appAssert(!existingUser, CONFLICT, 'Email already exists', AppErrorCode.ValidationError);
 
     //  create user
     const user = await UserModel.create({
@@ -64,28 +54,10 @@ export const createAccount = async (data: AuthCredentials) => {
         ...getVerifyEmailTemplate(url),
     });
 
-    // create session
-    const session = await sessionModel.create({
-        userId: user._id,
-    });
-
-    // sign access token and refresh token
-    const refreshToken = signToken(
-        {sessionId: session._id},
-        refreshTokenSignOptions
-    );
-
-    const accessToken = signToken(
-        {userId: user._id, sessionId: session._id},
-        accessTokenSignOptions
-    );
+    const {accessToken, refreshToken} = await createSessionAndTokens(user._id as string)
 
     // return user and tokens
-    return {
-        user,
-        accessToken,
-        refreshToken,
-    };
+    return {user, accessToken, refreshToken};
 };
 
 export const loginUser = async ({email, password}: AuthCredentials) => {
@@ -104,28 +76,10 @@ export const loginUser = async ({email, password}: AuthCredentials) => {
     const isValid = await user.comparePassword(password);
     appAssert(isValid, UNAUTHORIZED, 'Invalid email or password');
 
-    //     create a session
-    const session = await SessionModel.create({
-        userId: user._id,
-    });
-
-    //     sign access and refresh token
-    const refreshToken = signToken(
-        {sessionId: session._id},
-        refreshTokenSignOptions
-    );
-
-    const accessToken = signToken(
-        {userId: user._id, sessionId: session._id},
-        accessTokenSignOptions
-    );
+    const {accessToken, refreshToken} = await createSessionAndTokens(user._id as string)
 
     //     return user
-    return {
-        user,
-        accessToken,
-        refreshToken,
-    };
+    return {user, accessToken, refreshToken};
 };
 
 export const refreshUserAccessToken = async (refreshToken: string) => {
@@ -159,10 +113,7 @@ export const refreshUserAccessToken = async (refreshToken: string) => {
         sessionId: session._id,
     });
 
-    return {
-        accessToken,
-        newRefreshToken,
-    };
+    return {accessToken, newRefreshToken};
 };
 
 export const verifyEmail = async (code: string) => {
@@ -185,13 +136,11 @@ export const verifyEmail = async (code: string) => {
     await validCode.deleteOne();
 
     //     return user
-    return {
-        user: updateUser,
-    };
+    return {user: updateUser};
 };
 
 export const resendVerifyEmail = async (email: string) => {
-    console.log('email', email);
+    // console.log('email', email);
     const user = await UserModel.findOne({email});
     appAssert(user, NOT_FOUND, 'User not found');
 
@@ -259,10 +208,7 @@ export const sendPasswordResetEmail = async (email: string) => {
     );
 
     //     return success
-    return {
-        url,
-        emailId: data.id,
-    };
+    return {url, emailId: data.id};
 };
 
 export const resetPassword = async ({
@@ -290,9 +236,7 @@ export const resetPassword = async ({
     await SessionModel.deleteMany({userId: validCode.userId});
 
     //     return value
-    return {
-        user: updateUser,
-    };
+    return {user: updateUser};
 };
 
 // Google Auth
@@ -324,25 +268,7 @@ export const googleLoginOrRegister = async (googleToken: string) => {
         });
     }
 
-//     Create session
-    const session = await SessionModel.create({
-        userId: user._id,
-    })
+    const {accessToken, refreshToken} = await createSessionAndTokens(user._id as string);
 
-//     Generate tokens
-    const refreshToken = signToken(
-        {sessionId: session.id},
-        refreshTokenSignOptions
-    )
-
-    const accessToken = signToken(
-        {userId: user._id, sessionId: session._id},
-        accessTokenSignOptions
-    )
-
-    return {
-        user,
-        accessToken,
-        refreshToken,
-    }
+    return {user, accessToken, refreshToken}
 };

@@ -11,6 +11,7 @@ const sessionSchema = new mongoose.Schema<SessionDocument>({
     userId: {
         ref: 'User',
         type: mongoose.Schema.Types.ObjectId,
+        required: true,
         index: true,
     },
     createdAt: {type: Date, required: true, default: Date.now()},

@@ -12,5 +12,5 @@ export const ResumeSchema = z.object({
     sections: z.array(SectionSchema).default([]),
 });
 
-export type Resume = z.infer<typeof ResumeSchema>;
-export type Section = z.infer<typeof SectionSchema>;
+export type ResumeType = z.infer<typeof ResumeSchema>;
+export type SectionType = z.infer<typeof SectionSchema>;

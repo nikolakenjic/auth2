@@ -11,6 +11,7 @@ const getEnv = (key: string, defaultValue?: string): string => {
 
 export const NODE_ENV = getEnv('NODE_ENV', 'development');
 export const PORT = getEnv('PORT', '3500');
+export const CLIENT_URL = getEnv('CLIENT_URL');
 export const MONGO_URI = getEnv('MONGO_URI');
 export const APP_ORIGIN = getEnv('APP_ORIGIN');
 export const JWT_SECRET = getEnv('JWT_SECRET');

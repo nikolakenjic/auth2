@@ -45,6 +45,7 @@ export const updateCoverLetter = catchAsync(async (req, res, next) => {
     const data = updateCoverLetterSchema.parse(req.body)
 
     const updatedCoverLetter = await updateCoverLetterService(req.user.userId, coverLetterId, data)
+    ensureFound(updatedCoverLetter, 'Cover Letter not found')
 
     return res.status(OK).json({
         status: "success",

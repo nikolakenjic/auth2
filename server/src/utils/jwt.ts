@@ -13,6 +13,7 @@ export type RefreshTokenPayload = {
 
 export type AccessTokenPayload = RefreshTokenPayload & {
     userId: UserDocument['_id'];
+    role: UserDocument['role'];
 };
 
 type SignOptionsAndSecret = SignOptions & {

@@ -9,7 +9,7 @@ import { AuthForm, Field } from '@/components/auth/AuthForm';
 import { loginSchema } from '@/app/lib/validations/auth';
 import { useAuth } from '@/app/context/AuthContext';
 import { AxiosError } from 'axios';
-import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
+import { CredentialResponse } from '@react-oauth/google';
 
 type LoginFormValues = z.infer<typeof loginSchema>;
 

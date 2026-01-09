@@ -11,7 +11,7 @@ export interface InterviewSessionDocument extends mongoose.Document {
     userId: mongoose.Types.ObjectId;
     role: string;
     level?: string;
-    message: InterviewMessage[];
+    messages: InterviewMessage[];
     overallFeedback?: string;
     createdAt: Date;
     updatedAt: Date;

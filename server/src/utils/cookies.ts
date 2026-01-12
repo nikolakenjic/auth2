@@ -3,7 +3,6 @@ import {fifteenMinutesFromNow, thirtyDaysFromNow} from "./date";
 
 const secure = process.env.NODE_ENV !== 'development';
 export const REFRESH_PATH = '/api/v1/auth/refresh';
-// I remove REFRESH_PATH for accessTokenGetRefreshed
 
 const defaults: CookieOptions = {
     sameSite: "strict",
@@ -13,12 +12,14 @@ const defaults: CookieOptions = {
 
 export const getAccessTokenCookieOptions = (): CookieOptions => ({
     ...defaults,
-    expires: fifteenMinutesFromNow()
+    expires: fifteenMinutesFromNow(),
+    path: REFRESH_PATH
 })
 
 export const getRefreshTokenCookieOptions = (): CookieOptions => ({
     ...defaults,
-    expires: thirtyDaysFromNow()
+    expires: thirtyDaysFromNow(),
+    path: REFRESH_PATH
 })
 
 type Params = {
@@ -38,4 +39,4 @@ export const setAuthCookies = ({
 
 
 export const clearAuthCookies = (res: Response) =>
-    res.clearCookie('accessToken').clearCookie('refreshToken')
+    res.clearCookie('accessToken').clearCookie('refreshToken', {path: REFRESH_PATH})

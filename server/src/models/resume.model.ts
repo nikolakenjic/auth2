@@ -70,15 +70,52 @@ const experienceItemSchema = new mongoose.Schema<ExperienceItem>(
 
 const educationItemSchema = new mongoose.Schema<EducationItem>(
     {
-        school: { type: String, required: true, trim: true },
-        degree: { type: String, trim: true },
-        field: { type: String, trim: true },
-        startDate: { type: String, trim: true },
-        endDate: { type: String, trim: true },
-        details: { type: [String], default: [] },
+        school: {type: String, required: true, trim: true},
+        degree: {type: String, trim: true},
+        field: {type: String, trim: true},
+        startDate: {type: String, trim: true},
+        endDate: {type: String, trim: true},
+        details: {type: [String], default: []},
     },
-    { _id: false }
+    {_id: false}
 );
+
+const summarySectionSchema = new mongoose.Schema(
+    {
+        type: {type: String, enum: ['summary'], required: true},
+        content: {
+            text: {type: String, default: "", required: true},
+        },
+    },
+    {_id: false}
+)
+
+const educationSectionSchema = new mongoose.Schema(
+    {
+        type: {type: String, enum: ["education"], required: true},
+        content: {
+            items: {type: [educationItemSchema], default: [], required: true},
+        },
+    },
+    {_id: false}
+);
+
+const skillsSectionSchema = new mongoose.Schema(
+    {
+        type: {type: String, enum: ["skills"], required: true},
+        content: {
+            items: {type: [String], default: [], required: true},
+        },
+    },
+    {_id: false}
+);
+
+const sectionsSchema = [
+    summarySectionSchema,
+    experienceItemSchema,
+    educationItemSchema,
+    skillsSectionSchema,
+]
 
 const resumeSchema = new mongoose.Schema<ResumeDocument>(
     {
@@ -92,22 +129,33 @@ const resumeSchema = new mongoose.Schema<ResumeDocument>(
             required: [true, 'Resume title is required'],
             trim: true,
         },
-        sections: [
-            {
-                type: {
-                    type: String,
-                    enum: ['experience', 'education', 'skills', 'projects', 'other'],
-                    required: true,
-                },
-                content: {
-                    type: mongoose.Schema.Types.Mixed,
-                    required: true,
-                },
-            },
-        ],
+        status: {
+            type: String,
+            enum: ['draft', 'complete'],
+            default: 'draft',
+            required: [true, 'Resume status is required'],
+        },
+        templateVersion: {
+            type: Number,
+            default: 1,
+            required: true,
+        },
+        sections: {
+            type: sectionsSchema as any,
+            default: [
+                {type: 'summary', content: {text: ''}},
+                {type: "experience", content: {items: []}},
+                {type: "education", content: {items: []}},
+                {type: "skills", content: {items: []}},
+            ],
+            required: [true, 'Resume section is required'],
+        }
     },
     {timestamps: true}
 );
+
+// Ensure you doesn't create duplicate titles
+resumeSchema.index({userId: 1, title: 1}, {unique: false})
 
 const ResumeModel = mongoose.model<ResumeDocument>('Resume', resumeSchema);
 

@@ -9,6 +9,7 @@ export type ExperienceItem = {
     location?: string;
     startDate: string;
     endDate?: string;
+    bullets: string[];
 }
 
 export type EducationItem = {
@@ -63,7 +64,8 @@ const experienceItemSchema = new mongoose.Schema<ExperienceItem>(
         title: {type: String, required: true, trim: true},
         location: {type: String, trim: true},
         startDate: {type: String, required: true, trim: true},
-        endDate: {type: String, trim: true}
+        endDate: {type: String, trim: true},
+        bullets: {type: [String], default: [], required: true},
     },
     {_id: false}
 )
@@ -90,6 +92,16 @@ const summarySectionSchema = new mongoose.Schema(
     {_id: false}
 )
 
+const experienceSectionSchema = new mongoose.Schema(
+    {
+        type: {type: String, enum: ["experience"], required: true},
+        content: {
+            items: {type: [experienceItemSchema], default: [], required: true},
+        },
+    },
+    {_id: false}
+);
+
 const educationSectionSchema = new mongoose.Schema(
     {
         type: {type: String, enum: ["education"], required: true},
@@ -112,8 +124,8 @@ const skillsSectionSchema = new mongoose.Schema(
 
 const sectionsSchema = [
     summarySectionSchema,
-    experienceItemSchema,
-    educationItemSchema,
+    experienceSectionSchema,
+    educationSectionSchema,
     skillsSectionSchema,
 ]
 
@@ -153,9 +165,6 @@ const resumeSchema = new mongoose.Schema<ResumeDocument>(
     },
     {timestamps: true}
 );
-
-// Ensure you doesn't create duplicate titles
-resumeSchema.index({userId: 1, title: 1}, {unique: false})
 
 const ResumeModel = mongoose.model<ResumeDocument>('Resume', resumeSchema);
 

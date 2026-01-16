@@ -5,11 +5,12 @@ import AppErrorCode from '../constants/appErrorCode';
 import {verifyToken} from '../utils/jwt';
 import {ObjectId} from "mongodb";
 import SessionModel from "../models/session.model";
+import catchAsync from "../utils/catchAsync";
 
-const authenticate: RequestHandler = async (req, res, next) => {
+const authenticate: RequestHandler = catchAsync(async (req, res, next) => {
     const authHeader = req.headers.authorization;
     const tokenFromHeader = authHeader?.startsWith("Bearer ") ? authHeader.split(" ")[1] : undefined;
-    const tokenFromCookie = req.cookies.accessToken as string;
+    const tokenFromCookie = req.cookies?.accessToken as string;
 
     const accessToken = tokenFromHeader || tokenFromCookie;
     appAssert(
@@ -44,6 +45,6 @@ const authenticate: RequestHandler = async (req, res, next) => {
     };
 
     next();
-};
+});
 
 export default authenticate;

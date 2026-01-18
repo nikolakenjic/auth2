@@ -122,12 +122,28 @@ const skillsSectionSchema = new mongoose.Schema(
     {_id: false}
 );
 
-const sectionsSchema = [
-    summarySectionSchema,
-    experienceSectionSchema,
-    educationSectionSchema,
-    skillsSectionSchema,
-]
+// const sectionsSchema = [
+//     summarySectionSchema,
+//     experienceSectionSchema,
+//     educationSectionSchema,
+//     skillsSectionSchema,
+// ]
+
+const sectionSchema = new mongoose.Schema(
+    {
+        type: {
+            type: String,
+            enum: ["summary", "experience", "education", "skills"],
+            required: true,
+        },
+        content: {
+            type: mongoose.Schema.Types.Mixed,
+            required: true,
+            default: {},
+        },
+    },
+    { _id: false }
+);
 
 const resumeSchema = new mongoose.Schema<ResumeDocument>(
     {
@@ -153,7 +169,7 @@ const resumeSchema = new mongoose.Schema<ResumeDocument>(
             required: true,
         },
         sections: {
-            type: sectionsSchema as any,
+            type: [sectionSchema],
             default: [
                 {type: 'summary', content: {text: ''}},
                 {type: "experience", content: {items: []}},

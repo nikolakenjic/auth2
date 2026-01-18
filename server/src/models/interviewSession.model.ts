@@ -68,5 +68,9 @@ const interviewSessionSchema = new mongoose.Schema<InterviewSessionDocument>(
     {timestamps: true}
 )
 
-const InterviewSessionModel = mongoose.model<InterviewSessionDocument>('InterviewSession', interviewSessionSchema);
+const InterviewSessionModel = mongoose.model<InterviewSessionDocument>(
+    'InterviewSession',
+    interviewSessionSchema
+);
+
 export default InterviewSessionModel;

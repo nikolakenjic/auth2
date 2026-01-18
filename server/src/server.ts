@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
-dotenv.config({ path: './config.env' });
+
+dotenv.config({path: './config.env'});
 
 import app from './app';
 import connectToDatabase from "./config/db";
@@ -8,16 +9,22 @@ import {PORT} from "./constants/env";
 
 const startServer = async () => {
     try {
+        // Connect to Database
         await connectToDatabase();
-        app.listen(PORT, () => {
+
+        // Start server
+        const server = app.listen(PORT, () => {
             console.log(`Server started on port ${PORT}`);
         });
+
+
     } catch (err) {
-        console.error("Unexpected startup error:", err);
+        console.error("Critical startup error:", err);
         process.exit(1);
     }
 };
 
 startServer().catch(err => {
-    console.error('Unhandled error:', err);
+    console.error('Unexpected startup error:', err);
+    process.exit(1)
 });

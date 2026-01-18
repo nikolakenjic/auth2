@@ -6,7 +6,6 @@ import {
     updateResumeService
 } from "../services/resume.service";
 import {CREATED, OK} from "../constants/http";
-import {createResumeSchema, updateResumeSchema} from "../validations/resume.schemas";
 import {ensureFound, toObjectId} from "../utils/dataHelpers";
 
 
@@ -20,9 +19,7 @@ export const getAllResumes = catchAsync(async (req, res, next) => {
 })
 
 export const createResume = catchAsync(async (req, res, next) => {
-    const data = createResumeSchema.parse(req.body)
-
-    const resume = await createResumeService(req.user.userId, data)
+    const resume = await createResumeService(req.user.userId, req.body)
 
     return res.status(CREATED).json({
         status: "success",
@@ -44,9 +41,8 @@ export const getResumeById = catchAsync(async (req, res, next) => {
 
 export const updateResume = catchAsync(async (req, res, next) => {
     const resumeId = toObjectId(req.params.id)
-    const data = updateResumeSchema.parse(req.body)
 
-    const updatedResume = await updateResumeService(req.user.userId, resumeId, data)
+    const updatedResume = await updateResumeService(req.user.userId, resumeId, req.body)
     ensureFound(updatedResume, 'Resume not found')
 
     return res.status(OK).json({

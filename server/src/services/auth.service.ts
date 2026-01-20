@@ -62,7 +62,7 @@ export const createAccount = async (data: AuthCredentials) => {
 
 export const loginUser = async ({email, password}: AuthCredentials) => {
     //     get validation by email
-    const user = await UserModel.findOne({email});
+    const user = await UserModel.findOne({email}).select('+password');
     appAssert(user, UNAUTHORIZED, 'Invalid email or password');
 
     //     check if email is verified

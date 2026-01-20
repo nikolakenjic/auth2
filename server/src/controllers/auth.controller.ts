@@ -30,7 +30,6 @@ import appAssert from '../utils/appAssert';
 export const registerHandler = catchAsync(async (req, res, next) => {
     // //    validate request
     const request = registerSchema.parse(req.body);
-    // console.log(request)
 
     //     call service
     const {user, accessToken, refreshToken} = await createAccount(request);
@@ -104,8 +103,7 @@ export const emailVerifyHandler = catchAsync(async (req, res, next) => {
     });
 });
 
-export const resendEmailVerificationHandler = catchAsync(
-    async (req, res, next) => {
+export const resendEmailVerificationHandler = catchAsync(async (req, res, next) => {
         const {email} = resendVerificationSchema.parse(req.body);
 
         await resendVerifyEmail(email);

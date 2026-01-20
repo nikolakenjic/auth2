@@ -5,7 +5,7 @@ export interface UserDocument extends mongoose.Document {
     email: string;
     password?: string;
     verified: boolean;
-    role:string;
+    role: string;
     name?: string;
     googleId?: string;
     profileImg?: string;
@@ -27,9 +27,10 @@ const userSchema = new mongoose.Schema<UserDocument>(
         },
         password: {
             type: String,
-            required: function() {
+            required: function () {
                 return !this.isOAuth;
             },
+            select: false
         },
         verified: {
             type: Boolean,
@@ -46,6 +47,7 @@ const userSchema = new mongoose.Schema<UserDocument>(
         },
         googleId: {
             type: String,
+            select: false
         },
         profileImg: {
             type: String,
@@ -58,6 +60,7 @@ const userSchema = new mongoose.Schema<UserDocument>(
     {timestamps: true}
 );
 
+// Hashed Password before saving
 userSchema.pre('save', async function (next) {
     if (this.isOAuth) return next();
     if (!this.isModified('password') || !this.password) return next();
@@ -72,13 +75,22 @@ userSchema.methods.comparePassword = async function (candidatePassword: string) 
     return await compareValue(candidatePassword, this.password);
 };
 
-// Omit Password
+// Remove sensitive fields for API responses
+const transformResponse = (doc: any, ret: any) => {
+    delete ret.password;
+    delete ret.__v;
+    delete ret.googleId;
+
+    return ret;
+}
+
 userSchema.set('toJSON', {
-    transform(doc, ret) {
-        delete ret.password;
-        return ret;
-    }
+    transform: transformResponse,
 });
+
+userSchema.set('toObject', {
+    transform: transformResponse,
+})
 
 
 const UserModel = mongoose.model<UserDocument>('User', userSchema);

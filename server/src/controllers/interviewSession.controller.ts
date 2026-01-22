@@ -18,9 +18,7 @@ export const getAllInterviewSessions = catchAsync(async (req, res, next) => {
 })
 
 export const createInterviewSession = catchAsync(async (req, res, next) => {
-    const data = createInterviewSessionSchema.parse(req.body)
-
-    const session = await createInterviewSessionService(req.user.userId, data)
+    const session = await createInterviewSessionService(req.user.userId, req.body)
 
     return res.status(CREATED).json({
         status: 'success',
@@ -42,9 +40,8 @@ export const getInterviewSessionById = catchAsync(async (req, res, next) => {
 
 export const updateInterviewSession = catchAsync(async (req, res, next) => {
     const sessionId = toObjectId(req.params.id)
-    const data = updateInterviewSessionSchema.parse(req.body)
 
-    const updatedInterviewSession = await updateInterviewSessionService(req.user.userId, sessionId, data)
+    const updatedInterviewSession = await updateInterviewSessionService(req.user.userId, sessionId, req.body)
     ensureFound(updatedInterviewSession, 'Interview Session Not Found')
 
     return res.status(OK).json({

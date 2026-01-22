@@ -1,15 +1,16 @@
 import mongoose from "mongoose";
 import InterviewSessionModel from "../models/interviewSession.model";
+import {CreateInterviewSessionInput, UpdateInterviewSessionInput} from "../validations/interviewSession.schemas";
 
 export const getAllInterviewSessionsService = async (
     userId: mongoose.Types.ObjectId,
 ) => {
-    return await InterviewSessionModel.find({userId})
+    return await InterviewSessionModel.find({userId}).sort({createdAt: -1})
 }
 
 export const createInterviewSessionService = async (
     userId: mongoose.Types.ObjectId,
-    data: any
+    data: CreateInterviewSessionInput
 ) => {
     return await InterviewSessionModel.create({
         ...data,
@@ -30,12 +31,12 @@ export const getInterviewSessionByIdService = async (
 export const updateInterviewSessionService = async (
     userId: mongoose.Types.ObjectId,
     sessionId: mongoose.Types.ObjectId,
-    data: any
+    data: UpdateInterviewSessionInput
 ) => {
     return await InterviewSessionModel.findOneAndUpdate(
-        { _id: sessionId, userId },
-        { $set: data },
-        { new: true }
+        {_id: sessionId, userId},
+        {$set: data},
+        {new: true}
     );
 };
 

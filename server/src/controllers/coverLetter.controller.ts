@@ -18,9 +18,7 @@ export const getAllCoverLetters = catchAsync(async (req, res, next) => {
 })
 
 export const createCoverLetter = catchAsync(async (req, res, next) => {
-    const data = createCoverLetterSchema.parse(req.body)
-
-    const coverLetter = await createCoverLetterService(req.user.userId, data)
+    const coverLetter = await createCoverLetterService(req.user.userId, req.body)
 
     return res.status(CREATED).json({
         status: "success",
@@ -42,9 +40,8 @@ export const getCoverLetterById = catchAsync(async (req, res, next) => {
 
 export const updateCoverLetter = catchAsync(async (req, res, next) => {
     const coverLetterId = toObjectId(req.params.id)
-    const data = updateCoverLetterSchema.parse(req.body)
 
-    const updatedCoverLetter = await updateCoverLetterService(req.user.userId, coverLetterId, data)
+    const updatedCoverLetter = await updateCoverLetterService(req.user.userId, coverLetterId, req.body)
     ensureFound(updatedCoverLetter, 'Cover Letter not found')
 
     return res.status(OK).json({

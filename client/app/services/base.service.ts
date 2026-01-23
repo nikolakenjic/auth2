@@ -18,6 +18,6 @@ export default class BaseService {
     }
 
     static async delete<T>(endpoint: string, queryParams = {}, config = {}): Promise<T> {
-        return ApiClient.remove(endpoint, queryParams, config).then(res => res.data);
+        return ApiClient.delete(endpoint, queryParams, config).then(res => res.data);
     }
 }

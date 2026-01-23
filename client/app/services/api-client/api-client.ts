@@ -18,7 +18,7 @@ export default class ApiClient {
         return axiosInstance.patch(endpoint, body, {params: queryParams, ...config});
     }
 
-    static async remove(endpoint: string, queryParams = {}, config = {}): Promise<AxiosResponse> {
+    static async delete(endpoint: string, queryParams = {}, config = {}): Promise<AxiosResponse> {
         return axiosInstance.delete(endpoint, {params: queryParams, ...config});
     }
 }

@@ -15,11 +15,14 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-    title: "Auth MERN",
-    description: "Create auth mern with google",
+    title: "AI Resume & Interview Coach",
+    description: "AI Resume & Interview Coach - full-stack MERN app",
 };
 
-const CLIENT_ID = '622547765919-k2mh07dnvdm3strqp91oul51jmetpvb1.apps.googleusercontent.com'
+// const CLIENT_ID = '622547765919-k2mh07dnvdm3strqp91oul51jmetpvb1.apps.googleusercontent.com'
+const CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID as string;
+
+if (!CLIENT_ID) throw new Error('Missing NEXT_PUBLIC_GOOGLE_CLIENT_ID');
 
 export default function RootLayout({
                                        children,

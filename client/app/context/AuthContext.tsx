@@ -16,11 +16,11 @@ import type {
     RegisterUserData,
     User,
 } from "@/app/types/auth";
-import { AxiosError } from "axios";
+import {AxiosError} from "axios";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+export const AuthProvider = ({children}: { children: React.ReactNode }) => {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
 
@@ -61,7 +61,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     // Run once on app start
     useEffect(() => {
-        refreshUser();
+        void refreshUser();
     }, [refreshUser]);
 
     // ✅ login
@@ -91,7 +91,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     // ✅ resend verification
     const resendVerificationEmail = useCallback(async (email: string) => {
-        return AuthService.resendVerificationEmail({ email });
+        return AuthService.resendVerificationEmail({email});
     }, []);
 
     // ✅ forgot password

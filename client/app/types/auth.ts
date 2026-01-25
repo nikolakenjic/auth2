@@ -13,10 +13,12 @@ export interface User {
     _id: string;
     email: string;
     verified: boolean;
+    role?: string;
+    name?: string;
+    profileImg?: string;
     isOAuth: boolean;
     createdAt: string;
     updatedAt: string;
-    __v: number;
 }
 
 export interface AuthResponse {
@@ -24,25 +26,36 @@ export interface AuthResponse {
     user: User;
 }
 
+export interface RefreshResponse {
+    status: string;
+    message: string;
+}
+
 export interface ForgotPasswordPayload {
     email: string;
 }
 
 export interface ResetPasswordPayload {
-    token: string;
-
+    verificationCode: string;
+    password: string;
 }
 
 export interface AuthContextType {
     user: User | null;
+    loading: boolean;
+
+    refreshUser: () => Promise<User | null>;
+
     login: (credentials: LoginUserData) => Promise<User | null>;
     register: (payload: RegisterUserData) => Promise<User | null>;
     logout: () => Promise<void>;
+
     googleLogin: (token: string) => Promise<User | null>;
+
     verifyEmail: (code: string) => Promise<void>;
     resendVerificationEmail: (email: string) => Promise<void>;
+
     sendPasswordReset: (payload: ForgotPasswordPayload) => Promise<void>;
-    resetPasswordChange: (payload: any) => Promise<void>;
-    loading: boolean;
+    resetPasswordChange: (payload: ResetPasswordPayload) => Promise<void>;
 }
 

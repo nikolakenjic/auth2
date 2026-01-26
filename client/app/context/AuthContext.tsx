@@ -31,27 +31,12 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
     const refreshUser = useCallback(async () => {
         try {
             setLoading(true);
-
             // 1) Try get current user
             const me = await UserService.getMe();
             setUser(me.user);
             return me.user;
         } catch (err) {
-            // 2) If unauthorized -> try refresh
-            if (err instanceof AxiosError && err.response?.status === 401) {
-                try {
-                    await AuthService.refresh();
-                    const me = await UserService.getMe();
-                    setUser(me.user);
-                    return me.user;
-                } catch (refreshErr) {
-                    setUser(null);
-                    return null;
-                }
-            }
-
-            // other errors
-            console.error("refreshUser error:", err);
+            // If it reaches here, the refresh token was likely expired/invalid
             setUser(null);
             return null;
         } finally {

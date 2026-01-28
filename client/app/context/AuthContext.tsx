@@ -71,8 +71,11 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
     const register = useCallback(
         async (payload: RegisterUserData) => {
             await AuthService.register(payload);
-            return await refreshUser();
-        }, [refreshUser]);
+            // Clear cookies so /user/me can't succeed until real login
+            await AuthService.logout();
+            setUser(null);
+            return null;
+        }, []);
 
     // ✅ logout
     const logout = useCallback(

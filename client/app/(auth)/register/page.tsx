@@ -8,6 +8,7 @@ import {useRouter} from "next/navigation";
 import {registerSchema} from "@/app/lib/validations/auth";
 import {AuthForm, Field} from "@/components/auth/AuthForm";
 import {useAuth} from "@/app/context/AuthContext";
+import {toast} from 'sonner'
 
 
 type RegisterFormValues = z.infer<typeof registerSchema>;
@@ -37,9 +38,11 @@ export default function RegisterPage() {
         try {
             setLoading(true)
             await registerUser(values)
+            toast.success("Account created! Check your email to verify.");
             router.push('/email/verify')
         } catch (err) {
             console.error('Registration failed', err)
+            toast.error("Registration failed");
         } finally {
             setLoading(false)
         }

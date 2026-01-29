@@ -1,15 +1,17 @@
 import {useAuth} from "@/app/context/AuthContext";
-import { Button } from "../ui/button";
+import {Button} from "../ui/button";
 import Link from "next/link";
+import {toast} from "sonner";
 
 export default function Header() {
     const {user, logout} = useAuth()
 
     const handleLogout = async () => {
-        try{
+        try {
             await logout()
-        } catch(err){
-            console.log('Logout failed',err)
+            toast.success('Logged out successfully')
+        } catch (err) {
+            console.log('Logout failed', err)
         }
     }
 

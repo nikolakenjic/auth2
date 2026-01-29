@@ -88,7 +88,7 @@ export default function ResetPasswordPage() {
                     <AuthForm
                         title="Reset Password"
                         form={form}
-                        onSubmit={onSubmit}
+                        onSubmitAction={onSubmit}
                         submitText="Reset Password"
                         loading={loading}
                         fields={fields}

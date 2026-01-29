@@ -46,7 +46,7 @@ export default function ForgotPasswordPage() {
         <AuthForm
             title="Forgot Password"
             form={form}
-            onSubmit={onSubmit}
+            onSubmitAction={onSubmit}
             submitText="Send reset link"
             loading={loading}
             fields={fields}

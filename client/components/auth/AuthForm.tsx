@@ -1,7 +1,7 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import {Button} from '@/components/ui/button';
+import {Input} from '@/components/ui/input';
 import {
     Form,
     FormControl,
@@ -10,11 +10,11 @@ import {
     FormLabel,
     FormMessage,
 } from '@/components/ui/form';
-import { UseFormReturn } from 'react-hook-form';
+import {UseFormReturn} from 'react-hook-form';
 import Link from 'next/link';
-import { Mail, Home } from 'lucide-react';
-import { useAuth } from '@/app/context/AuthContext';
-import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
+import {Mail, Home} from 'lucide-react';
+import {useAuth} from '@/app/context/AuthContext';
+import {CredentialResponse, GoogleLogin} from '@react-oauth/google';
 
 export type Field = {
     name: string;
@@ -55,11 +55,12 @@ export function AuthForm({
                              unverifiedEmail,
                              onGoogleSuccessAction,
                          }: AuthFormProps) {
-    const { resendVerificationEmail } = useAuth();
+    const {resendVerificationEmail} = useAuth();
 
     return (
         <div className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-gray-900">
-            <div className="w-full max-w-md space-y-6 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 shadow-lg bg-white dark:bg-gray-800">
+            <div
+                className="w-full max-w-md space-y-6 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 shadow-lg bg-white dark:bg-gray-800">
                 <h1 className="text-2xl font-bold text-center text-gray-900 dark:text-gray-100">
                     {title}
                 </h1>
@@ -71,7 +72,7 @@ export function AuthForm({
                                 key={field.name}
                                 control={form.control}
                                 name={field.name}
-                                render={({ field: f }) => (
+                                render={({field: f}) => (
                                     <FormItem>
                                         <FormLabel>{field.label}</FormLabel>
                                         <FormControl>
@@ -81,7 +82,7 @@ export function AuthForm({
                                                 {...f}
                                             />
                                         </FormControl>
-                                        <FormMessage />
+                                        <FormMessage/>
                                     </FormItem>
                                 )}
                             />
@@ -114,15 +115,16 @@ export function AuthForm({
                         </div>
 
                         <div className="flex justify-center">
-                            <GoogleLogin onSuccess={onGoogleSuccessAction} />
+                            <GoogleLogin onSuccess={onGoogleSuccessAction}/>
                         </div>
                     </div>
                 )}
 
                 {unverifiedEmail && (
-                    <div className="mt-4 rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm flex items-center justify-between">
+                    <div
+                        className="mt-4 rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm flex items-center justify-between">
                         <div className="flex gap-2">
-                            <Mail className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+                            <Mail className="w-5 h-5 text-gray-600 dark:text-gray-300"/>
                             <span>Didn’t get the email?</span>
                         </div>
                         <Button
@@ -168,7 +170,7 @@ export function AuthForm({
                         href="/"
                         className="inline-flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300 hover:text-blue-500 transition-colors"
                     >
-                        <Home className="w-4 h-4" />
+                        <Home className="w-4 h-4"/>
                         Back to Home
                     </Link>
                 </div>

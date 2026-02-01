@@ -10,6 +10,7 @@ import {loginSchema} from '@/app/lib/validations/auth';
 import {useAuth} from '@/app/context/AuthContext';
 import {AxiosError} from 'axios';
 import {CredentialResponse} from '@react-oauth/google';
+import {toast} from "sonner";
 
 type LoginFormValues = z.infer<typeof loginSchema>;
 
@@ -50,23 +51,27 @@ export default function LoginPage() {
         try {
             setLoading(true);
             await loginUser(values);
+            toast.success('Logged in successfully');
             router.push('/');
         } catch (err: unknown) {
             if (err instanceof AxiosError) {
                 console.error('Login failed', err.response?.data);
                 const errorMessage =
-                    err.response?.data?.message || 'Something went wrong';
+                    err.response?.data?.message || 'Login failed';
+                toast.error(errorMessage)
 
                 if (errorMessage.includes('verify your email')) {
                     setUnverifiedEmail(values.email);
                 }
 
+                // Form-level error
                 form.setError('root', {
                     type: 'server',
                     message: errorMessage,
                 });
             } else {
                 console.error('Unexpected error', err);
+                toast.error('Unexpected error')
                 form.setError('root', {
                     type: 'server',
                     message: 'Unexpected error occurred',
@@ -89,10 +94,11 @@ export default function LoginPage() {
 
             const user = await googleLogin(token);
             console.log('Google user:', user);
-
-            router.push('/'); // redirect to home after successful login
+            toast.success('Logged in successfully');
+            router.push('/');
         } catch (err) {
             console.error('Google login failed', err);
+            toast.error('Google login failed')
         }
     };
 

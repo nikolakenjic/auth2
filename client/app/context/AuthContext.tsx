@@ -24,19 +24,30 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
 
-    /**
-     * ✅ Source of truth: GET /user/me
-     * If 401 -> try refresh -> retry /user/me
-     */
+
     const refreshUser = useCallback(async () => {
+        setLoading(true);
         try {
-            setLoading(true);
             // 1) Try get current user
             const me = await UserService.getMe();
             setUser(me.user);
             return me.user;
         } catch (err) {
             // If it reaches here, the refresh token was likely expired/invalid
+            const status = (err as AxiosError)?.response?.status;
+
+            if (status === 401) {
+                try {
+                    await AuthService.refresh();
+                    const me = await UserService.getMe();
+                    setUser(me.user);
+                    return me.user;
+                } catch {
+                    setUser(null);
+                    return null;
+                }
+            }
+
             setUser(null);
             return null;
         } finally {
@@ -50,51 +61,59 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
     }, [refreshUser]);
 
     // ✅ login
-    const login = useCallback(async (credentials: LoginUserData) => {
-        const response = await AuthService.login(credentials);
-        setUser(response.user);
-        return response.user;
-    }, []);
+    const login = useCallback(
+        async (credentials: LoginUserData) => {
+            await AuthService.login(credentials);
+            return await refreshUser();
+        }, [refreshUser]);
 
     // ✅ register
-    const register = useCallback(async (payload: RegisterUserData) => {
-        const response = await AuthService.register(payload);
-        setUser(response.user);
-        return response.user;
-    }, []);
+    const register = useCallback(
+        async (payload: RegisterUserData) => {
+            await AuthService.register(payload);
+            // Clear cookies so /user/me can't succeed until real login
+            await AuthService.logout();
+            setUser(null);
+            return null;
+        }, []);
 
     // ✅ logout
-    const logout = useCallback(async () => {
-        await AuthService.logout();
-        setUser(null);
-    }, []);
+    const logout = useCallback(
+        async () => {
+            await AuthService.logout();
+            setUser(null);
+        }, []);
 
     // ✅ verify email
-    const verifyEmail = useCallback(async (code: string) => {
-        return AuthService.verifyEmail(code);
-    }, []);
+    const verifyEmail = useCallback(
+        async (code: string) => {
+            return AuthService.verifyEmail(code);
+        }, []);
 
     // ✅ resend verification
-    const resendVerificationEmail = useCallback(async (email: string) => {
-        return AuthService.resendVerificationEmail({email});
-    }, []);
+    const resendVerificationEmail = useCallback(
+        async (email: string) => {
+            return AuthService.resendVerificationEmail({email});
+        }, []);
 
     // ✅ forgot password
-    const sendPasswordReset = useCallback(async (payload: { email: string }) => {
-        return AuthService.forgotPassword(payload);
-    }, []);
+    const sendPasswordReset = useCallback(
+        async (payload: { email: string }) => {
+            return AuthService.forgotPassword(payload);
+        }, []);
 
     // ✅ reset password
-    const resetPasswordChange = useCallback(async (payload: any) => {
-        return AuthService.resetPassword(payload);
-    }, []);
+    const resetPasswordChange = useCallback(
+        async (payload: any) => {
+            return AuthService.resetPassword(payload);
+        }, []);
 
     // ✅ google login/register
-    const googleLogin = useCallback(async (token: string) => {
-        const response = await AuthService.google(token);
-        setUser(response.user);
-        return response.user;
-    }, []);
+    const googleLogin = useCallback(
+        async (token: string) => {
+            await AuthService.google(token);
+            return await refreshUser();
+        }, [refreshUser]);
 
     const value: AuthContextType = useMemo(
         () => ({

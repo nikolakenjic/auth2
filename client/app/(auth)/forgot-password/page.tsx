@@ -6,6 +6,9 @@ import {zodResolver} from "@hookform/resolvers/zod"
 import {AuthForm, Field} from "@/components/auth/AuthForm";
 import {useState} from "react";
 import {useAuth} from "@/app/context/AuthContext";
+import {toast} from "sonner";
+import {AxiosError} from "axios";
+import {useRouter} from "next/navigation";
 
 const forgotPasswordSchema = z.object({
     email: z.string().email("Invalid email address"),
@@ -14,6 +17,7 @@ const forgotPasswordSchema = z.object({
 type ForgotPasswordValues = z.infer<typeof forgotPasswordSchema>
 
 export default function ForgotPasswordPage() {
+    const router = useRouter()
     const {sendPasswordReset} = useAuth()
     const [loading, setLoading] = useState(false);
 
@@ -33,10 +37,22 @@ export default function ForgotPasswordPage() {
         try {
             setLoading(true)
             await sendPasswordReset(values)
-            console.log('successfully sent')
+            toast.success('Reset link sent. Check your email.')
             form.reset()
+
+            //     Redirect after 1s
+            setTimeout(() => {
+                router.push("/")
+            }, 1000)
         } catch (error) {
             console.log(error)
+            let message = 'Something went wrong'
+            if (error instanceof AxiosError) {
+                message = error.response?.data?.message || message
+            }
+            toast.error(message)
+
+            form.setError('root', {type: 'server', message})
         } finally {
             setLoading(false)
         }
@@ -50,6 +66,11 @@ export default function ForgotPasswordPage() {
             submitText="Send reset link"
             loading={loading}
             fields={fields}
+            secondaryAction={{
+                text: "Remember your password?",
+                linkText: "Login",
+                href: "/login",
+            }}
         />
     )
 }

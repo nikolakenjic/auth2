@@ -9,7 +9,8 @@ import {useSearchParams, useRouter} from "next/navigation"
 import {useAuth} from "@/app/context/AuthContext"
 import {AlertCircle} from "lucide-react"
 import Link from "next/link"
-
+import {toast} from "sonner";
+import {AxiosError} from "axios";
 
 const resetPasswordSchema = z
     .object({
@@ -59,9 +60,10 @@ export default function ResetPasswordPage() {
 
     const onSubmit = async (values: ResetPasswordValues) => {
         if (!verificationCode) {
-            form.setError("password", {
+            form.setError("root", {
                 message: "Invalid or missing verification code",
             })
+            toast.error('Invalid reset link')
             return
         }
 
@@ -71,43 +73,53 @@ export default function ResetPasswordPage() {
                 password: values.password,
                 verificationCode,
             })
-            router.push("/login")
+            toast.success('Password changed successfully, please log in')
+
+            router.replace("/login")
         } catch (error: any) {
-            const message =
-                error.response?.data?.message || "Something went wrong"
-            form.setError("password", {message})
+            let message = 'Something went wrong'
+
+            if (error instanceof AxiosError) {
+                message = error.response?.data?.message || message
+            }
+            form.setError("root", {message})
         } finally {
             setLoading(false)
         }
     }
 
-    return (
-        <div className="flex min-h-screen items-center justify-center">
-            <div className="max-w-md w-full px-6 py-12">
-                {linkIsValid ? (
-                    <AuthForm
-                        title="Reset Password"
-                        form={form}
-                        onSubmitAction={onSubmit}
-                        submitText="Reset Password"
-                        loading={loading}
-                        fields={fields}
-                    />
-                ) : (
+    if (!linkIsValid) {
+        return (
+            <div className="flex min-h-screen items-center justify-center">
+                <div className="max-w-md w-full px-6 py-12">
                     <div className="flex flex-col items-center gap-6 text-center">
                         <div className="flex items-center gap-2 p-4 rounded-xl bg-red-100 text-red-600">
                             <AlertCircle className="h-6 w-6"/>
                             <span>Invalid or expired link</span>
                         </div>
+
                         <p className="text-gray-500">
                             The reset link is either invalid or has expired.
                         </p>
+
                         <Link href="/forgot-password" className="text-blue-500 underline">
                             Request a new password reset link
                         </Link>
                     </div>
-                )}
+                </div>
             </div>
-        </div>
+        );
+    }
+
+
+    return (
+        <AuthForm
+            title="Reset Password"
+            form={form}
+            onSubmitAction={onSubmit}
+            submitText="Reset Password"
+            loading={loading}
+            fields={fields}
+        />
     )
 }

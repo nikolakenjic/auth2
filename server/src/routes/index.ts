@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import {Router} from 'express';
 import authRoute from './auth.route';
 import userRoute from './user.route';
 import sessionRoute from './session.route';
@@ -20,6 +20,5 @@ router.use('/resume', authenticate, resumeRoute);
 router.use('/cover-letter', authenticate, coverLetterRoute);
 router.use('/interview-session', authenticate, interviewSessionRoute);
 router.use("/job-description", authenticate, jobDescriptionRoute);
-
 
 export default router;

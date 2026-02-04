@@ -11,15 +11,18 @@ export function useDeleteResume() {
     const remove = async (id: string) => {
         try {
             setLoading(true);
+            setError(null);
             await ResumeService.remove(id);
         } catch (err: any) {
-            setError(err?.message || 'Delete failed');
+            const message = err?.response?.data?.message || err?.message || 'Delete failed';
+            setError(message);
             throw err;
         } finally {
             setLoading(false);
         }
     };
 
+    const clearError = () => setError(null);
 
-    return { remove, loading, error };
+    return {remove, loading, error};
 }

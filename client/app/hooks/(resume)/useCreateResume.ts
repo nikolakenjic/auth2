@@ -13,16 +13,19 @@ export function useCreateResume() {
     const create = async (data: Partial<Resume>) => {
         try {
             setLoading(true);
+            setError(null)
             const res = await ResumeService.create(data);
             return res.resume;
         } catch (err: any) {
-            setError(err?.message || 'Create failed');
+            const message = err?.response?.data?.message || err?.message || 'Create failed';
+            setError(message);
             throw err;
         } finally {
             setLoading(false);
         }
     };
 
+    const clearError = () => setError(null);
 
-    return {create, loading, error};
+    return {create, loading, error, clearError};
 }

@@ -12,12 +12,12 @@ export function useResumes() {
     const fetchResumes = async () => {
         try {
             setLoading(true);
+            setError(null)
             const res = await ResumeService.getAll()
-
             setResumes(res.resumes || [])
-        } catch (error) {
-            console.error(error)
-            setError('Failed to load resumes')
+        } catch (err: any) {
+            console.error(err)
+            setError(err?.message || 'Failed to load resumes')
         } finally {
             setLoading(false)
         }
@@ -31,7 +31,7 @@ export function useResumes() {
         resumes,
         loading,
         error,
-        fetchResumes,
+        refetch: fetchResumes,
         setResumes
     }
 }

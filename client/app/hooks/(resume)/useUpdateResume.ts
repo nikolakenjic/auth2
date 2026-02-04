@@ -12,16 +12,19 @@ export function useUpdateResume() {
     const update = async (id: string, data: Partial<Resume>) => {
         try {
             setLoading(true);
+            setError(null)
             const res = await ResumeService.update(id, data);
             return res.resume;
         } catch (err: any) {
-            setError(err?.message || 'Update failed');
+            const message = err?.response?.data?.message || err?.message || 'Update failed';
+            setError(message);
             throw err;
         } finally {
             setLoading(false);
         }
     };
 
+    const clearError = () => setError(null);
 
-    return {update, loading, error};
+    return {update, loading, error, clearError};
 }

@@ -9,7 +9,7 @@ export function useResumes() {
     const [loading, setLoading] = useState<boolean>(true)
     const [error, setError] = useState<string | null>(null)
 
-    const fetchResumes = useCallback(async () => { // ✅ useCallback fixes the type issue
+    const fetchResumes = useCallback(async () => {
         try {
             setLoading(true);
             setError(null);

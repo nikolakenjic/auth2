@@ -1,6 +1,6 @@
 'use client'
 
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {Resume} from "@/app/types/resume.types";
 import ResumeService from "@/app/services/resume.service";
 
@@ -9,23 +9,24 @@ export function useResumes() {
     const [loading, setLoading] = useState<boolean>(true)
     const [error, setError] = useState<string | null>(null)
 
-    const fetchResumes = async () => {
+    const fetchResumes = useCallback(async () => { // ✅ useCallback fixes the type issue
         try {
             setLoading(true);
-            setError(null)
+            setError(null);
             const res = await ResumeService.getAll()
             setResumes(res.resumes || [])
         } catch (err: any) {
             console.error(err)
-            setError(err?.message || 'Failed to load resumes')
+            const message = err?.response?.data?.message || err?.message || 'Failed to load resumes';
+            setError(message)
         } finally {
             setLoading(false)
         }
-    }
+    }, []); // ✅ Empty deps array
 
     useEffect(() => {
         fetchResumes()
-    }, [])
+    }, [fetchResumes])
 
     return {
         resumes,

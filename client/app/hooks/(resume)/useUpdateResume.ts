@@ -1,27 +1,27 @@
 'use client'
 
 import ResumeService from '@/app/services/resume.service';
-import {Resume} from '@/app/types/resume.types';
-import {useState} from 'react';
+import {UpdateResumeInput} from '@/app/types/resume.types';
+import {useApiMutation} from "@/app/hooks/(resume)/useApiMutation";
+
+type UpdateVariables = {
+    id: string;
+    data: UpdateResumeInput;
+}
 
 export function useUpdateResume() {
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-
-
-    const update = async (id: string, data: Partial<Resume>) => {
-        try {
-            setLoading(true);
+    const {mutate, loading, error, clearError} = useApiMutation(
+        async ({id, data}: UpdateVariables) => {
             const res = await ResumeService.update(id, data);
-            return res.resume;
-        } catch (err: any) {
-            setError(err?.message || 'Update failed');
-            throw err;
-        } finally {
-            setLoading(false);
+            return res.resume
         }
-    };
+    )
 
+    return {
+        update: mutate,
+        loading,
+        error,
+        clearError,
+    }
 
-    return {update, loading, error};
 }

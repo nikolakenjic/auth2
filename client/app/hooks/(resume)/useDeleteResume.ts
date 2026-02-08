@@ -1,25 +1,19 @@
 'use client'
 
 import ResumeService from "@/app/services/resume.service";
-import {useState} from "react";
+import {useApiMutation} from "@/app/hooks/(resume)/useApiMutation";
 
 export function useDeleteResume() {
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-
-
-    const remove = async (id: string) => {
-        try {
-            setLoading(true);
-            await ResumeService.remove(id);
-        } catch (err: any) {
-            setError(err?.message || 'Delete failed');
-            throw err;
-        } finally {
-            setLoading(false);
+    const {mutate, loading, error, clearError} = useApiMutation(
+        async (id: string) => {
+            await ResumeService.remove(id)
         }
-    };
+    )
 
-
-    return { remove, loading, error };
+    return {
+        remove: mutate,
+        loading,
+        error,
+        clearError,
+    }
 }

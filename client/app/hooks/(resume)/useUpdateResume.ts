@@ -2,7 +2,7 @@
 
 import ResumeService from '@/app/services/resume.service';
 import {UpdateResumeInput} from '@/app/types/resume.types';
-import {useApiMutation} from "@/app/hooks/(resume)/useApiMutation";
+import {useApiMutation} from "@/app/hooks/useApiMutation";
 
 type UpdateVariables = {
     id: string;

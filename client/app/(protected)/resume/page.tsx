@@ -1,3 +1,5 @@
+'use client'
+
 import {useResumes} from "@/app/hooks/(resume)/useResumes";
 import {useDeleteResume} from "@/app/hooks/(resume)/useDeleteResume";
 import {useRouter} from "next/navigation";
@@ -7,6 +9,14 @@ export default function ResumePage() {
     const {resumes, loading, error, refetch} = useResumes()
     const {remove, loading: deleting} = useDeleteResume()
     const router = useRouter()
+
+    const handleDelete = async (id: string) => {
+        try {
+            await remove(id)
+        } catch (error) {
+            console.error('Delete failed', error)
+        }
+    }
 
 
     if (loading) {

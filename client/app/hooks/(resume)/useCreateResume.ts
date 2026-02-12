@@ -2,7 +2,8 @@
 
 import ResumeService from '@/app/services/resume.service';
 import {CreateResumeInput} from '@/app/types/resume.types';
-import {useApiMutation} from "@/app/hooks/(resume)/useApiMutation";
+import {useApiMutation} from "@/app/hooks/useApiMutation";
+
 
 
 export function useCreateResume() {

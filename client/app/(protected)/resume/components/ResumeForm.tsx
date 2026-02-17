@@ -10,6 +10,9 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { X, Plus } from 'lucide-react';
+import { FormInput } from '@/components/form-fields/FormInput';
+import { FormSelect } from '@/components/form-fields/FormSelect';
+import { FormTextarea } from '@/components/form-fields/FormTextarea';
 
 interface ResumeFormProps {
   resume: Resume;
@@ -91,6 +94,11 @@ export function ResumeForm({ resume, onSubmit, formRef }: ResumeFormProps) {
     setSkills(newSkills);
   };
 
+  const statusOptions = [
+    { value: 'draft', label: 'Draft' },
+    { value: 'complete', label: 'Complete' },
+  ];
+
   return (
     <Formik
       initialValues={initialValues}
@@ -102,58 +110,40 @@ export function ResumeForm({ resume, onSubmit, formRef }: ResumeFormProps) {
         <Form>
           <div className="space-y-6">
             {/* Title Field */}
-            <div>
-              <Label htmlFor="title">
-                Resume Title <span className="text-red-500">*</span>
-              </Label>
-              <Input
-                id="title"
-                name="title"
-                value={values.title}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder="e.g., Senior Frontend Developer Resume"
-                className={
-                  touched.title && errors.title ? 'border-red-500' : ''
-                }
-              />
-              {touched.title && errors.title && (
-                <p className="text-sm text-red-500 mt-1">
-                  {errors.title as string}
-                </p>
-              )}
-            </div>
+            <FormInput
+              name="title"
+              label="Resume Title"
+              value={values.title}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              placeholder="Enter your resume title"
+              isRequired
+              error={errors.title as string}
+              touched={touched.title}
+            />
 
             {/* Status Field */}
-            <div>
-              <Label htmlFor="status">Status</Label>
-              <select
-                id="status"
-                name="status"
-                value={values.status}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-              >
-                <option value="draft">Draft</option>
-                <option value="complete">Complete</option>
-              </select>
-            </div>
+            <FormSelect
+              name="status"
+              label="Status"
+              value={values.status}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              options={statusOptions}
+              error={errors.status as string}
+              touched={touched.status}
+            />
 
             {/* Summary Section */}
-            <div>
-              <Label htmlFor="summary">Professional Summary</Label>
-              <Textarea
-                id="summary"
-                value={summaryText}
-                onChange={(e) => setSummaryText(e.target.value)}
-                placeholder="Brief summary of your professional background and key achievements..."
-                className="min-h-[120px]"
-              />
-              <p className="text-xs text-gray-500 mt-1">
-                Write a compelling summary that highlights your expertise
-              </p>
-            </div>
+            <FormTextarea
+              name="summary"
+              label="ProfessionalSummary"
+              value={summaryText}
+              onChange={(e) => setSummaryText(e.target.value)}
+              placeholder="Enter your professional summary"
+              rows={5}
+              helperText="Write a short summary that highlights your skills and experience in a professional manner."
+            />
 
             {/* Skills Section */}
             <div>
@@ -179,10 +169,12 @@ export function ResumeForm({ resume, onSubmit, formRef }: ResumeFormProps) {
                 ) : (
                   skills.map((skill, index) => (
                     <div key={index} className="flex gap-2">
-                      <Input
+                      <FormInput
+                        name={`sill-${index}`}
+                        label=""
                         value={skill}
                         onChange={(e) => updateSkill(index, e.target.value)}
-                        placeholder="e.g., React, TypeScript, Node.js"
+                        placeholder="e.g., React, Typescript, Next.js"
                       />
                       <Button
                         type="button"

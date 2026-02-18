@@ -4,15 +4,20 @@ import React, { useState } from 'react';
 import { Formik, Form, FormikProps } from 'formik';
 import { toFormikValidationSchema } from 'zod-formik-adapter';
 import { z } from 'zod';
-import { Resume, ResumeSection } from '@/app/types/resume.types';
+import {
+  EducationItem,
+  ExperienceItem,
+  Resume,
+  ResumeSection,
+} from '@/app/types/resume.types';
 import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { X, Plus } from 'lucide-react';
 import { FormInput } from '@/components/form-fields/FormInput';
 import { FormSelect } from '@/components/form-fields/FormSelect';
 import { FormTextarea } from '@/components/form-fields/FormTextarea';
+import { ExperienceSection } from './ExperienceSection';
+import { EducationSection } from './EducationSection';
 
 interface ResumeFormProps {
   resume: Resume;
@@ -25,6 +30,16 @@ export function ResumeForm({ resume, onSubmit, formRef }: ResumeFormProps) {
   const getSection = (sections: ResumeSection[], type: string) => {
     return sections.find((s) => s.type === type); // ✅ Fixed typo: section -> sections
   };
+
+  //   experience and education
+  const [experience, setExperience] = useState<ExperienceItem[]>(
+    (getSection(resume.sections || [], 'experience') as any)?.content?.items ||
+      [],
+  );
+  const [education, setEducation] = useState<EducationItem[]>(
+    (getSection(resume.sections || [], 'education') as any)?.content?.items ||
+      [],
+  );
 
   // Extract initial values from sections
   const summarySection = getSection(resume.sections || [], 'summary') as any;
@@ -53,18 +68,9 @@ export function ResumeForm({ resume, onSubmit, formRef }: ResumeFormProps) {
     setSubmitting(true);
 
     const sections: ResumeSection[] = [
-      {
-        type: 'summary',
-        content: { text: summaryText },
-      },
-      {
-        type: 'experience',
-        content: { items: [] },
-      },
-      {
-        type: 'education',
-        content: { items: [] },
-      },
+      { type: 'summary', content: { text: summaryText } },
+      { type: 'experience', content: { items: experience } },
+      { type: 'education', content: { items: education } },
       {
         type: 'skills',
         content: { items: skills.filter((s) => s.trim() !== '') },
@@ -145,6 +151,12 @@ export function ResumeForm({ resume, onSubmit, formRef }: ResumeFormProps) {
               helperText="Write a short summary that highlights your skills and experience in a professional manner."
             />
 
+            {/* Experience Section */}
+            <ExperienceSection items={experience} onChange={setExperience} />
+
+            {/* Education Section */}
+            <EducationSection items={education} onChange={setEducation} />
+
             {/* Skills Section */}
             <div>
               <div className="flex justify-between items-center mb-2">
@@ -197,8 +209,7 @@ export function ResumeForm({ resume, onSubmit, formRef }: ResumeFormProps) {
             {/* Info note */}
             <div className="bg-blue-50 border border-blue-200 rounded p-3">
               <p className="text-xs text-blue-700">
-                💡 Experience and Education sections will be added in the next
-                step
+                💡 education sections will be added in the next step
               </p>
             </div>
           </div>

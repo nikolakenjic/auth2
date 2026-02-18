@@ -4,15 +4,18 @@ import React, { useState } from 'react';
 import { Formik, Form, FormikProps } from 'formik';
 import { toFormikValidationSchema } from 'zod-formik-adapter';
 import { z } from 'zod';
-import { Resume, ResumeSection } from '@/app/types/resume.types';
+import {
+  ExperienceItem,
+  Resume,
+  ResumeSection,
+} from '@/app/types/resume.types';
 import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { X, Plus } from 'lucide-react';
 import { FormInput } from '@/components/form-fields/FormInput';
 import { FormSelect } from '@/components/form-fields/FormSelect';
 import { FormTextarea } from '@/components/form-fields/FormTextarea';
+import { ExperienceSection } from './ExperienceSection';
 
 interface ResumeFormProps {
   resume: Resume;
@@ -21,6 +24,10 @@ interface ResumeFormProps {
 }
 
 export function ResumeForm({ resume, onSubmit, formRef }: ResumeFormProps) {
+  const [experience, setExperience] = useState<ExperienceItem[]>(
+    (getSection(resume.sections || [], 'experience') as any)?.content?.items ||
+      [],
+  );
   // Helper to get section by type
   const getSection = (sections: ResumeSection[], type: string) => {
     return sections.find((s) => s.type === type); // ✅ Fixed typo: section -> sections
@@ -145,6 +152,9 @@ export function ResumeForm({ resume, onSubmit, formRef }: ResumeFormProps) {
               helperText="Write a short summary that highlights your skills and experience in a professional manner."
             />
 
+            {/* Experience Section */}
+            <ExperienceSection items={experience} onChange={setExperience} />
+
             {/* Skills Section */}
             <div>
               <div className="flex justify-between items-center mb-2">
@@ -197,8 +207,7 @@ export function ResumeForm({ resume, onSubmit, formRef }: ResumeFormProps) {
             {/* Info note */}
             <div className="bg-blue-50 border border-blue-200 rounded p-3">
               <p className="text-xs text-blue-700">
-                💡 Experience and Education sections will be added in the next
-                step
+                💡 education sections will be added in the next step
               </p>
             </div>
           </div>

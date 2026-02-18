@@ -5,6 +5,7 @@ import { Formik, Form, FormikProps } from 'formik';
 import { toFormikValidationSchema } from 'zod-formik-adapter';
 import { z } from 'zod';
 import {
+  EducationItem,
   ExperienceItem,
   Resume,
   ResumeSection,
@@ -16,6 +17,7 @@ import { FormInput } from '@/components/form-fields/FormInput';
 import { FormSelect } from '@/components/form-fields/FormSelect';
 import { FormTextarea } from '@/components/form-fields/FormTextarea';
 import { ExperienceSection } from './ExperienceSection';
+import { EducationSection } from './EducationSection';
 
 interface ResumeFormProps {
   resume: Resume;
@@ -24,14 +26,20 @@ interface ResumeFormProps {
 }
 
 export function ResumeForm({ resume, onSubmit, formRef }: ResumeFormProps) {
-  const [experience, setExperience] = useState<ExperienceItem[]>(
-    (getSection(resume.sections || [], 'experience') as any)?.content?.items ||
-      [],
-  );
   // Helper to get section by type
   const getSection = (sections: ResumeSection[], type: string) => {
     return sections.find((s) => s.type === type); // ✅ Fixed typo: section -> sections
   };
+
+  //   experience and education
+  const [experience, setExperience] = useState<ExperienceItem[]>(
+    (getSection(resume.sections || [], 'experience') as any)?.content?.items ||
+      [],
+  );
+  const [education, setEducation] = useState<EducationItem[]>(
+    (getSection(resume.sections || [], 'education') as any)?.content?.items ||
+      [],
+  );
 
   // Extract initial values from sections
   const summarySection = getSection(resume.sections || [], 'summary') as any;
@@ -60,18 +68,9 @@ export function ResumeForm({ resume, onSubmit, formRef }: ResumeFormProps) {
     setSubmitting(true);
 
     const sections: ResumeSection[] = [
-      {
-        type: 'summary',
-        content: { text: summaryText },
-      },
-      {
-        type: 'experience',
-        content: { items: [] },
-      },
-      {
-        type: 'education',
-        content: { items: [] },
-      },
+      { type: 'summary', content: { text: summaryText } },
+      { type: 'experience', content: { items: experience } },
+      { type: 'education', content: { items: education } },
       {
         type: 'skills',
         content: { items: skills.filter((s) => s.trim() !== '') },
@@ -154,6 +153,9 @@ export function ResumeForm({ resume, onSubmit, formRef }: ResumeFormProps) {
 
             {/* Experience Section */}
             <ExperienceSection items={experience} onChange={setExperience} />
+
+            {/* Education Section */}
+            <EducationSection items={education} onChange={setEducation} />
 
             {/* Skills Section */}
             <div>

@@ -48,11 +48,24 @@ const skillsSectionSchema = z.object({
   }),
 });
 
+const contactSectionSchema = z.object({
+  type: z.literal('contact'),
+  content: z.object({
+    fullName: z.string().default(''),
+    email: z.string().default(''),
+    phone: z.string().optional(),
+    location: z.string().optional(),
+    linkedin: z.string().optional(),
+    portfolio: z.string().optional(),
+  }),
+});
+
 const sectionSchema = z.discriminatedUnion('type', [
   summarySectionSchema,
   experienceSectionSchema,
   educationSectionSchema,
   skillsSectionSchema,
+  contactSectionSchema,
 ]);
 
 // ---- create/update ---- //

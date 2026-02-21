@@ -200,17 +200,6 @@ export function ResumeForm({ resume, onSubmit, formRef }: ResumeFormProps) {
                   ))
                 )}
               </div>
-
-              <p className="text-xs text-gray-500 mt-2">
-                Add your technical and professional skills
-              </p>
-            </div>
-
-            {/* Info note */}
-            <div className="bg-blue-50 border border-blue-200 rounded p-3">
-              <p className="text-xs text-blue-700">
-                💡 education sections will be added in the next step
-              </p>
             </div>
           </div>
         </Form>

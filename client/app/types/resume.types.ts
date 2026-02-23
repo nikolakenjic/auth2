@@ -1,5 +1,20 @@
-export type ResumeSectionType = 'summary' | 'experience' | 'education' | 'skills';
+export type ResumeSectionType =
+    | 'summary'
+    | 'experience'
+    | 'education'
+    | 'skills'
+    | 'contact';
+
 export type ResumeStatus = 'draft' | 'complete';
+
+export type ContactInfo = {
+    fullName: string;
+    email: string;
+    phone?: string;
+    location?: string;
+    linkedin?: string;
+    portfolio?: string;
+};
 
 // --- Item Types ---
 export type ExperienceItem = {
@@ -9,7 +24,7 @@ export type ExperienceItem = {
     startDate: string;
     endDate?: string;
     bullets: string[];
-}
+};
 
 export type EducationItem = {
     school: string;
@@ -18,34 +33,40 @@ export type EducationItem = {
     startDate?: string;
     endDate?: string;
     details: string[];
-}
+};
 
 // --- Section Types ---
 export interface ResumeSectionSummary {
     type: 'summary';
-    content: { text: string };
+    content: {text: string};
 }
 
 export interface ResumeSectionExperience {
     type: 'experience';
-    content: { items: ExperienceItem[] };
+    content: {items: ExperienceItem[]};
 }
 
 export interface ResumeSectionEducation {
     type: 'education';
-    content: { items: EducationItem[] };
+    content: {items: EducationItem[]};
 }
 
 export interface ResumeSectionSkills {
     type: 'skills';
-    content: { items: string[] };
+    content: {items: string[]};
+}
+
+export interface ResumeSectionContact {
+    type: 'contact';
+    content: {info: ContactInfo};
 }
 
 export type ResumeSection =
     | ResumeSectionSummary
     | ResumeSectionExperience
     | ResumeSectionEducation
-    | ResumeSectionSkills;
+    | ResumeSectionSkills
+    | ResumeSectionContact;
 
 // --- Main Resume Type ---
 export interface Resume {
@@ -76,6 +97,6 @@ export type CreateResumeInput = {
     status?: ResumeStatus;
     templateVersion?: number;
     sections?: ResumeSection[];
-}
+};
 
 export type UpdateResumeInput = Partial<CreateResumeInput>;

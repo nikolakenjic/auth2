@@ -1,27 +1,24 @@
 'use client';
 
 import {
-    Resume,
-    ContactInfo,
-    ExperienceItem,
-    EducationItem,
-} from '@/app/types/resume.types';
+    getContactInfo,
+    getEducationItems,
+    getExperienceItems,
+    getSkillItems,
+    getSummaryText,
+} from '@/app/lib/resume/resume.utils';
+import {Resume} from '@/app/types/resume.types';
 
 interface ResumePreviewProps {
     resume: Resume;
 }
 
 export function ResumePreview({resume}: ResumePreviewProps) {
-    const getSection = (type: string) =>
-        resume.sections?.find((s) => s.type === type) as any;
-
-    const contact: ContactInfo = getSection('contact')?.content || {};
-    const summary: string = getSection('summary')?.content?.text || '';
-    const experience: ExperienceItem[] =
-        getSection('experience')?.content?.items || [];
-    const education: EducationItem[] =
-        getSection('education')?.content?.items || [];
-    const skills: string[] = getSection('skills')?.content?.items || [];
+    const contact = getContactInfo(resume.sections);
+    const summary = getSummaryText(resume.sections);
+    const experience = getExperienceItems(resume.sections);
+    const education = getEducationItems(resume.sections);
+    const skills = getSkillItems(resume.sections);
 
     return (
         <div className="bg-white shadow-lg rounded-md p-10 min-h-[1100px] font-serif text-gray-900">

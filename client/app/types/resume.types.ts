@@ -18,6 +18,7 @@ export type ContactInfo = {
 
 // --- Item Types ---
 export type ExperienceItem = {
+    _key?: string;
     company: string;
     title: string;
     location?: string;
@@ -27,6 +28,7 @@ export type ExperienceItem = {
 };
 
 export type EducationItem = {
+    _key?: string;
     school: string;
     degree?: string;
     field?: string;

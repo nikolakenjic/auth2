@@ -80,3 +80,23 @@ export function buildSections({
         },
     ];
 }
+
+export const createEmptyExperience = (): ExperienceItem => ({
+    _key: crypto.randomUUID(),
+    company: '',
+    title: '',
+    location: '',
+    startDate: '',
+    endDate: '',
+    bullets: [],
+});
+
+export const createEmptyEducation = (): EducationItem => ({
+    _key: crypto.randomUUID(),
+    school: '',
+    degree: '',
+    field: '',
+    startDate: '',
+    endDate: '',
+    details: [],
+});

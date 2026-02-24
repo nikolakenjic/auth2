@@ -7,9 +7,9 @@ import {useResumes} from '@/app/hooks/(resume)/useResumes';
 import {useDeleteResume} from '@/app/hooks/(resume)/useDeleteResume';
 import LoadingState from '@/components/loading-state/LoadingState';
 import {FileText, Plus} from 'lucide-react';
-import {ResumeModal} from '@/app/(protected)/resume/components/ResumeModal';
+import {ResumeModal} from '@/app/(protected)/resume/_components/ResumeModal';
 import EmptyState from '@/components/empty-state/EmptyState';
-import ResumeList from './components/ResumeList';
+import ResumeList from './_components/ResumeList';
 import {ConfirmDeleteModal} from '@/components/modal/ConfirmDeleteModal';
 
 const DEFAULT_RESUME: Resume = {

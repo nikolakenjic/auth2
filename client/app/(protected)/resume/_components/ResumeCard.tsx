@@ -9,14 +9,14 @@ interface ResumeCardProps {
     resume: Resume;
     onDelete: (id: string) => void;
     onEdit: (resume: Resume) => void;
-    isDeleting: boolean;
+    deletingId: string | null;
 }
 
 export default function ResumeCard({
     resume,
     onDelete,
     onEdit,
-    isDeleting,
+    deletingId,
 }: ResumeCardProps) {
     const handleDelete = (e: React.MouseEvent) => {
         e.stopPropagation();
@@ -65,11 +65,11 @@ export default function ResumeCard({
                     variant="outline"
                     size="sm"
                     onClick={handleDelete}
-                    disabled={isDeleting}
+                    disabled={deletingId !== null}
                     className="flex items-center gap-1 text-red-600 hover:text-red-700 hover:bg-red-50"
                 >
                     <Trash2 className="h-4 w-4" />
-                    {isDeleting ? 'Deleting...' : 'Delete'}
+                    {deletingId ? 'Deleting...' : 'Delete'}
                 </Button>
 
                 <Link href={`/resume/${resume._id}/preview`}>

@@ -141,8 +141,8 @@ export function ResumeForm({resume, onSubmit, formRef}: ResumeFormProps) {
                             <div className="space-y-2">
                                 {skills.length === 0 ? (
                                     <p className="text-sm text-gray-500 py-4 text-center border border-dashed rounded">
-                                        No skills added yet. Click "Add Skill"
-                                        to get started.
+                                        No skills added yet. Click &ldquo;Add
+                                        Skill&ldquo; to get started.
                                     </p>
                                 ) : (
                                     skills.map((skill, index) => (

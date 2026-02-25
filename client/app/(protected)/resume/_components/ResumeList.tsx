@@ -1,16 +1,21 @@
-'use client'
+'use client';
 
-import {Resume} from "@/app/types/resume.types";
-import ResumeCard from "./ResumeCard";
+import {Resume} from '@/app/types/resume.types';
+import ResumeCard from './ResumeCard';
 
 interface ResumeListProps {
     resumes: Resume[];
     onDelete: (id: string) => void;
     onEdit: (resume: Resume) => void;
-    isDeleting: boolean;
+    deletingId: string | null;
 }
 
-export default function ResumeList({resumes, onDelete, onEdit, isDeleting}: ResumeListProps) {
+export default function ResumeList({
+    resumes,
+    onDelete,
+    onEdit,
+    deletingId,
+}: ResumeListProps) {
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {resumes.map((resume) => (
@@ -19,7 +24,7 @@ export default function ResumeList({resumes, onDelete, onEdit, isDeleting}: Resu
                     resume={resume}
                     onDelete={onDelete}
                     onEdit={onEdit}
-                    isDeleting={isDeleting}
+                    deletingId={deletingId}
                 />
             ))}
         </div>

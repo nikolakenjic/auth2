@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import React, {useRef, useState} from 'react';
 import {FormikProps} from 'formik';
@@ -35,8 +35,12 @@ export function ResumeModal({resume, onSave, onClose}: ResumeModalProps) {
                 onSave(res.resume);
             }
             if (onClose) onClose();
-        } catch (error: any) {
-            toast.error(error?.message || 'Failed to save resume');
+        } catch (error: unknown) {
+            const message =
+                error instanceof Error
+                    ? error.message
+                    : 'Failed to save resume';
+            toast.error(message);
         } finally {
             setSubmitting(false);
         }
@@ -44,7 +48,11 @@ export function ResumeModal({resume, onSave, onClose}: ResumeModalProps) {
 
     return (
         <ModalContent
-            title={resume._id ? `Edit Resume: ${resume.title}` : 'Create New Resume'}
+            title={
+                resume._id
+                    ? `Edit Resume: ${resume.title}`
+                    : 'Create New Resume'
+            }
             scrollableContent={true}
             footerContent={
                 <>

@@ -11,6 +11,7 @@ import {ResumeModal} from '@/app/(protected)/resume/_components/ResumeModal';
 import EmptyState from '@/components/empty-state/EmptyState';
 import ResumeList from './_components/ResumeList';
 import {ConfirmDeleteModal} from '@/components/modal/ConfirmDeleteModal';
+import {toast} from 'sonner';
 
 const DEFAULT_RESUME: Resume = {
     _id: '',
@@ -25,7 +26,7 @@ const DEFAULT_RESUME: Resume = {
 
 export default function ResumePage() {
     const {resumes, loading, error, refetch, setResumes} = useResumes();
-    const {remove, loading: deleting} = useDeleteResume();
+    const {remove, deletingId} = useDeleteResume();
     const {openModal, closeModal} = useModal();
 
     const handleCreateNew = () => {
@@ -69,6 +70,7 @@ export default function ResumePage() {
                         );
                     } catch (err) {
                         console.error('Delete failed:', err);
+                        toast.error('Failed to delete resume');
                         refetch();
                     }
                 }}
@@ -129,7 +131,7 @@ export default function ResumePage() {
                         if (resume) handleDeleteClick(resume);
                     }}
                     onEdit={handleEdit}
-                    isDeleting={deleting}
+                    deletingId={deletingId}
                 />
             )}
         </div>

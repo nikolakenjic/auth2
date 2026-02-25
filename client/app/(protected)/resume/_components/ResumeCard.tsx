@@ -18,6 +18,7 @@ export default function ResumeCard({
     onEdit,
     deletingId,
 }: ResumeCardProps) {
+    const isDeleting = deletingId === resume._id;
     const handleDelete = (e: React.MouseEvent) => {
         e.stopPropagation();
         onDelete(resume._id);
@@ -65,11 +66,11 @@ export default function ResumeCard({
                     variant="outline"
                     size="sm"
                     onClick={handleDelete}
-                    disabled={deletingId !== null}
+                    disabled={isDeleting}
                     className="flex items-center gap-1 text-red-600 hover:text-red-700 hover:bg-red-50"
                 >
                     <Trash2 className="h-4 w-4" />
-                    {deletingId ? 'Deleting...' : 'Delete'}
+                    {isDeleting ? 'Deleting...' : 'Delete'}
                 </Button>
 
                 <Link href={`/resume/${resume._id}/preview`}>

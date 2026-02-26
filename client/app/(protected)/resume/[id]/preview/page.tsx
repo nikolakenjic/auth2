@@ -4,7 +4,7 @@ import ResumeService from '@/app/services/resume.service';
 import {Resume} from '@/app/types/resume.types';
 import {useParams, useRouter} from 'next/navigation';
 import {useEffect, useState} from 'react';
-import {ResumePreview} from '../../components/ResumePreview';
+import {ResumePreview} from '../../_components/ResumePreview';
 
 export default function ResumePreviewPage() {
     const {id} = useParams();

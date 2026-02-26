@@ -9,15 +9,16 @@ interface ResumeCardProps {
     resume: Resume;
     onDelete: (id: string) => void;
     onEdit: (resume: Resume) => void;
-    isDeleting: boolean;
+    deletingId: string | null;
 }
 
 export default function ResumeCard({
     resume,
     onDelete,
     onEdit,
-    isDeleting,
+    deletingId,
 }: ResumeCardProps) {
+    const isDeleting = deletingId === resume._id;
     const handleDelete = (e: React.MouseEvent) => {
         e.stopPropagation();
         onDelete(resume._id);

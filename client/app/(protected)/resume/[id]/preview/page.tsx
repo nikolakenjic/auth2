@@ -1,32 +1,23 @@
 'use client';
 
-import ResumeService from '@/app/services/resume.service';
-import {Resume} from '@/app/types/resume.types';
-import {useParams, useRouter} from 'next/navigation';
-import {useEffect, useState} from 'react';
+import {useParams} from 'next/navigation';
 import {ResumePreview} from '../../_components/ResumePreview';
+import useResume from '../../_hooks/useResume';
+import LoadingState from '@/components/loading-state/LoadingState';
 
 export default function ResumePreviewPage() {
     const {id} = useParams();
-    const router = useRouter();
-    const [resume, setResume] = useState<Resume | null>(null);
-    const [loading, setLoading] = useState(true);
+    const {resume, loading, error} = useResume(id as string);
 
-    useEffect(() => {
-        ResumeService.getById(id as string)
-            .then(({resume}) => setResume(resume))
-            .finally(() => setLoading(false));
-    }, [id]);
-
-    console.log(resume);
-
-    if (!resume) {
+    if (loading) return <LoadingState message="Loading preview..." />;
+    if (error)
+        return <div className="p-8 text-center text-red-500">{error}</div>;
+    if (!resume)
         return (
             <div className="p-8 text-center text-gray-500">
                 Resume not found.
             </div>
         );
-    }
 
     return (
         <div className="min-h-screen bg-gray-100 py-10">

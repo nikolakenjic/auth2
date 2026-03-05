@@ -3,7 +3,7 @@
 import {useAuth} from '@/app/context/AuthContext';
 import React from 'react';
 import Header from '@/components/header/Header';
-import {ArrowRight, FileText, Mail, Loader2} from 'lucide-react';
+import {ArrowRight, FileText, Mail, Loader2, MessageSquare} from 'lucide-react';
 import Link from 'next/link';
 
 export default function Home() {
@@ -97,6 +97,28 @@ export default function Home() {
                                     <p className="text-sm text-gray-500 dark:text-gray-400">
                                         Kreiraj, uredi i upravljaj svojim
                                         propratnim pismima.
+                                    </p>
+                                </div>
+                            </Link>
+
+                            {/* Interview Sessions */}
+                            <Link
+                                href="/interview-session"
+                                className="group flex flex-col gap-4 rounded-xl border bg-white dark:bg-gray-900 p-6 hover:border-green-400 dark:hover:border-green-600 hover:shadow-md transition-all"
+                            >
+                                <div className="flex items-center justify-between">
+                                    <div className="w-10 h-10 rounded-lg bg-green-50 dark:bg-green-900/20 flex items-center justify-center">
+                                        <MessageSquare className="w-5 h-5 text-green-500" />
+                                    </div>
+                                    <ArrowRight className="w-4 h-4 text-gray-300 group-hover:text-green-500 group-hover:translate-x-1 transition-all" />
+                                </div>
+                                <div>
+                                    <h2 className="font-semibold text-base mb-1">
+                                        Intervju Simulator
+                                    </h2>
+                                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                                        Vežbaj intervjue i dobij AI povratne
+                                        informacije.
                                     </p>
                                 </div>
                             </Link>

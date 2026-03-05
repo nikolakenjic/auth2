@@ -1,91 +1,90 @@
 'use client';
 
-import {useMemo} from 'react';
-import {Formik, Form, FormikProps} from 'formik';
-import {toFormikValidationSchema} from 'zod-formik-adapter';
-import {z} from 'zod';
+import React, {useRef, useState} from 'react';
+import {FormikProps} from 'formik';
 import {InterviewSession} from '@/app/types/interviewSession.types';
-import {FormInput} from '@/components/form-fields/FormInput';
-import {FormSelect} from '@/components/form-fields/FormSelect';
-import {useInterviewSessionForm} from '../_hooks/useInterviewSessionForm';
+import InterviewSessionService from '@/app/services/interviewSession.service';
+import {toast} from 'sonner';
+import {InterviewSessionForm} from './InterviewSessionForm';
+import {ModalContent} from '@/components/modal/ModalContent';
+import {Button} from '@/components/ui/button';
 
-const InterviewSessionSchema = z.object({
-    role: z.string().min(1, 'Role is required'),
-    level: z.enum(['junior', 'mid', 'senior']).optional(),
-});
-
-const LEVEL_OPTIONS = [
-    {value: 'junior', label: 'Junior'},
-    {value: 'mid', label: 'Mid'},
-    {value: 'senior', label: 'Senior'},
-] as const;
-
-interface InterviewSessionFormProps {
+interface InterviewSessionModalProps {
     session: InterviewSession;
-    onSubmit: (values: InterviewSession) => Promise<void>;
-    formRef?: React.Ref<FormikProps<InterviewSession>>;
+    onSave: (session: InterviewSession) => void;
+    onClose?: () => void;
 }
 
-export function InterviewSessionForm({
+export function InterviewSessionModal({
     session,
-    onSubmit,
-    formRef,
-}: InterviewSessionFormProps) {
-    const {assembleSubmitData} = useInterviewSessionForm(session);
+    onSave,
+    onClose,
+}: InterviewSessionModalProps) {
+    const formRef = useRef<FormikProps<InterviewSession>>(null);
+    const [isSubmitting, setSubmitting] = useState(false);
 
-    const initialValues = useMemo(
-        () => ({
-            ...session,
-            role: session.role ?? '',
-            level: session.level ?? 'junior',
-        }),
-        [session._id],
-    );
-
-    const handleSubmit = async (
-        values: InterviewSession,
-        {setSubmitting}: {setSubmitting: (v: boolean) => void},
-    ) => {
+    const handleSubmit = async (data: InterviewSession) => {
         setSubmitting(true);
-        await onSubmit(assembleSubmitData(values));
-        setSubmitting(false);
+        try {
+            if (!session._id) {
+                const res = await InterviewSessionService.create(data);
+                toast.success('Interview session created successfully');
+                onSave(res.session);
+            } else {
+                const res = await InterviewSessionService.update(
+                    session._id,
+                    data,
+                );
+                toast.success('Interview session updated successfully');
+                onSave(res.session);
+            }
+            if (onClose) onClose();
+        } catch (error: unknown) {
+            const message =
+                error instanceof Error
+                    ? error.message
+                    : 'Failed to save interview session';
+            toast.error(message);
+        } finally {
+            setSubmitting(false);
+        }
     };
 
     return (
-        <Formik
-            initialValues={initialValues}
-            validationSchema={toFormikValidationSchema(InterviewSessionSchema)}
-            onSubmit={handleSubmit}
-            innerRef={formRef}
+        <ModalContent
+            title={
+                session._id
+                    ? `Edit Session: ${session.role}`
+                    : 'Start New Interview Session'
+            }
+            scrollableContent={true}
+            footerContent={
+                <>
+                    <Button
+                        variant="outline"
+                        onClick={onClose}
+                        disabled={isSubmitting}
+                    >
+                        Cancel
+                    </Button>
+                    <Button
+                        onClick={() => formRef.current?.submitForm()}
+                        disabled={isSubmitting}
+                    >
+                        {isSubmitting
+                            ? 'Saving...'
+                            : session._id
+                              ? 'Save Changes'
+                              : 'Start Session'}
+                    </Button>
+                </>
+            }
         >
-            {({values, errors, touched, handleChange, handleBlur}) => (
-                <Form>
-                    <div className="space-y-6">
-                        <FormInput
-                            name="role"
-                            label="Role"
-                            value={values.role}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            placeholder="e.g. Software Engineer, Product Manager"
-                            isRequired
-                            error={errors.role as string}
-                            touched={touched.role}
-                        />
-
-                        <FormSelect
-                            name="level"
-                            label="Level"
-                            value={values.level ?? ''}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            options={LEVEL_OPTIONS}
-                            error={errors.level as string}
-                            touched={touched.level}
-                        />
-                    </div>
-                </Form>
-            )}
-        </Formik>
+            <InterviewSessionForm
+                session={session}
+                onSubmit={handleSubmit}
+                formRef={formRef}
+            />
+        </ModalContent>
     );
 }

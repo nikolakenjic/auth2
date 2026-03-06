@@ -8,7 +8,7 @@ import {toast} from 'sonner';
 
 import {ModalContent} from '@/components/modal/ModalContent';
 import {Button} from '@/components/ui/button';
-import {JobDescriptionForm} from './JobDescriptionFrom';
+import {JobDescriptionForm} from './JobDescriptionForm';
 
 interface JobDescriptionModalProps {
     jobDescription: JobDescription;
@@ -25,8 +25,8 @@ export function JobDescriptionModal({
     const [isSubmitting, setSubmitting] = useState(false);
 
     const handleSubmit = async (data: JobDescription) => {
-        setSubmitting(true);
         console.log('JD', data);
+        setSubmitting(true);
         try {
             if (!jobDescription._id) {
                 const res = await JobDescriptionService.create(data);

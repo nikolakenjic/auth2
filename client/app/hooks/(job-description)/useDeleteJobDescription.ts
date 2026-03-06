@@ -1,19 +1,28 @@
-'use client'
+'use client';
 
-import JobDescriptionService from "@/app/services/jobDescription.service";
+import {useState} from 'react';
+import JobDescriptionService from '@/app/services/jobDescription.service';
 import {useApiMutation} from '@/app/hooks/useApiMutation';
 
 export function useDeleteJobDescription() {
-    const {mutate, loading, error, clearError} = useApiMutation(
-        async (id: string) => {
-            await JobDescriptionService.remove(id);
+    const [deletingId, setDeletingId] = useState<string | null>(null);
+    const {mutate, error, clearError} = useApiMutation(async (id: string) => {
+        await JobDescriptionService.remove(id);
+    });
+
+    const remove = async (id: string) => {
+        setDeletingId(id);
+        try {
+            await mutate(id);
+        } finally {
+            setDeletingId(null);
         }
-    );
+    };
 
     return {
-        remove: mutate,
-        loading,
+        remove,
+        deletingId,
         error,
-        clearError
+        clearError,
     };
 }

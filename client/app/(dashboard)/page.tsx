@@ -19,16 +19,15 @@ export default function Home() {
     }
 
     return (
-        <>
+        <div className="flex flex-col h-screen">
             <Header />
-
-            <main>
-                {!user ? (
-                    <LandingHero />
-                ) : (
+            <main className="flex-1 overflow-hidden">
+                {user ? (
                     <DashboardGrid username={user.email.split('@')[0]} />
+                ) : (
+                    <LandingHero />
                 )}
             </main>
-        </>
+        </div>
     );
 }

@@ -37,20 +37,20 @@ const landingFeatures = [
 
 export default function LandingHero() {
     return (
-        <div className="min-h-screen bg-slate-950 text-white">
+        <div className="h-full bg-slate-950 text-white flex flex-col items-center justify-center gap-8 px-6">
             {/* Hero */}
-            <section className="max-w-4xl mx-auto px-6 pt-24 pb-20 text-center">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-medium mb-6">
+            <div className="text-center max-w-2xl">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-medium mb-5">
                     <Sparkles className="w-3 h-3" />
                     Powered by GPT-4
                 </div>
-                <h1 className="text-5xl sm:text-6xl font-bold tracking-tight mb-6 leading-tight">
+                <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-4 leading-tight">
                     Land your dream job
-                    <span className="block text-indigo-400">
+                    <span className="block text-indigo-500">
                         with AI on your side.
                     </span>
                 </h1>
-                <p className="text-slate-400 text-lg max-w-xl mx-auto mb-10">
+                <p className="text-slate-400 text-base max-w-xl mx-auto mb-6">
                     CareerForge helps you build stronger resumes, ace
                     interviews, and write cover letters — all powered by AI.
                 </p>
@@ -69,29 +69,25 @@ export default function LandingHero() {
                         </Button>
                     </Link>
                 </div>
-            </section>
+            </div>
 
             {/* Features */}
-            <section className="max-w-4xl mx-auto px-6 pb-24">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {landingFeatures.map(({icon: Icon, title, description}) => (
-                        <div
-                            key={title}
-                            className="p-6 rounded-xl border border-slate-800 bg-slate-900/50"
-                        >
-                            <div className="w-9 h-9 rounded-lg bg-indigo-500/10 flex items-center justify-center mb-4">
-                                <Icon className="w-4 h-4 text-indigo-400" />
-                            </div>
-                            <h3 className="font-semibold text-white mb-1">
-                                {title}
-                            </h3>
-                            <p className="text-sm text-slate-400">
-                                {description}
-                            </p>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-4xl w-full">
+                {landingFeatures.map(({icon: Icon, title, description}) => (
+                    <div
+                        key={title}
+                        className="p-4 rounded-xl border border-slate-800 bg-slate-900/50"
+                    >
+                        <div className="w-8 h-8 rounded-lg bg-indigo-500/10 flex items-center justify-center mb-3">
+                            <Icon className="w-4 h-4 text-indigo-400" />
                         </div>
-                    ))}
-                </div>
-            </section>
+                        <h3 className="font-semibold text-white text-sm mb-1">
+                            {title}
+                        </h3>
+                        <p className="text-xs text-slate-400">{description}</p>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 }

@@ -100,6 +100,8 @@ export default function CoverLetterPage() {
                 onCreateNew={handleCreateNew}
                 buttonLabel="Create New"
                 count={coverLetters.length}
+                iconBg="bg-purple-50 dark:bg-purple-900/20"
+                iconColor="text-purple-500"
             />
             <CoverLetterPageContent
                 coverLetters={coverLetters}

@@ -103,6 +103,8 @@ export default function ResumePage() {
                 onCreateNew={handleCreateNew}
                 buttonLabel="New Resume"
                 count={resumes.length}
+                iconBg="bg-indigo-50 dark:bg-indigo-900/20"
+                iconColor="text-indigo-500"
             />
             <ResumePageContent
                 resumes={resumes}

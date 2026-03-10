@@ -102,6 +102,8 @@ export default function JobDescriptionPage() {
                 onCreateNew={handleCreateNew}
                 buttonLabel="Add New"
                 count={jobDescriptions.length}
+                iconBg="bg-orange-50 dark:bg-orange-900/20"
+                iconColor="text-orange-500"
             />
             <JobDescriptionPageContent
                 jobDescriptions={jobDescriptions}

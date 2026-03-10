@@ -10,6 +10,8 @@ interface PageHeaderProps {
     onCreateNew: () => void;
     buttonLabel?: string;
     count?: number;
+    iconBg?: string;
+    iconColor?: string;
 }
 
 export default function PageHeader({
@@ -19,6 +21,8 @@ export default function PageHeader({
     onCreateNew,
     buttonLabel = 'Create New',
     count = 0,
+    iconBg = 'bg-indigo-500/10',
+    iconColor = 'text-indigo-500',
 }: PageHeaderProps) {
     return (
         <div className="relative mb-8 overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-6 py-6 shadow-sm">
@@ -27,8 +31,10 @@ export default function PageHeader({
 
             <div className="relative flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
-                    <div className="flex-shrink-0 w-11 h-11 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center">
-                        <Icon className="w-5 h-5 text-indigo-500" />
+                    <div
+                        className={`flex-shrink-0 w-11 h-11 rounded-xl border border-slate-200 dark:border-slate-700 flex items-center justify-center ${iconBg}`}
+                    >
+                        <Icon className={`w-5 h-5 ${iconColor}`} />
                     </div>
                     <div>
                         <div className="flex items-center gap-2 mb-0.5">

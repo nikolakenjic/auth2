@@ -102,6 +102,8 @@ export default function InterviewSessionPage() {
                 onCreateNew={handleCreateNew}
                 buttonLabel="New Session"
                 count={sessions.length}
+                iconBg="bg-green-50 dark:bg-green-900/20"
+                iconColor="text-green-500"
             />
             <InterviewSessionPageContent
                 sessions={sessions}

@@ -10,7 +10,8 @@ import {ResumeModal} from '@/app/(protected)/resume/_components/ResumeModal';
 import {ConfirmDeleteModal} from '@/components/modal/ConfirmDeleteModal';
 import {toast} from 'sonner';
 import ResumePageContent from './_components/ResumePageContent';
-import ResumePageHeader from './_components/ResumePageHeader';
+import PageHeader from '../_components/PageHeader';
+import {FileText} from 'lucide-react';
 
 const DEFAULT_RESUME: Resume = {
     _id: '',
@@ -95,9 +96,14 @@ export default function ResumePage() {
 
     return (
         <div className="container mx-auto px-4 py-8 max-w-6xl">
-            {/* Header */}
-            <ResumePageHeader onCreateNew={handleCreateNew} />
-            {/* Content */}
+            <PageHeader
+                title="My Resumes"
+                description="Manage and create your professional resumes"
+                icon={FileText}
+                onCreateNew={handleCreateNew}
+                buttonLabel="New Resume"
+                count={resumes.length}
+            />
             <ResumePageContent
                 resumes={resumes}
                 deletingId={deletingId}

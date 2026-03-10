@@ -1,9 +1,9 @@
 'use client';
 
-import EmptyState from '@/components/empty-state/EmptyState';
+import PageContent from '../../_components/PageContent';
 import {MessageSquare} from 'lucide-react';
-import InterviewSessionList from './InterviewSessionList';
 import {InterviewSession} from '@/app/types/interviewSession.types';
+import InterviewSessionCard from './InterviewSessionCard';
 
 interface InterviewSessionPageContentProps {
     sessions: InterviewSession[];
@@ -20,24 +20,22 @@ export default function InterviewSessionPageContent({
     onEdit,
     onDelete,
 }: InterviewSessionPageContentProps) {
-    if (sessions.length === 0) {
-        return (
-            <EmptyState
-                icon={MessageSquare}
-                title="No interview sessions yet"
-                description="Start your first mock interview to begin practicing"
-                actionLabel="Start First Interview"
-                onAction={onCreateNew}
-            />
-        );
-    }
-
     return (
-        <InterviewSessionList
-            sessions={sessions}
-            onDelete={onDelete}
-            onEdit={onEdit}
-            deletingId={deletingId}
+        <PageContent
+            items={sessions}
+            onCreateNew={onCreateNew}
+            emptyIcon={MessageSquare}
+            emptyTitle="No interview sessions yet"
+            emptyDescription="Start your first mock interview to begin practicing"
+            emptyActionLabel="Start First Interview"
+            renderItem={(session) => (
+                <InterviewSessionCard
+                    session={session}
+                    onDelete={onDelete}
+                    onEdit={onEdit}
+                    deletingId={deletingId}
+                />
+            )}
         />
     );
 }

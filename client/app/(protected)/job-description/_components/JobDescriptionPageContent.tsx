@@ -1,9 +1,9 @@
 'use client';
 
-import EmptyState from '@/components/empty-state/EmptyState';
 import {FileSearch} from 'lucide-react';
-import JobDescriptionList from './JobDescriptionList';
 import {JobDescription} from '@/app/types/jobDescription.types';
+import JobDescriptionCard from './JobDescriptionCard';
+import PageContent from '../../_components/PageContent';
 
 interface JobDescriptionPageContentProps {
     jobDescriptions: JobDescription[];
@@ -20,24 +20,22 @@ export default function JobDescriptionPageContent({
     onEdit,
     onDelete,
 }: JobDescriptionPageContentProps) {
-    if (jobDescriptions.length === 0) {
-        return (
-            <EmptyState
-                icon={FileSearch}
-                title="No job descriptions yet"
-                description="Add your first job description to start analyzing keyword matches"
-                actionLabel="Add Job Description"
-                onAction={onCreateNew}
-            />
-        );
-    }
-
     return (
-        <JobDescriptionList
-            jobDescriptions={jobDescriptions}
-            onDelete={onDelete}
-            onEdit={onEdit}
-            deletingId={deletingId}
+        <PageContent
+            items={jobDescriptions}
+            onCreateNew={onCreateNew}
+            emptyIcon={FileSearch}
+            emptyTitle="No job descriptions yet"
+            emptyDescription="Add your first job description to start analyzing keyword matches"
+            emptyActionLabel="Add Job Description"
+            renderItem={(jd) => (
+                <JobDescriptionCard
+                    jobDescription={jd}
+                    onDelete={onDelete}
+                    onEdit={onEdit}
+                    deletingId={deletingId}
+                />
+            )}
         />
     );
 }

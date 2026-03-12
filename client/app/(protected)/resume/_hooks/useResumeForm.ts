@@ -1,12 +1,19 @@
 import {
     buildSections,
+    getContactInfo,
     getEducationItems,
     getExperienceItems,
     getSkillItems,
     getSummaryText,
 } from '@/app/lib/resume/resume.utils';
-import {EducationItem, ExperienceItem, Resume} from '@/app/types/resume.types';
+import {
+    ContactInfo,
+    EducationItem,
+    ExperienceItem,
+    Resume,
+} from '@/app/types/resume.types';
 import {useCallback, useState} from 'react';
+import {set} from 'zod';
 
 export function useResumeForm(resume: Resume) {
     const [experience, setExperience] = useState<ExperienceItem[]>(() =>
@@ -20,6 +27,10 @@ export function useResumeForm(resume: Resume) {
     );
     const [skills, setSkills] = useState<string[]>(() =>
         getSkillItems(resume.sections),
+    );
+
+    const [contact, setContact] = useState<ContactInfo>(() =>
+        getContactInfo(resume.sections),
     );
 
     const addSkill = useCallback(() => {
@@ -51,10 +62,11 @@ export function useResumeForm(resume: Resume) {
                     experience: cleanExperience,
                     education: cleanEducation,
                     skills,
+                    contact,
                 }),
             };
         },
-        [resume, summaryText, experience, education, skills],
+        [resume, summaryText, experience, education, skills, contact],
     );
 
     return {
@@ -62,12 +74,14 @@ export function useResumeForm(resume: Resume) {
         education,
         summaryText,
         skills,
+        contact,
         setExperience,
         setEducation,
         setSummaryText,
         addSkill,
         removeSkill,
         updateSkill,
+        setContact,
         assembleSubmitData,
     };
 }

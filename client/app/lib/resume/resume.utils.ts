@@ -64,11 +64,13 @@ export function buildSections({
     experience,
     education,
     skills,
+    contact,
 }: {
     summaryText: string;
     experience: ExperienceItem[];
     education: EducationItem[];
     skills: string[];
+    contact: ContactInfo;
 }): ResumeSection[] {
     return [
         {type: 'summary', content: {text: summaryText}},
@@ -78,6 +80,7 @@ export function buildSections({
             type: 'skills',
             content: {items: skills.filter((s) => s.trim() !== '')},
         },
+        {type: 'contact', content: {info: contact}},
     ];
 }
 

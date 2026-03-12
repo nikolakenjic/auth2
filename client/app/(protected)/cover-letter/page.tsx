@@ -8,9 +8,10 @@ import {CoverLetterModal} from './_components/CoverLetterModal';
 import {ConfirmDeleteModal} from '@/components/modal/ConfirmDeleteModal';
 import {toast} from 'sonner';
 import CoverLetterPageContent from './_components/CoverLetterPageContent';
-import CoverLetterPageHeader from './_components/CoverLetterPageHeader';
 import {useDeleteCoverLetter} from '@/app/hooks/(cover-letter)/useDeleteCoverLetter';
 import {useCoverLetters} from '@/app/hooks/(cover-letter)/useCoverLetters';
+import PageHeader from '../_components/PageHeader';
+import {Mail} from 'lucide-react';
 
 const DEFAULT_COVER_LETTER: CoverLetter = {
     _id: '',
@@ -92,7 +93,16 @@ export default function CoverLetterPage() {
 
     return (
         <div className="container mx-auto px-4 py-8 max-w-6xl">
-            <CoverLetterPageHeader onCreateNew={handleCreateNew} />
+            <PageHeader
+                title="My Cover Letters"
+                description="Manage and create your cover letters"
+                icon={Mail}
+                onCreateNew={handleCreateNew}
+                buttonLabel="Create New"
+                count={coverLetters.length}
+                iconBg="bg-purple-50 dark:bg-purple-900/20"
+                iconColor="text-purple-500"
+            />
             <CoverLetterPageContent
                 coverLetters={coverLetters}
                 deletingId={deletingId}

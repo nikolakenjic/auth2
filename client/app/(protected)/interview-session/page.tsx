@@ -8,9 +8,10 @@ import {InterviewSessionModal} from './_components/InterviewSessionModal';
 import {ConfirmDeleteModal} from '@/components/modal/ConfirmDeleteModal';
 import {toast} from 'sonner';
 import InterviewSessionPageContent from './_components/InterviewSessionPageContent';
-import InterviewSessionPageHeader from './_components/InterviewSessionPageHeader';
 import {useInterviewSessions} from '@/app/hooks/(interview-session)/useInterviewSessions';
 import {useDeleteInterviewSession} from '@/app/hooks/(interview-session)/useDeleteInterviewSession';
+import PageHeader from '../_components/PageHeader';
+import {MessageSquare} from 'lucide-react';
 
 const DEFAULT_SESSION: InterviewSession = {
     _id: '',
@@ -94,7 +95,16 @@ export default function InterviewSessionPage() {
 
     return (
         <div className="container mx-auto px-4 py-8 max-w-6xl">
-            <InterviewSessionPageHeader onCreateNew={handleCreateNew} />
+            <PageHeader
+                title="Interview Sessions"
+                description="Practice and track your interview performance"
+                icon={MessageSquare}
+                onCreateNew={handleCreateNew}
+                buttonLabel="New Session"
+                count={sessions.length}
+                iconBg="bg-green-50 dark:bg-green-900/20"
+                iconColor="text-green-500"
+            />
             <InterviewSessionPageContent
                 sessions={sessions}
                 deletingId={deletingId}

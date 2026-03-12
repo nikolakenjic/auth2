@@ -1,7 +1,7 @@
-import EmptyState from '@/components/empty-state/EmptyState';
 import {FileText} from 'lucide-react';
-import ResumeList from './ResumeList';
 import {Resume} from '@/app/types/resume.types';
+import PageContent from '../../_components/PageContent';
+import ResumeCard from './ResumeCard';
 
 interface ResumePageContentProps {
     resumes: Resume[];
@@ -18,24 +18,22 @@ export default function ResumePageContent({
     onEdit,
     onDelete,
 }: ResumePageContentProps) {
-    if (resumes.length === 0) {
-        return (
-            <EmptyState
-                icon={FileText}
-                title="No resumes yet"
-                description="Create your first resume to get started"
-                actionLabel="Create Your First Resume"
-                onAction={onCreateNew}
-            />
-        );
-    }
-
     return (
-        <ResumeList
-            resumes={resumes}
-            onDelete={onDelete}
-            onEdit={onEdit}
-            deletingId={deletingId}
+        <PageContent
+            items={resumes}
+            onCreateNew={onCreateNew}
+            emptyIcon={FileText}
+            emptyTitle="No resumes yet"
+            emptyDescription="Create your first resume to get started"
+            emptyActionLabel="Create Your First Resume"
+            renderItem={(resume) => (
+                <ResumeCard
+                    resume={resume}
+                    onDelete={onDelete}
+                    onEdit={onEdit}
+                    deletingId={deletingId}
+                />
+            )}
         />
     );
 }

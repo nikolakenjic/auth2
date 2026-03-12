@@ -1,9 +1,9 @@
 'use client';
 
-import EmptyState from '@/components/empty-state/EmptyState';
 import {FileText} from 'lucide-react';
-import CoverLetterList from './CoverLetterList';
 import {CoverLetter} from '@/app/types/coverLetter.types';
+import CoverLetterCard from './CoverLetterCard';
+import PageContent from '../../_components/PageContent';
 
 interface CoverLetterPageContentProps {
     coverLetters: CoverLetter[];
@@ -20,24 +20,22 @@ export default function CoverLetterPageContent({
     onEdit,
     onDelete,
 }: CoverLetterPageContentProps) {
-    if (coverLetters.length === 0) {
-        return (
-            <EmptyState
-                icon={FileText}
-                title="No cover letters yet"
-                description="Create your first cover letter to get started"
-                actionLabel="Create Your First Cover Letter"
-                onAction={onCreateNew}
-            />
-        );
-    }
-
     return (
-        <CoverLetterList
-            coverLetters={coverLetters}
-            onDelete={onDelete}
-            onEdit={onEdit}
-            deletingId={deletingId}
+        <PageContent
+            items={coverLetters}
+            onCreateNew={onCreateNew}
+            emptyIcon={FileText}
+            emptyTitle="No cover letters yet"
+            emptyDescription="Create your first cover letter to get started"
+            emptyActionLabel="Create Your First Cover Letter"
+            renderItem={(cl) => (
+                <CoverLetterCard
+                    coverLetter={cl}
+                    onDelete={onDelete}
+                    onEdit={onEdit}
+                    deletingId={deletingId}
+                />
+            )}
         />
     );
 }

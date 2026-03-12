@@ -8,9 +8,10 @@ import {JobDescriptionModal} from './_components/JobDescriptionModal';
 import {ConfirmDeleteModal} from '@/components/modal/ConfirmDeleteModal';
 import {toast} from 'sonner';
 import JobDescriptionPageContent from './_components/JobDescriptionPageContent';
-import JobDescriptionPageHeader from './_components/JobDescriptionPageHeader';
 import {useJobDescriptions} from '@/app/hooks/(job-description)/useJobDescriptions';
 import {useDeleteJobDescription} from '@/app/hooks/(job-description)/useDeleteJobDescription';
+import PageHeader from '../_components/PageHeader';
+import {FileSearch} from 'lucide-react';
 
 const DEFAULT_JOB_DESCRIPTION: JobDescription = {
     _id: '',
@@ -94,7 +95,16 @@ export default function JobDescriptionPage() {
 
     return (
         <div className="container mx-auto px-4 py-8 max-w-6xl">
-            <JobDescriptionPageHeader onCreateNew={handleCreateNew} />
+            <PageHeader
+                title="Job Descriptions"
+                description="Manage and analyze your job descriptions"
+                icon={FileSearch}
+                onCreateNew={handleCreateNew}
+                buttonLabel="Add New"
+                count={jobDescriptions.length}
+                iconBg="bg-orange-50 dark:bg-orange-900/20"
+                iconColor="text-orange-500"
+            />
             <JobDescriptionPageContent
                 jobDescriptions={jobDescriptions}
                 deletingId={deletingId}

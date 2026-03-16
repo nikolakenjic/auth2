@@ -14,6 +14,7 @@ interface FormSelectProps {
     touched?: boolean;
     placeholder?: string;
     disabled?: boolean;
+    className?: string;
 }
 
 export function FormSelect({
@@ -28,6 +29,7 @@ export function FormSelect({
     touched,
     placeholder,
     disabled = false,
+    className,
 }: FormSelectProps) {
     return (
         <div>
@@ -43,7 +45,7 @@ export function FormSelect({
                 disabled={disabled}
                 className={`w-full rounded-md border border-input bg-background px-3 py-2 text-sm ${
                     touched && error ? 'border-red-500' : ''
-                }`}
+                } ${className ?? ''}`}
             >
                 {placeholder && <option value="">{placeholder}</option>}
                 {options.map((option) => (

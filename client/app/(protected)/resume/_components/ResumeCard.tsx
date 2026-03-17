@@ -4,6 +4,7 @@ import {Resume} from '@/app/types/resume.types';
 import {Eye, Pencil, Trash2} from 'lucide-react';
 import {Button} from '@/components/ui/button';
 import Link from 'next/link';
+import {useRouter} from 'next/navigation';
 
 interface ResumeCardProps {
     resume: Resume;
@@ -18,7 +19,9 @@ export default function ResumeCard({
     onEdit,
     deletingId,
 }: ResumeCardProps) {
+    const router = useRouter();
     const isDeleting = deletingId === resume._id;
+
     const handleDelete = (e: React.MouseEvent) => {
         e.stopPropagation();
         onDelete(resume._id);
@@ -54,7 +57,8 @@ export default function ResumeCard({
                     size="sm"
                     onClick={(e) => {
                         e.stopPropagation();
-                        onEdit(resume);
+                        // onEdit(resume);
+                        router.push(`/resume/${resume._id}/edit`);
                     }}
                     className="flex items-center gap-1"
                 >

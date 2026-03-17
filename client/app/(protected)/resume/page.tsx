@@ -12,6 +12,7 @@ import {toast} from 'sonner';
 import ResumePageContent from './_components/ResumePageContent';
 import PageHeader from '../_components/PageHeader';
 import {FileText} from 'lucide-react';
+import {ResumeQuickCreateModal} from './_components/ResumeQuickCreateModal';
 
 const DEFAULT_RESUME: Resume = {
     _id: '',
@@ -31,13 +32,14 @@ export default function ResumePage() {
 
     const handleCreateNew = () => {
         openModal(
-            <ResumeModal
-                resume={DEFAULT_RESUME}
-                onSave={(savedResume) => {
-                    setResumes((prev) => [savedResume, ...prev]);
-                }}
-                onClose={closeModal}
-            />,
+            <ResumeQuickCreateModal onClose={closeModal} />,
+            // <ResumeModal
+            //     resume={DEFAULT_RESUME}
+            //     onSave={(savedResume) => {
+            //         setResumes((prev) => [savedResume, ...prev]);
+            //     }}
+            //     onClose={closeModal}
+            // />,
         );
     };
 

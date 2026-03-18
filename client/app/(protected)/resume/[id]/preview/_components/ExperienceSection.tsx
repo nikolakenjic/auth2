@@ -8,17 +8,24 @@ type ExperienceItems = ReturnType<typeof getExperienceItems>;
 export function ExperienceSection({experience}: {experience: ExperienceItems}) {
     if (!experience.length) return null;
     return (
-        <section className="mb-6">
+        <section className="mb-7">
             <SectionHeader title="Experience" />
-            <div className="space-y-5">
+            <div className="space-y-6">
                 {experience.map((item, i) => (
                     <div key={i}>
-                        <div className="flex justify-between items-start">
-                            <div>
-                                <p className="font-bold">{item.title}</p>
-                                <p className="text-sm text-gray-600">
+                        <div className="flex justify-between items-start gap-4">
+                            <div className="min-w-0">
+                                <p className="font-semibold text-gray-900 leading-tight">
+                                    {item.title}
+                                </p>
+                                <p className="text-sm text-gray-500 mt-0.5">
                                     {item.company}
-                                    {item.location ? ` — ${item.location}` : ''}
+                                    {item.location ? (
+                                        <span className="text-gray-400">
+                                            {' '}
+                                            · {item.location}
+                                        </span>
+                                    ) : null}
                                 </p>
                             </div>
                             <DateRange

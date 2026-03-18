@@ -121,3 +121,15 @@
         @apply bg-background text-foreground h-full;
     }
 }
+
+@media print {
+    @page {
+        margin: 0.5in;
+        size: letter;
+    }
+
+    body {
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+    }
+}

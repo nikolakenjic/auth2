@@ -26,7 +26,10 @@ export function ResumePreview({resume}: ResumePreviewProps) {
     const skills = getSkillItems(resume.sections);
 
     return (
-        <div className="bg-white shadow-lg rounded-md p-10 min-h-[1100px] font-serif text-gray-900">
+        <div
+            id="resume-print-area"
+            className="bg-white shadow-xl rounded-lg p-12 min-h-[1056px] font-sans text-gray-900 print:shadow-none print:rounded-none print:p-8"
+        >
             <ContactHeader contact={contact} />
             <SummarySection summary={summary} />
             <ExperienceSection experience={experience} />

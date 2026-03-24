@@ -1,12 +1,12 @@
 'use client';
 
+import {useRouter} from 'next/navigation';
 import {useModal} from '@/app/context/ModalContext';
 import {Button} from '@/components/ui/button';
 import {Resume} from '@/app/types/resume.types';
 import {useResumes} from '@/app/hooks/(resume)/useResumes';
 import {useDeleteResume} from '@/app/hooks/(resume)/useDeleteResume';
 import LoadingState from '@/components/loading-state/LoadingState';
-import {ResumeModal} from '@/app/(protected)/resume/_components/ResumeModal';
 import {ConfirmDeleteModal} from '@/components/modal/ConfirmDeleteModal';
 import {toast} from 'sonner';
 import ResumePageContent from './_components/ResumePageContent';
@@ -14,49 +14,14 @@ import PageHeader from '../_components/PageHeader';
 import {FileText} from 'lucide-react';
 import {ResumeQuickCreateModal} from './_components/ResumeQuickCreateModal';
 
-const DEFAULT_RESUME: Resume = {
-    _id: '',
-    userId: '',
-    title: '',
-    status: 'draft',
-    templateVersion: 1,
-    sections: [],
-    createdAt: '',
-    updatedAt: '',
-};
-
 export default function ResumePage() {
+    const router = useRouter();
     const {resumes, loading, error, refetch, setResumes} = useResumes();
     const {remove, deletingId} = useDeleteResume();
     const {openModal, closeModal} = useModal();
 
     const handleCreateNew = () => {
-        openModal(
-            <ResumeQuickCreateModal onClose={closeModal} />,
-            // <ResumeModal
-            //     resume={DEFAULT_RESUME}
-            //     onSave={(savedResume) => {
-            //         setResumes((prev) => [savedResume, ...prev]);
-            //     }}
-            //     onClose={closeModal}
-            // />,
-        );
-    };
-
-    const handleEdit = (resume: Resume) => {
-        openModal(
-            <ResumeModal
-                resume={resume}
-                onSave={(savedResume) => {
-                    setResumes((prev) =>
-                        prev.map((r) =>
-                            r._id === savedResume._id ? savedResume : r,
-                        ),
-                    );
-                }}
-                onClose={closeModal}
-            />,
-        );
+        openModal(<ResumeQuickCreateModal onClose={closeModal} />);
     };
 
     const handleDeleteClick = (resume: Resume) => {
@@ -112,7 +77,7 @@ export default function ResumePage() {
                 resumes={resumes}
                 deletingId={deletingId}
                 onCreateNew={handleCreateNew}
-                onEdit={handleEdit}
+                onEdit={(resume) => router.push(`/resume/${resume._id}/edit`)}
                 onDelete={(id) => {
                     const resume = resumes.find((r) => r._id === id);
                     if (resume) handleDeleteClick(resume);

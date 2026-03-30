@@ -10,6 +10,8 @@ interface DashboardFeatureCardProps {
     iconColor: string;
     hoverBorder: string;
     arrowHover: string;
+    count?: number;
+    loading?: boolean;
 }
 
 export default function DashboardFeatureCard({
@@ -21,6 +23,8 @@ export default function DashboardFeatureCard({
     iconColor,
     hoverBorder,
     arrowHover,
+    count,
+    loading,
 }: DashboardFeatureCardProps) {
     return (
         <Link
@@ -33,9 +37,21 @@ export default function DashboardFeatureCard({
                 >
                     <Icon className={`w-5 h-5 ${iconColor}`} />
                 </div>
-                <ArrowRight
-                    className={`w-4 h-4 text-slate-300 ${arrowHover} group-hover:translate-x-1 transition-all`}
-                />
+                <div className="flex items-center gap-2">
+                    {!loading && count !== undefined && (
+                        <span
+                            className={`text-xs font-semibold px-2 py-0.5 rounded-full ${iconBg} ${iconColor}`}
+                        >
+                            {count}
+                        </span>
+                    )}
+                    {loading && (
+                        <span className="w-8 h-4 bg-slate-100 dark:bg-slate-800 rounded-full animate-pulse" />
+                    )}
+                    <ArrowRight
+                        className={`w-4 h-4 text-slate-300 ${arrowHover} group-hover:translate-x-1 transition-all`}
+                    />
+                </div>
             </div>
             <div>
                 <h2 className="font-semibold text-sm text-slate-900 dark:text-white mb-1">

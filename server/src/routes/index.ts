@@ -1,12 +1,13 @@
 import {Router} from 'express';
 import authRoute from './auth.route';
+import authenticate from '../middleware/authenticate';
 import userRoute from './user.route';
 import sessionRoute from './session.route';
 import resumeRoute from './resume.route';
 import coverLetterRoute from './coverLetter.route';
 import interviewSessionRoute from './interviewSession.route';
-import jobDescriptionRoute from "./jobDescription.route";
-import authenticate from '../middleware/authenticate';
+import jobDescriptionRoute from './jobDescription.route';
+import aiRoute from './ai.route';
 
 const router = Router();
 
@@ -19,6 +20,7 @@ router.use('/sessions', authenticate, sessionRoute);
 router.use('/resume', authenticate, resumeRoute);
 router.use('/cover-letter', authenticate, coverLetterRoute);
 router.use('/interview-session', authenticate, interviewSessionRoute);
-router.use("/job-description", authenticate, jobDescriptionRoute);
+router.use('/job-description', authenticate, jobDescriptionRoute);
+router.use('/ai', authenticate, aiRoute);
 
 export default router;

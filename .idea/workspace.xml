@@ -1,0 +1,539 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="4ca3b1a3-783c-4116-8330-4a836e6f481f" name="Changes" comment="refactor(cloverLetter): refactor CL" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="feat/auth-guard" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;nikolakenjic&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/nikolakenjic/auth2.git&quot;,
+    &quot;accountId&quot;: &quot;91a5c145-2b58-4b3f-8ad7-97dd51add785&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="2zI3wOL3J5kj4kzyrAflEz2PkZU" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "feat/resume-ui",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.editor.code.editing",
+    "ts.external.directory.path": "C:\\Users\\Administrator\\Desktop\\My projects\\auth-jwt-mern\\client\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Administrator\Desktop\My projects\auth-jwt-mern\server\src\types\express" />
+      <recent name="C:\Users\Administrator\Desktop\My projects\auth-jwt-mern\server\src\types" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-WS-243.22562.222" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="4ca3b1a3-783c-4116-8330-4a836e6f481f" name="Changes" comment="" />
+      <created>1751404997859</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1751404997859</updated>
+      <workItem from="1751404999240" duration="11424000" />
+      <workItem from="1752258552306" duration="2189000" />
+      <workItem from="1752686962533" duration="3000" />
+      <workItem from="1752686985845" duration="12276000" />
+      <workItem from="1754168613434" duration="17758000" />
+      <workItem from="1754946623177" duration="3950000" />
+      <workItem from="1755120586916" duration="728000" />
+      <workItem from="1755541381600" duration="16929000" />
+      <workItem from="1757453177664" duration="84000" />
+      <workItem from="1757453308746" duration="2390000" />
+      <workItem from="1757866231281" duration="6071000" />
+      <workItem from="1758572891000" duration="27652000" />
+      <workItem from="1760473377249" duration="684000" />
+      <workItem from="1760476459132" duration="63000" />
+      <workItem from="1760476739848" duration="2977000" />
+      <workItem from="1760642759172" duration="19096000" />
+      <workItem from="1762294970645" duration="1618000" />
+      <workItem from="1762554146122" duration="1364000" />
+      <workItem from="1763416580514" duration="8065000" />
+      <workItem from="1764017794383" duration="19226000" />
+      <workItem from="1765400773953" duration="12025000" />
+      <workItem from="1766446917860" duration="8840000" />
+      <workItem from="1766877521988" duration="2632000" />
+      <workItem from="1767910335254" duration="55611000" />
+    </task>
+    <task id="LOCAL-00140" summary="feat(api-client): add patch method and support config for all requests">
+      <option name="closed" value="true" />
+      <created>1764616787599</created>
+      <option name="number" value="00140" />
+      <option name="presentableId" value="LOCAL-00140" />
+      <option name="project" value="LOCAL" />
+      <updated>1764616787599</updated>
+    </task>
+    <task id="LOCAL-00141" summary="feat(resume-page): add resume page initials">
+      <option name="closed" value="true" />
+      <created>1764886415457</created>
+      <option name="number" value="00141" />
+      <option name="presentableId" value="LOCAL-00141" />
+      <option name="project" value="LOCAL" />
+      <updated>1764886415457</updated>
+    </task>
+    <task id="LOCAL-00142" summary="feat(resume-hook): add resume hook">
+      <option name="closed" value="true" />
+      <created>1764974972586</created>
+      <option name="number" value="00142" />
+      <option name="presentableId" value="LOCAL-00142" />
+      <option name="project" value="LOCAL" />
+      <updated>1764974972587</updated>
+    </task>
+    <task id="LOCAL-00143" summary="feat(shadcn): add dialog">
+      <option name="closed" value="true" />
+      <created>1765233689801</created>
+      <option name="number" value="00143" />
+      <option name="presentableId" value="LOCAL-00143" />
+      <option name="project" value="LOCAL" />
+      <updated>1765233689801</updated>
+    </task>
+    <task id="LOCAL-00144" summary="feat(validation-resume-schema): create resume schema">
+      <option name="closed" value="true" />
+      <created>1765398802925</created>
+      <option name="number" value="00144" />
+      <option name="presentableId" value="LOCAL-00144" />
+      <option name="project" value="LOCAL" />
+      <updated>1765398802925</updated>
+    </task>
+    <task id="LOCAL-00145" summary="feat(resume-form): create resume form">
+      <option name="closed" value="true" />
+      <created>1765483563707</created>
+      <option name="number" value="00145" />
+      <option name="presentableId" value="LOCAL-00145" />
+      <option name="project" value="LOCAL" />
+      <updated>1765483563707</updated>
+    </task>
+    <task id="LOCAL-00146" summary="feat(app-coreMiddleware): create core middleware">
+      <option name="closed" value="true" />
+      <created>1765494480725</created>
+      <option name="number" value="00146" />
+      <option name="presentableId" value="LOCAL-00146" />
+      <option name="project" value="LOCAL" />
+      <updated>1765494480725</updated>
+    </task>
+    <task id="LOCAL-00147" summary="feat(api-routes): create central API router and register all routes">
+      <option name="closed" value="true" />
+      <created>1765494693880</created>
+      <option name="number" value="00147" />
+      <option name="presentableId" value="LOCAL-00147" />
+      <option name="project" value="LOCAL" />
+      <updated>1765494693880</updated>
+    </task>
+    <task id="LOCAL-00148" summary="feat(formik): install formik">
+      <option name="closed" value="true" />
+      <created>1765577850042</created>
+      <option name="number" value="00148" />
+      <option name="presentableId" value="LOCAL-00148" />
+      <option name="project" value="LOCAL" />
+      <updated>1765577850042</updated>
+    </task>
+    <task id="LOCAL-00149" summary="feat(resume-modal): create resume modal">
+      <option name="closed" value="true" />
+      <created>1765577880761</created>
+      <option name="number" value="00149" />
+      <option name="presentableId" value="LOCAL-00149" />
+      <option name="project" value="LOCAL" />
+      <updated>1765577880761</updated>
+    </task>
+    <task id="LOCAL-00150" summary="refactor(authenticate): update req.user to have role">
+      <option name="closed" value="true" />
+      <created>1765665704351</created>
+      <option name="number" value="00150" />
+      <option name="presentableId" value="LOCAL-00150" />
+      <option name="project" value="LOCAL" />
+      <updated>1765665704351</updated>
+    </task>
+    <task id="LOCAL-00151" summary="refactor(validate): add appError to validate">
+      <option name="closed" value="true" />
+      <created>1765752122287</created>
+      <option name="number" value="00151" />
+      <option name="presentableId" value="LOCAL-00151" />
+      <option name="project" value="LOCAL" />
+      <updated>1765752122287</updated>
+    </task>
+    <task id="LOCAL-00152" summary="feat(utils-auth): create session and tokens">
+      <option name="closed" value="true" />
+      <created>1765924644650</created>
+      <option name="number" value="00152" />
+      <option name="presentableId" value="LOCAL-00152" />
+      <option name="project" value="LOCAL" />
+      <updated>1765924644650</updated>
+    </task>
+    <task id="LOCAL-00153" summary="feat(authorize-middleware): create authorize for roles">
+      <option name="closed" value="true" />
+      <created>1765925545619</created>
+      <option name="number" value="00153" />
+      <option name="presentableId" value="LOCAL-00153" />
+      <option name="project" value="LOCAL" />
+      <updated>1765925545619</updated>
+    </task>
+    <task id="LOCAL-00154" summary="feat(user-model): add role to user model">
+      <option name="closed" value="true" />
+      <created>1765926721228</created>
+      <option name="number" value="00154" />
+      <option name="presentableId" value="LOCAL-00154" />
+      <option name="project" value="LOCAL" />
+      <updated>1765926721228</updated>
+    </task>
+    <task id="LOCAL-00155" summary="refactor(app): refactor app">
+      <option name="closed" value="true" />
+      <created>1766610432420</created>
+      <option name="number" value="00155" />
+      <option name="presentableId" value="LOCAL-00155" />
+      <option name="project" value="LOCAL" />
+      <updated>1766610432420</updated>
+    </task>
+    <task id="LOCAL-00156" summary="refactor(app-error): add some error detail to my errors">
+      <option name="closed" value="true" />
+      <created>1766611022351</created>
+      <option name="number" value="00156" />
+      <option name="presentableId" value="LOCAL-00156" />
+      <option name="project" value="LOCAL" />
+      <updated>1766611022351</updated>
+    </task>
+    <task id="LOCAL-00157" summary="refactor(error-handler): extend error handler">
+      <option name="closed" value="true" />
+      <created>1766696344781</created>
+      <option name="number" value="00157" />
+      <option name="presentableId" value="LOCAL-00157" />
+      <option name="project" value="LOCAL" />
+      <updated>1766696344782</updated>
+    </task>
+    <task id="LOCAL-00158" summary="refactor(req-user): change req.userId to req.user.userId">
+      <option name="closed" value="true" />
+      <created>1766696399487</created>
+      <option name="number" value="00158" />
+      <option name="presentableId" value="LOCAL-00158" />
+      <option name="project" value="LOCAL" />
+      <updated>1766696399487</updated>
+    </task>
+    <task id="LOCAL-00159" summary="feat(authenticate): add session model to authenticate">
+      <option name="closed" value="true" />
+      <created>1766860877586</created>
+      <option name="number" value="00159" />
+      <option name="presentableId" value="LOCAL-00159" />
+      <option name="project" value="LOCAL" />
+      <updated>1766860877587</updated>
+    </task>
+    <task id="LOCAL-00160" summary="feat(validate): add validate to cl">
+      <option name="closed" value="true" />
+      <created>1766953726230</created>
+      <option name="number" value="00160" />
+      <option name="presentableId" value="LOCAL-00160" />
+      <option name="project" value="LOCAL" />
+      <updated>1766953726230</updated>
+    </task>
+    <task id="LOCAL-00161" summary="refactor(interviewSession-model): refactor IS model">
+      <option name="closed" value="true" />
+      <created>1767044941708</created>
+      <option name="number" value="00161" />
+      <option name="presentableId" value="LOCAL-00161" />
+      <option name="project" value="LOCAL" />
+      <updated>1767044941708</updated>
+    </task>
+    <task id="LOCAL-00162" summary="add more safety">
+      <option name="closed" value="true" />
+      <created>1767301956082</created>
+      <option name="number" value="00162" />
+      <option name="presentableId" value="LOCAL-00162" />
+      <option name="project" value="LOCAL" />
+      <updated>1767301956082</updated>
+    </task>
+    <task id="LOCAL-00163" summary="refactor spelling error">
+      <option name="closed" value="true" />
+      <created>1767992793932</created>
+      <option name="number" value="00163" />
+      <option name="presentableId" value="LOCAL-00163" />
+      <option name="project" value="LOCAL" />
+      <updated>1767992793933</updated>
+    </task>
+    <task id="LOCAL-00164" summary="feat(db): add more database controls">
+      <option name="closed" value="true" />
+      <created>1768080828069</created>
+      <option name="number" value="00164" />
+      <option name="presentableId" value="LOCAL-00164" />
+      <option name="project" value="LOCAL" />
+      <updated>1768080828069</updated>
+    </task>
+    <task id="LOCAL-00165" summary="refactor(cookies.ts): remove REFRESH_PATH for accessToken get refreshed">
+      <option name="closed" value="true" />
+      <created>1768164589423</created>
+      <option name="number" value="00165" />
+      <option name="presentableId" value="LOCAL-00165" />
+      <option name="project" value="LOCAL" />
+      <updated>1768164589423</updated>
+    </task>
+    <task id="LOCAL-00166" summary="refactor(cookies.ts): add REFRESH_PATH for accessToken get refreshed">
+      <option name="closed" value="true" />
+      <created>1768249372069</created>
+      <option name="number" value="00166" />
+      <option name="presentableId" value="LOCAL-00166" />
+      <option name="project" value="LOCAL" />
+      <updated>1768249372069</updated>
+    </task>
+    <task id="LOCAL-00167" summary="feat(cookies.ts): add API_PATH to accessToken">
+      <option name="closed" value="true" />
+      <created>1768339488251</created>
+      <option name="number" value="00167" />
+      <option name="presentableId" value="LOCAL-00167" />
+      <option name="project" value="LOCAL" />
+      <updated>1768339488252</updated>
+    </task>
+    <task id="LOCAL-00168" summary="feat(resume-model): add experience and education schema">
+      <option name="closed" value="true" />
+      <created>1768426865440</created>
+      <option name="number" value="00168" />
+      <option name="presentableId" value="LOCAL-00168" />
+      <option name="project" value="LOCAL" />
+      <updated>1768426865440</updated>
+    </task>
+    <task id="LOCAL-00169" summary="refactor(resume-model): refactor resume model">
+      <option name="closed" value="true" />
+      <created>1768427570354</created>
+      <option name="number" value="00169" />
+      <option name="presentableId" value="LOCAL-00169" />
+      <option name="project" value="LOCAL" />
+      <updated>1768427570354</updated>
+    </task>
+    <task id="LOCAL-00170" summary="refactor(resume-model): refactor resume model">
+      <option name="closed" value="true" />
+      <created>1768510630782</created>
+      <option name="number" value="00170" />
+      <option name="presentableId" value="LOCAL-00170" />
+      <option name="project" value="LOCAL" />
+      <updated>1768510630782</updated>
+    </task>
+    <task id="LOCAL-00171" summary="feat(resume-schema): add more functins to resume schema">
+      <option name="closed" value="true" />
+      <created>1768511193051</created>
+      <option name="number" value="00171" />
+      <option name="presentableId" value="LOCAL-00171" />
+      <option name="project" value="LOCAL" />
+      <updated>1768511193051</updated>
+    </task>
+    <task id="LOCAL-00172" summary="refactor(interview-session-model): refactor IS">
+      <option name="closed" value="true" />
+      <created>1768596726834</created>
+      <option name="number" value="00172" />
+      <option name="presentableId" value="LOCAL-00172" />
+      <option name="project" value="LOCAL" />
+      <updated>1768596726834</updated>
+    </task>
+    <task id="LOCAL-00173" summary="refactor(cover-letter-schema): refactor CLS">
+      <option name="closed" value="true" />
+      <created>1768596755825</created>
+      <option name="number" value="00173" />
+      <option name="presentableId" value="LOCAL-00173" />
+      <option name="project" value="LOCAL" />
+      <updated>1768596755825</updated>
+    </task>
+    <task id="LOCAL-00174" summary="feat(authenticate): add catch async to authenticate">
+      <option name="closed" value="true" />
+      <created>1768597547753</created>
+      <option name="number" value="00174" />
+      <option name="presentableId" value="LOCAL-00174" />
+      <option name="project" value="LOCAL" />
+      <updated>1768597547753</updated>
+    </task>
+    <task id="LOCAL-00175" summary="feat(jobDescription-model): create JD model">
+      <option name="closed" value="true" />
+      <created>1768683464910</created>
+      <option name="number" value="00175" />
+      <option name="presentableId" value="LOCAL-00175" />
+      <option name="project" value="LOCAL" />
+      <updated>1768683464910</updated>
+    </task>
+    <task id="LOCAL-00176" summary="feat(jobDescription-schema): create JD schema">
+      <option name="closed" value="true" />
+      <created>1768683482333</created>
+      <option name="number" value="00176" />
+      <option name="presentableId" value="LOCAL-00176" />
+      <option name="project" value="LOCAL" />
+      <updated>1768683482333</updated>
+    </task>
+    <task id="LOCAL-00177" summary="refactor(resume-service): refactor resume service">
+      <option name="closed" value="true" />
+      <created>1768770919657</created>
+      <option name="number" value="00177" />
+      <option name="presentableId" value="LOCAL-00177" />
+      <option name="project" value="LOCAL" />
+      <updated>1768770919657</updated>
+    </task>
+    <task id="LOCAL-00178" summary="feat(resume): implement CRUD routes/controllers/services">
+      <option name="closed" value="true" />
+      <created>1768771259446</created>
+      <option name="number" value="00178" />
+      <option name="presentableId" value="LOCAL-00178" />
+      <option name="project" value="LOCAL" />
+      <updated>1768771259446</updated>
+    </task>
+    <task id="LOCAL-00179" summary="refactor(resume): remove zod parsing from create and update handlers">
+      <option name="closed" value="true" />
+      <created>1768771902870</created>
+      <option name="number" value="00179" />
+      <option name="presentableId" value="LOCAL-00179" />
+      <option name="project" value="LOCAL" />
+      <updated>1768771902870</updated>
+    </task>
+    <task id="LOCAL-00180" summary="feat(jobDescription-route): create JD route">
+      <option name="closed" value="true" />
+      <created>1768856073319</created>
+      <option name="number" value="00180" />
+      <option name="presentableId" value="LOCAL-00180" />
+      <option name="project" value="LOCAL" />
+      <updated>1768856073319</updated>
+    </task>
+    <task id="LOCAL-00181" summary="feat(jobDescription-controller): create JD controller">
+      <option name="closed" value="true" />
+      <created>1768856086678</created>
+      <option name="number" value="00181" />
+      <option name="presentableId" value="LOCAL-00181" />
+      <option name="project" value="LOCAL" />
+      <updated>1768856086678</updated>
+    </task>
+    <task id="LOCAL-00182" summary="feat(jobDescription-service): create JD service">
+      <option name="closed" value="true" />
+      <created>1768856098329</created>
+      <option name="number" value="00182" />
+      <option name="presentableId" value="LOCAL-00182" />
+      <option name="project" value="LOCAL" />
+      <updated>1768856098329</updated>
+    </task>
+    <task id="LOCAL-00183" summary="feat(README): create README for backend">
+      <option name="closed" value="true" />
+      <created>1768945638494</created>
+      <option name="number" value="00183" />
+      <option name="presentableId" value="LOCAL-00183" />
+      <option name="project" value="LOCAL" />
+      <updated>1768945638494</updated>
+    </task>
+    <task id="LOCAL-00184" summary="refactor(user-model): hide sensitive fields and add password and googleId select:false">
+      <option name="closed" value="true" />
+      <created>1768947227498</created>
+      <option name="number" value="00184" />
+      <option name="presentableId" value="LOCAL-00184" />
+      <option name="project" value="LOCAL" />
+      <updated>1768947227499</updated>
+    </task>
+    <task id="LOCAL-00185" summary="fix(auth): select password explicitly for login">
+      <option name="closed" value="true" />
+      <created>1768947269692</created>
+      <option name="number" value="00185" />
+      <option name="presentableId" value="LOCAL-00185" />
+      <option name="project" value="LOCAL" />
+      <updated>1768947269692</updated>
+    </task>
+    <task id="LOCAL-00186" summary="refactor(jobDescription-schema): refactor JD schema">
+      <option name="closed" value="true" />
+      <created>1769032231927</created>
+      <option name="number" value="00186" />
+      <option name="presentableId" value="LOCAL-00186" />
+      <option name="project" value="LOCAL" />
+      <updated>1769032231927</updated>
+    </task>
+    <task id="LOCAL-00187" summary="refactor(interview): refactor IS">
+      <option name="closed" value="true" />
+      <created>1769119741858</created>
+      <option name="number" value="00187" />
+      <option name="presentableId" value="LOCAL-00187" />
+      <option name="project" value="LOCAL" />
+      <updated>1769119741858</updated>
+    </task>
+    <task id="LOCAL-00188" summary="refactor(cloverLetter): refactor CL">
+      <option name="closed" value="true" />
+      <created>1769119965415</created>
+      <option name="number" value="00188" />
+      <option name="presentableId" value="LOCAL-00188" />
+      <option name="project" value="LOCAL" />
+      <updated>1769119965415</updated>
+    </task>
+    <option name="localTasksCounter" value="189" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="refactor spelling error" />
+    <MESSAGE value="feat(db): add more database controls" />
+    <MESSAGE value="refactor(cookies.ts): remove REFRESH_PATH for accessToken get refreshed" />
+    <MESSAGE value="refactor(cookies.ts): add REFRESH_PATH for accessToken get refreshed" />
+    <MESSAGE value="feat(cookies.ts): add API_PATH to accessToken" />
+    <MESSAGE value="feat(resume-model): add experience and education schema" />
+    <MESSAGE value="refactor(resume-model): refactor resume model" />
+    <MESSAGE value="feat(resume-schema): add more functins to resume schema" />
+    <MESSAGE value="refactor(interview-session-model): refactor IS" />
+    <MESSAGE value="refactor(cover-letter-schema): refactor CLS" />
+    <MESSAGE value="feat(authenticate): add catch async to authenticate" />
+    <MESSAGE value="feat(jobDescription-model): create JD model" />
+    <MESSAGE value="feat(jobDescription-schema): create JD schema" />
+    <MESSAGE value="refactor(resume-service): refactor resume service" />
+    <MESSAGE value="feat(resume): implement CRUD routes/controllers/services" />
+    <MESSAGE value="refactor(resume): remove zod parsing from create and update handlers" />
+    <MESSAGE value="feat(jobDescription-route): create JD route" />
+    <MESSAGE value="feat(jobDescription-controller): create JD controller" />
+    <MESSAGE value="feat(jobDescription-service): create JD service" />
+    <MESSAGE value="feat(README): create README for backend" />
+    <MESSAGE value="refactor(user-model): hide sensitive fields and add password and googleId select:false" />
+    <MESSAGE value="fix(auth): select password explicitly for login" />
+    <MESSAGE value="refactor(jobDescription-schema): refactor JD schema" />
+    <MESSAGE value="refactor(interview): refactor IS" />
+    <MESSAGE value="refactor(cloverLetter): refactor CL" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor(cloverLetter): refactor CL" />
+  </component>
+</project>
